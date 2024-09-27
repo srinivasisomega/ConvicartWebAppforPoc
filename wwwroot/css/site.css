@@ -1,0 +1,231 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+/* Global Styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+    line-height: 60px;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    
+}
+
+/* Header Styles */
+
+.header1 {
+    background-color: #F3BE57;
+    padding: 2px;
+    border-bottom: 1px solid #ddd;
+}
+
+.navbar-brand img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    margin-left:30px;
+}
+
+.navbar-nav {
+    margin-left: 20px;
+}
+
+.nav-link {
+    color: #337ab7;
+    transition: color 0.2s ease;
+}
+
+    .nav-link:hover {
+        color: #23527c;
+    }
+
+.nav-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+
+/* Search Bar Styles */
+
+.d-flex {
+    margin-left: 20px;
+}
+
+.form-control {
+    width: 300px;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-outline-success {
+    height: 40px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+}
+
+    .btn-outline-success:hover {
+        background-color: #2ecc71;
+    }
+
+/* Footer Styles */
+
+
+/* Profile Avatar Styles */
+
+.nav-profile img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+footer .container1 {
+    display: flex;
+    flex-direction: column;
+    width: stretch;
+}
+
+    footer .container1 .footer-top {
+        display: flex;
+        flex-direction: row;
+    }
+        /*footer .container .footer-top .footer-contact .footer-contact ul {
+            list-style-type: none;*/ /* Removes bullet points */
+        /*padding: 0;
+            margin: 0;
+        }
+
+        footer .container .footer-top .footer-contact .footer-contact li {
+            line-height: 1.2;*/ /* Adjusts the space between lines (smaller value reduces gap) */
+        /*margin-bottom: 5px;*/ /* Optional: Adds a bit of space between items, adjust as needed */
+        /*}*/
+        footer .container1 .footer-top .footer-logos {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            footer .container1 .footer-top .footer-logos .footer-logo-top {
+                height: fit-content;
+                width: fit-content;
+            }
+
+                footer .container1 .footer-top .footer-logos .footer-logo-top .footer-brand img {
+                    height: 90px;
+                    width: 120px;
+                }
+
+            footer .container1 .footer-top .footer-logos .footer-logo-bottom {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+
+                footer .container1 .footer-top .footer-logos .footer-logo-bottom .facebook img {
+                    height: 40px;
+                    width: 40px;
+                }
+
+                footer .container1 .footer-top .footer-logos .footer-logo-bottom .insta img {
+                    height: 40px;
+                    width: 40px;
+                }
+
+                footer .container1 .footer-top .footer-logos .footer-logo-bottom .youtube img {
+                    height: 40px;
+                    width: 40px;
+                }
+
+                footer .container1 .footer-top .footer-logos .footer-logo-bottom .linkedin img {
+                    height: 40px;
+                    width: 40px;
+                }
+
+        footer .container1 .footer-top .footer-contact {
+            width: fit-content;
+        }
+
+            footer .container1 .footer-top .footer-contact ul {
+                list-style-type: none; /* Removes bullet points */
+                padding: 2px 5px;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            footer .container1 .footer-top .footer-contact li {
+                padding: 2px 5px; /* Adjusts padding inside each list item to control height */
+                width: fit-content; /* Adjust the width as needed */
+                height: auto; /* Ensures the height is based on content */
+                display: inline-block; /* Optional: Makes the list items fit content width */
+                margin-bottom: 5px; /* Adds space between items if needed */
+                line-height: 1.2; /* Adjusts space between lines */
+            }
+        footer .container1 .footer-top .footer-service .footer-service-list {
+            list-style-type: none; /* Removes bullet points */
+            display: flex;
+            flex-direction: column;
+        }
+        footer .container1 .footer-top .footer-service li {
+            padding: 2px 5px; /* Adjusts padding inside each list item to control height */
+            width: fit-content; /* Adjust the width as needed */
+            height: auto; /* Ensures the height is based on content */
+            display: inline-block; /* Optional: Makes the list items fit content width */
+            margin-bottom: 5px; /* Adds space between items if needed */
+            line-height: 1.2;
+        }
+/* Logo Styles */
+
+/*.container-fluid {
+    background-color: #F3BE57;
+}
+.navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 {
+    background-color: #F3BE57;
+}*/
+
