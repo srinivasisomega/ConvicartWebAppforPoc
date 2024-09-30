@@ -1,5 +1,107 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "About us";
 }
+<style>
+    .pb-3{
+        display:flex;
+        flex-direction:row;
+        justify-content:center;
+        background-image: url('/images/hero-banner.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    .aboutus-body {
+        background-color: #f4f4f4; /* Background color */
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        margin-top:40px;
+    }
+
+        .aboutus-body .convi-title {
+            margin-left:50px;
+        }
+
+    .content-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+        .content-section img {
+            width: 300px; /* Size of the abstract picture frame */
+            height: 200px;
+            margin-right: 20px;
+            border: 2px solid #ddd; /* Border to mimic a picture frame */
+            padding: 5px;
+            background-color: #fff;
+        }
+
+        .content-section .text-section {
+            max-width: 600px;
+        }
+
+    h1, h2 {
+        color: #333;
+    }
+
+    p {
+        color: #555;
+    }
+
+    ul {
+        color: #555;
+        list-style: none;
+        padding-left: 0;
+    }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+            ul li strong {
+                color: #333;
+            }
+</style>
+
+<div class="aboutus-body">
+    <h1 class="convi-title">About Convicart</h1>
+    <div class="content-section">
+        <div class="text-section">
+            <h4>Welcome to Convicart, where we combine the convenience of meal delivery with the joy of home cooking. Our mission is simple: to make healthy, delicious meals accessible to everyone, no matter how busy life gets.</h4>
+        </div>
+        <img src="~/Images/A-1.png" alt="Abstract Frame 1">
+    </div>
+
+    <div class="content-section">
+        <img src="~/Images/A-2.png" alt="Abstract Frame 2">
+        <div class="text-section">
+            <h2>Why Convicart?</h2>
+            <p>At Convicart, we believe that food is more than just fuel—it’s an experience. We aim to take the stress out of meal planning and shopping by offering a unique blend of:</p>
+            <ul>
+                <li><strong>Fresh Ingredients Delivered:</strong> Receive farm-fresh, high-quality ingredients that are perfectly portioned for your meals.</li>
+                <li><strong>Easy-to-Follow Recipes:</strong> Step-by-step instructions designed for all skill levels.</li>
+                <li><strong>Healthy Choices:</strong> Options for various dietary preferences, from vegetarian to keto.</li>
+                <li><strong>More Than a Meal Kit:</strong> Explore and create your favorite dishes anytime.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="text-section">
+            <h2>Our Vision</h2>
+            <p>We envision a world where everyone can enjoy the art of cooking at home, regardless of their schedule or skill level.</p>
+        </div>
+        <img src="~/Images/A-3.png" alt="Abstract Frame 3">
+    </div>
+
+    <div class="content-section">
+        <img src="~/Images/A-4.png" alt="Abstract Frame 4">
+        <div class="text-section">
+            <h2>Our Commitment to You</h2>
+            <p>We are dedicated to delivering fresh, quality ingredients and creating an easy, enjoyable cooking experience for you.</p>
+        </div>
+    </div>
+</div>

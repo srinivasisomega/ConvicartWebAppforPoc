@@ -1,5 +1,113 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Contact us";
 }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .details-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #f8f8f8;
+    }
+
+    .details-left, .details-right {
+        width: 30%;
+        padding: 20px;
+    }
+
+        .details-left h2, .details-right h3 {
+            color: #000;
+            font-size: 24px;
+        }
+
+        .details-left p, .details-right p {
+            color: #333;
+            font-size: 16px;
+        }
+
+    .input-section {
+        background-color: #f0f0f0;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #333;
+    }
+
+    input[type="text"], input[type="tel"], input[type="email"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .submit-btn {
+        background-color: #FFA500;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .submit-btn:hover {
+            background-color: #ff8c00;
+        }
+
+    .map-section img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    
+</style>
+<div class="details-container">
+    <div class="details-left">
+        <h2>Kindly share your details</h2>
+        <p>Our service executive will get back to you</p>
+
+        <div class="input-section">
+            <form method="post" action="/Contact/Submit">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name.." required>
+
+                <label for="mobile">Mobile</label>
+                <input type="tel" id="mobile" name="mobile" placeholder="Your mobile number.." required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Your email.." required>
+
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Describe your query.." rows="4"></textarea>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="map-section">
+        <img src="path-to-map-image.jpg" alt="Map image" />
+    </div>
+
+    <div class="details-right">
+        <h3>Talk to us via</h3>
+        <p><strong>Mobile:</strong><br>+918384321232<br>+919948284876</p>
+        <p><strong>Email:</strong><br>Sabsbs@gmail.com<br>Customer.Convicart@gmail.com</p>
+    </div>
+</div>
