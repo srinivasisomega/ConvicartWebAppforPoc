@@ -1,0 +1,115 @@
+﻿@model ConvicartWebApp.Models.Customer
+<style>
+    .pb-3 {
+        background-color: black;
+    }
+    /* Style for the progress bar */
+    .progress-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        padding: 10px 20px;
+    }
+
+    /* Style for each section label */
+    .section {
+        font-family: 'Arial', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: #ccc;
+        text-align: center;
+        padding: 0 20px;
+        white-space: nowrap;
+    }
+
+    /* Highlight for the active section */
+    .active {
+        font-weight: bold;
+        color: white;
+    }
+
+    /* Separator line between sections */
+    .separator {
+        flex-grow: 1;
+        height: 4px;
+        background-color: white;
+        margin: 0 10px;
+        border: none;
+    }
+
+    h3 {
+        color: white;
+    }
+
+    form {
+        color: white;
+        background-color: #222;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        margin: 20px auto;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+        color: #ccc;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #555;
+        background-color: #333;
+        color: white;
+    }
+
+        input:focus {
+            border-color: #888;
+            outline: none;
+        }
+
+</style>
+<div class="progress-bar">
+    <span class="section active">Sign up/in</span>
+    <hr class="separator" size="4" opacity="1" />
+    <span class="section">Subscription</span>
+    <hr class="separator" size="4" />
+    <span class="section">Preferences</span>
+</div>
+<div class="Switch-in-out">
+    <div class="nav-sign-in">
+        <h3>Sign up</h3>
+        <h3>Sign in</h3>
+    </div>
+    <form asp-action="SignUp" method="post">
+        <div>
+            <label for="Name">Name</label>
+            <input asp-for="Name" />
+        </div>
+        <div>
+            <label for="Email">Email</label>
+            <input asp-for="Email" />
+        </div>
+        <div>
+            <label for="Number">Mobile Number</label>
+            <input asp-for="Number" />
+        </div>
+        <div>
+            <label for="Password">Password</label>
+            <input asp-for="Password" type="password" />
+        </div>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+

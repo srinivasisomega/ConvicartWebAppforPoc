@@ -14,6 +14,7 @@ namespace ConvicartWebApp.Models
         public DbSet<CustomerDiet> CustomerDiets { get; set; }
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<QuerySubmission> QuerySubmissions { get; set; }
 
         // Constructor accepting DbContextOptions
         public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)

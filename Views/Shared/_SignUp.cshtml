@@ -1,0 +1,48 @@
+﻿@model ConvicartWebApp.Models.Customer
+
+<form asp-action="SignUp" method="post">
+    <div>
+        <label for="Name">Name*</label>
+        <input asp-for="Name" placeholder="Enter your name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="MobileNumber">Mobile Number*</label>
+        <input asp-for="MobileNumber" placeholder="Enter your mobile number" />
+        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="Email">Email*</label>
+        <input asp-for="Email" placeholder="Enter your email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="Password">Password*</label>
+        <input asp-for="Password" type="password" placeholder="Enter your password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="ConfirmPassword">Confirm Password*</label>
+        <input asp-for="ConfirmPassword" type="password" placeholder="Confirm your password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <div>
+        <input type="checkbox" id="terms" required />
+        <label for="terms">Do you agree to the Terms & Conditions?</label>
+    </div>
+
+    <button type="submit">Register</button>
+
+    <!-- Social Login Buttons -->
+    <div class="social-login">
+        <a class="google" href="#"></a>
+        <a class="facebook" href="#"></a>
+        <a class="microsoft" href="#"></a>
+    </div>
+</form>
+
