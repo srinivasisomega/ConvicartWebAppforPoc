@@ -1,0 +1,98 @@
+﻿@model ConvicartWebApp.Models.Customer
+<style>
+    
+    Sub-title{
+        display:flex;
+        flex-direction:column;
+
+    }
+    .Subscription {
+        width: 404px;
+        height: 463px;
+        margin-left: 30px;
+        padding-left: 20px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items:flex-start;
+    }
+
+    .Bronze {
+        background-color: #CD7F32;
+    }
+
+    .Silver {
+        background-color: #C0C0C0;
+    }
+
+    .Gold {
+        background-color: #FFD700;
+    }
+
+    .amount {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+        .amount h2 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .amount h5 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+</style>
+<form class="Subscription Bronze">
+    <div class="Sub-title">
+        <h3>Bronze</h3>
+        <div class="amount">
+            <h2>₹ 50000</h2>
+            <h5>/Year</h5>
+        </div>
+    </div>
+    <ul>
+        <li>Order ingredients for one person.</li>
+        <li>Get access to basic recipes.</li>
+        <li>Get info about calories consumed.</li>
+    </ul>
+    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+</form>
+<form class="Subscription Silver">
+    <div class="Sub-title">
+        <h3>Silver</h3>
+        <div class="amount">
+            <h2>₹ 90000</h2>
+            <h5>/Year</h5>
+        </div>
+    </div>
+    <ul>
+        <li>Order ingredients for two people.</li>
+        <li>Get access to all recipes.</li>
+        <li>Get complete nutritional info about the meals made using the app.</li>
+    </ul>
+    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+</form>
+<form class="Subscription Gold">
+    <div class="Sub-title">
+        <h3>Gold</h3>
+        <div class="amount">
+            <h2>₹ 100000</h2>
+            <h5>/Year</h5>
+        </div>
+    </div>
+    <ul>
+        <li>Order ingredients for upto 4 people.</li>
+        <li>Get access to all recipes.</li>
+        <li>Get Complete analysis of nutrients based <br>on the meals consumed by User.</li>
+        <li>
+            Get suggested recipes to  get nutrients<br />
+            which were neglected in your other meals
+        </li>
+    </ul>
+    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+</form>
+

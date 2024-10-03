@@ -79,37 +79,108 @@
             outline: none;
         }
 
+    .Switch-in-out {
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .nav-sign-in {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .nav-sign-in h3 {
+            margin: 0 20px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+
+            .nav-sign-in h3:hover {
+                background-color: #f0f0f0;
+            }
+
+    .switch-signup,
+    .switch-signin {
+        border: none;
+        padding: 10px 20px;
+        border-bottom: 2px solid transparent;
+    }
+
+    .active {
+        border-bottom: 2px solid #007BFF;
+        font-weight: bold;
+    }
+
+    .form-container-in-out {
+        position: relative;
+        width: 100%;
+        display:flex;
+        flex-direction:row;
+        justify-content: center
+    }
+
+    .partial-Signin-Switch,
+    .partial-Signup-Switch {
+        display: none;
+        width:max-content;
+        
+    }
+
+        .partial-Signin-Switch.active,
+        .partial-Signup-Switch.active {
+            display: block;
+        }
+
+
 </style>
 <div class="progress-bar">
     <span class="section active">Sign up/in</span>
-    <hr class="separator" size="4" opacity="1" />
+    <hr class="separator" size="4"/>
     <span class="section">Subscription</span>
     <hr class="separator" size="4" />
     <span class="section">Preferences</span>
 </div>
 <div class="Switch-in-out">
     <div class="nav-sign-in">
-        <h3>Sign up</h3>
-        <h3>Sign in</h3>
+        <h3 class="switch-signup">Sign up</h3>
+        <h3 class="switch-signin">Sign in</h3>
     </div>
-    <form asp-action="SignUp" method="post">
-        <div>
-            <label for="Name">Name</label>
-            <input asp-for="Name" />
-        </div>
-        <div>
-            <label for="Email">Email</label>
-            <input asp-for="Email" />
-        </div>
-        <div>
-            <label for="Number">Mobile Number</label>
-            <input asp-for="Number" />
-        </div>
-        <div>
-            <label for="Password">Password</label>
-            <input asp-for="Password" type="password" />
-        </div>
-        <button type="submit">Sign Up</button>
-    </form>
+    <div class="form-container-in-out">
+        <div class="partial-Signin-Switch"> @Html.Partial("_SignIn")</div>
+        <div class="partial-Signup-Switch"> @Html.Partial("_SignUp")</div>
+    </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const signUpSwitch = document.querySelector(".switch-signup");
+    const signInSwitch = document.querySelector(".switch-signin");
+    const signInPartial = document.querySelector(".partial-Signin-Switch");
+    const signUpPartial = document.querySelector(".partial-Signup-Switch");
+
+    // Set initial active tab (e.g., Sign In active by default)
+    signInSwitch.classList.add("active");
+    signInPartial.classList.add("active");
+
+    signUpSwitch.addEventListener("click", function () {
+        // Switch to sign-up view
+        signUpSwitch.classList.add("active");
+        signInSwitch.classList.remove("active");
+        signUpPartial.classList.add("active");
+        signInPartial.classList.remove("active");
+    });
+
+    signInSwitch.addEventListener("click", function () {
+        // Switch to sign-in view
+        signInSwitch.classList.add("active");
+        signUpSwitch.classList.remove("active");
+        signInPartial.classList.add("active");
+        signUpPartial.classList.remove("active");
+    });
+});
+
+</script>
 

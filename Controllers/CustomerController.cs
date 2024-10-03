@@ -11,11 +11,14 @@ namespace ConvicartWebApp.Controllers
         {
             _context = context;
         }
+
+        // GET: SignUp Page
         public IActionResult SignUp()
         {
             return View();
         }
 
+        // POST: Handle SignUp
         [HttpPost]
         public async Task<IActionResult> SignUp([Bind("Name,Number,Email,Password")] Customer customer)
         {
@@ -23,13 +26,34 @@ namespace ConvicartWebApp.Controllers
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(SignUp)); 
+
+                // After successful sign-up, redirect to the "Subscription" page
+                return RedirectToAction("Subscription", "Customer");
             }
-            return View("Subscription"); 
+
+            // If validation fails, stay on the SignUp page
+            return View(customer);
         }
-       
 
+        // GET: Subscription Page
+        public IActionResult Subscription()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Subcription([Bind("Subscription,SubscriptionDate")] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Update(customer);
+                await _context.SaveChangesAsync();
 
+                // After successful sign-up, redirect to the "Subscription" page
+                return RedirectToAction("Preferences", "Customer");
+            }
 
+            // If validation fails, stay on the SignUp page
+            return View(customer);
+        }
     }
 }

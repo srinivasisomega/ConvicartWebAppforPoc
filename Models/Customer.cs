@@ -9,15 +9,21 @@ namespace ConvicartWebApp.Models
         public int CustomerId { get; set; }
 
         [MaxLength(255)]
+        [Required]
         public string? Name { get; set; }
 
-        [MaxLength(20)]
+        [Required(ErrorMessage = "Mobile number is required.")]
+        [Range(1000000000, 9999999999, ErrorMessage = "Mobile number must be a 10-digit number.")]
         public string? Number { get; set; }
 
         [MaxLength(255)]
+        [Required]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid email format")]
         public string? Email { get; set; }
 
         [MaxLength(255)]
+        [Required]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$", ErrorMessage = "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.")]
         public string? Password { get; set; }
 
         [MaxLength(20)]
