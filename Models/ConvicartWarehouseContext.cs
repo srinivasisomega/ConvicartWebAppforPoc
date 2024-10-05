@@ -10,8 +10,7 @@ namespace ConvicartWebApp.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<CustomerPreference> CustomerPreferences { get; set; }
-        public DbSet<Diet> Diets { get; set; }
-        public DbSet<CustomerDiet> CustomerDiets { get; set; }
+       
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<QuerySubmission> QuerySubmissions { get; set; }
@@ -27,9 +26,6 @@ namespace ConvicartWebApp.Models
         {
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(cp => new { cp.CustomerId, cp.PreferenceId });
-
-            modelBuilder.Entity<CustomerDiet>()
-                .HasKey(cd => new { cd.CustomerId, cd.DietId });
             modelBuilder.Entity<Store>()
         .Property(s => s.Price)
         .HasColumnType("decimal(10, 2)");

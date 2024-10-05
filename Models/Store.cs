@@ -10,7 +10,7 @@ namespace ConvicartWebApp.Models
         public int ProductId { get; set; }
 
         [MaxLength(255)]
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
 
         [Column(TypeName = "decimal(10, 2)")] // Specify precision and scale
         public decimal Price { get; set; }
@@ -35,18 +35,12 @@ namespace ConvicartWebApp.Models
 
         [MaxLength(20)]
         [RegularExpression("Easy|Medium|Hard")]
-        public string Difficulty { get; set; }
-
-        public int? DietId { get; set; }
-
+        public string? Difficulty { get; set; }
         public int? PreferenceId { get; set; }
 
         [Range(1, 5)]
         public int? Rating { get; set; }
-
-        public Diet Diet { get; set; }
-
-        public Preference Preference { get; set; }
+        public Preference? Preference { get; set; }
     }
 
 

@@ -5,7 +5,7 @@ namespace ConvicartWebApp.Models
     public class Address
     {
         [Key]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
         [Required]
         [MaxLength(255)]

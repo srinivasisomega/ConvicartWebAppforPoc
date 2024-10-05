@@ -39,17 +39,18 @@
             border-bottom: 2px solid #007BFF;
         }
 
-    /* Separator line between sections */
     .separator {
         flex-grow: 1;
         height: 4px;
-        background-color: #555;
+        background-color: silver;
+        opacity: 0.4;
         margin: 0 10px;
         border: none;
     }
 
         .separator.active-bar {
             background-color: #007BFF;
+            opacity: 1;
         }
 
     /* Style for the subscription switch (Month/Year) */
@@ -108,7 +109,7 @@
     <span class="section">Sign up/in</span>
     <hr class="separator active-bar" size="4" />
     <span class="section active">Subscription</span>
-    <hr class="separator active-bar" size="4" />
+    <hr class="separator" size="4" />
     <span class="section">Preferences</span>
 </div>
 <div class="Switch-in-out">

@@ -1,6 +1,7 @@
 ﻿@model ConvicartWebApp.Models.Customer
+
 <style>
-    Sub-title {
+    .Sub-title {
         display: flex;
         flex-direction: column;
     }
@@ -49,7 +50,13 @@
             margin-bottom: 16px;
         }
 </style>
-<form class="Subscription Bronze">
+
+<h2>Select Your Subscription Plan</h2>
+
+<!-- Bronze Subscription -->
+<form asp-action="UpdateSubscription" method="post" class="Subscription Bronze">
+    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="subscriptionType" value="Bronze" />
     <div class="Sub-title">
         <h3>Bronze</h3>
         <div class="amount">
@@ -64,7 +71,11 @@
     </ul>
     <button type="submit" class="btn btn-primary btn-block">Purchase</button>
 </form>
-<form class="Subscription Silver">
+
+<!-- Silver Subscription -->
+<form asp-action="UpdateSubscription" method="post" class="Subscription Silver">
+    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="subscriptionType" value="Silver" />
     <div class="Sub-title">
         <h3>Silver</h3>
         <div class="amount">
@@ -79,7 +90,11 @@
     </ul>
     <button type="submit" class="btn btn-primary btn-block">Purchase</button>
 </form>
-<form class="Subscription Gold">
+
+<!-- Gold Subscription -->
+<form asp-action="UpdateSubscription" method="post" class="Subscription Gold">
+    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="subscriptionType" value="Gold" />
     <div class="Sub-title">
         <h3>Gold</h3>
         <div class="amount">
@@ -88,13 +103,10 @@
         </div>
     </div>
     <ul>
-        <li>Order ingredients for upto 4 people.</li>
+        <li>Order ingredients for up to 4 people.</li>
         <li>Get access to all recipes.</li>
-        <li>Get Complete analysis of nutrients based <br>on the meals consumed by User.</li>
-        <li>
-            Get suggested recipes to  get nutrients<br />
-            which were neglected in your other meals
-        </li>
+        <li>Get complete analysis of nutrients based on the meals consumed by the user.</li>
+        <li>Get suggested recipes to get nutrients neglected in your other meals.</li>
     </ul>
     <button type="submit" class="btn btn-primary btn-block">Purchase</button>
 </form>

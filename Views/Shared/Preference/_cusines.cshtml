@@ -1,0 +1,32 @@
+﻿
+@model IEnumerable<ConvicartWebApp.Models.Preference>;
+<form asp-action="SavePreferences" method="post">
+    <!-- Hidden field for customerId -->
+    <input type="hidden" name="customerId" value="@TempData["CustomerId"]" />
+
+    <!-- Card holder for horizontal scrolling of cuisine options -->
+    <div class="Card-holder">
+        @foreach (var preference in Model)
+        {
+            <div class="Card">
+                <!-- Cuisine image -->
+                <img src="~/Images/@preference.ImageURLCusine" alt="@preference.PreferenceName" />
+
+                <!-- Checkbox input for selecting cuisine -->
+                <input type="checkbox" name="selectedPreferences" value="@preference.PreferenceId" id="preference_@preference.PreferenceId" />
+                <label for="preference_@preference.PreferenceId">
+                    <div>
+                        <!-- Cuisine name -->
+                        <div>@preference.PreferenceName</div>
+
+                        <!-- Cuisine description -->
+                        <div>@preference.PreferenceDescription</div>
+                    </div>
+                </label>
+            </div>
+        }
+    </div>
+
+    <!-- Submit button to save preferences -->
+    <button type="submit">Save Preferences</button>
+</form>

@@ -117,21 +117,6 @@ namespace ConvicartWebApp.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("ConvicartWebApp.Models.CustomerDiet", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DietId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CustomerId", "DietId");
-
-                    b.HasIndex("DietId");
-
-                    b.ToTable("CustomerDiets");
-                });
-
             modelBuilder.Entity("ConvicartWebApp.Models.CustomerPreference", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -145,24 +130,6 @@ namespace ConvicartWebApp.Migrations
                     b.HasIndex("PreferenceId");
 
                     b.ToTable("CustomerPreferences");
-                });
-
-            modelBuilder.Entity("ConvicartWebApp.Models.Diet", b =>
-                {
-                    b.Property<int>("DietId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DietId"));
-
-                    b.Property<string>("DietName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("DietId");
-
-                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("ConvicartWebApp.Models.Order", b =>
@@ -205,8 +172,15 @@ namespace ConvicartWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PreferenceId"));
 
+                    b.Property<string>("ImageURLCusine")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("PreferenceDescription")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("PreferenceName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -260,11 +234,7 @@ namespace ConvicartWebApp.Migrations
                     b.Property<TimeSpan>("CookTime")
                         .HasColumnType("time");
 
-                    b.Property<int?>("DietId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Difficulty")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -281,7 +251,6 @@ namespace ConvicartWebApp.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("ProductName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -299,8 +268,6 @@ namespace ConvicartWebApp.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("DietId");
-
                     b.HasIndex("PreferenceId");
 
                     b.ToTable("Stores");
@@ -313,25 +280,6 @@ namespace ConvicartWebApp.Migrations
                         .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("ConvicartWebApp.Models.CustomerDiet", b =>
-                {
-                    b.HasOne("ConvicartWebApp.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConvicartWebApp.Models.Diet", "Diet")
-                        .WithMany()
-                        .HasForeignKey("DietId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Diet");
                 });
 
             modelBuilder.Entity("ConvicartWebApp.Models.CustomerPreference", b =>
@@ -374,15 +322,9 @@ namespace ConvicartWebApp.Migrations
 
             modelBuilder.Entity("ConvicartWebApp.Models.Store", b =>
                 {
-                    b.HasOne("ConvicartWebApp.Models.Diet", "Diet")
-                        .WithMany()
-                        .HasForeignKey("DietId");
-
                     b.HasOne("ConvicartWebApp.Models.Preference", "Preference")
                         .WithMany()
                         .HasForeignKey("PreferenceId");
-
-                    b.Navigation("Diet");
 
                     b.Navigation("Preference");
                 });

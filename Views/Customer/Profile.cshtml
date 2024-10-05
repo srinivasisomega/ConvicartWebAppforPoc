@@ -1,0 +1,27 @@
+﻿@model ConvicartWebApp.Models.CustomerProfileViewModel
+
+<h2>Profile Information</h2>
+
+<!-- Display Customer Details -->
+<h3>Customer Info</h3>
+<p>Name: @Model.Customer.Name</p>
+<p>Email: @Model.Customer.Email</p>
+<p>Mobile: @Model.Customer.Number</p>
+<p>Subscription: @Model.Customer.Subscription</p>
+
+<!-- Display Address Details -->
+<h3>Address Info</h3>
+<p>Street: @Model.Address.StreetAddress</p>
+<p>City: @Model.Address.City</p>
+<p>State: @Model.Address.State</p>
+<p>Postal Code: @Model.Address.PostalCode</p>
+<p>Country: @Model.Address.Country</p>
+
+<!-- Display Preferences -->
+<h3>Selected Preferences</h3>
+<ul>
+    @foreach (var cp in Model.CustomerPreferences)
+    {
+        <li>@cp.Preference.PreferenceName</li>
+    }
+</ul>
