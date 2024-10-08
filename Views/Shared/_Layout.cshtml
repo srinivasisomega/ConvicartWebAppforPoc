@@ -10,19 +10,27 @@
 </head>
 <body>
     @Html.Partial("_header")
+    <div class="baset" style="display: flex; flex-direction: row;">
+        @* Conditionally render the sidebar only on specific actions *@
+        @if (ViewContext.RouteData.Values["controller"].ToString() == "Store" ||
+        ViewContext.RouteData.Values["controller"].ToString() == "Home" &&
+        ViewContext.RouteData.Values["action"].ToString() == "Recipe")
+        {
+            <div>
+                @Html.Partial("_VerticalSideNav")
+            </div>
+        }
 
-
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
-
     @Html.Partial("_footer")
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    
 </body>
 </html>

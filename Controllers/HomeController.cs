@@ -22,10 +22,7 @@ namespace ConvicartWebApp.Controllers
             return View();
         }
 
-        public IActionResult Store()
-        {
-            return View();
-        }
+        
 
         public IActionResult Recipe()
         {

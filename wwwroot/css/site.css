@@ -17,6 +17,34 @@ html {
     min-height: 100%;
 }
 
+/* Add to your existing CSS file or inside a <style> tag */
+html, body {
+    height: 100%; /* Ensure the body and html elements take up full height */
+    margin: 0; /* Remove default margin */
+}
+
+.baset {
+    display: flex;
+    flex-direction: row;
+   
+}
+
+.Side-nav {
+    display: flex;
+    flex-direction: column; /* Align items in a column */
+    justify-content: flex-start; /* Align items to the top */
+    background-color: #f8f9fa; /* Optional: background color for side nav */
+    width: 250px; /* Set a fixed width for the sidebar */
+    padding: 15px; /* Add padding */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional: shadow for better visibility */
+    height: 100%; /* Ensure sidebar takes full height */
+}
+
+.Side-nav-item {
+    margin-bottom: 15px; /* Add space between items */
+}
+
+    
 
 /* Global Styles */
 

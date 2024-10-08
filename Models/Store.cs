@@ -37,6 +37,7 @@ namespace ConvicartWebApp.Models
         [RegularExpression("Easy|Medium|Hard")]
         public string? Difficulty { get; set; }
         public int? PreferenceId { get; set; }
+        public string? imgUrl {  get; set; }
 
         [Range(1, 5)]
         public int? Rating { get; set; }

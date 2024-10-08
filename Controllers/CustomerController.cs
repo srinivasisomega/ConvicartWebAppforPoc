@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
-namespace YourNamespace.Controllers
+namespace ConvicartWebApp.Controllers
 {
     public class CustomerController : Controller
     {

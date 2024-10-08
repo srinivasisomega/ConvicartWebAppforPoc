@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Mvc.Razor
+@{
+    // Get the current controller and action
+    var currentController = ViewContext.RouteData.Values["controller"].ToString();
+    var currentAction = ViewContext.RouteData.Values["action"].ToString();
+}
+
+<style>
+    .Side-nav {
+        width: fit-content; /* Fixed width for the sidebar */
+        background-color: #fff; /* Background color */
+        padding: 15px; /* Padding around the sidebar */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        border-radius: 8px; /* Rounded corners */
+    }
+
+    .Side-nav-item {
+        display: flex; /* Align items in a row */
+        flex-direction: column; /* Align items in a column */
+        align-items: center; /* Center vertically */
+        padding: 10px 0; /* Spacing between items */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
+    }
+
+        .Side-nav-item:hover {
+            background-color: #f7f7f7; /* Light background on hover */
+        }
+
+        .Side-nav-item.active {
+            background-color: #e0e0e0; /* Background for active items */
+        }
+
+        .Side-nav-item img {
+            width: 70px; /* Set image width */
+            height: 70px; /* Set image height */
+            margin-right: 10px; /* Spacing between icon and text */
+        }
+
+        .Side-nav-item h5 {
+            font-size: 16px; /* Font size for the text */
+            margin: 0; /* Remove default margin */
+            color: #333; /* Text color */
+        }
+</style>
+
+<div class="Side-nav">
+    <div class="Side-nav-item @(currentController == "Store" && currentAction == "Store" ? "active" : "")">
+        <a class="navbar-brand" asp-area="" asp-controller="Store" asp-action="Store">
+            <img src="~/Images/SideNav/shop.png" alt="Brand Logo" />
+        </a>
+        <h5>Store</h5>
+    </div>
+    <div class="Side-nav-item @(currentController == "Recipe" && currentAction == "Index" ? "active" : "")">
+        <a class="navbar-brand" asp-area="" asp-controller="Recipe" asp-action="Index">
+            <img src="~/Images/SideNav/Recipie.png" alt="Brand Logo" />
+        </a>
+        <h5>Recipe</h5>
+    </div>
+    <div class="Side-nav-item @(currentController == "Cart" && currentAction == "Index" ? "active" : "")">
+        <a class="navbar-brand" asp-area="" asp-controller="Cart" asp-action="Index">
+            <img src="~/Images/SideNav/Cart.png" alt="Brand Logo" />
+        </a>
+        <h5>Cart</h5>
+    </div>
+    <div class="Side-nav-item @(currentController == "Orders" && currentAction == "Index" ? "active" : "")">
+        <a class="navbar-brand" asp-area="" asp-controller="Orders" asp-action="Index">
+            <img src="~/Images/SideNav/Orders.png" alt="Brand Logo" />
+        </a>
+        <h5>Orders</h5>
+    </div>
+</div>
