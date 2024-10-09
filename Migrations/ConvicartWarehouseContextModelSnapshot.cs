@@ -220,6 +220,28 @@ namespace ConvicartWebApp.Migrations
                     b.ToTable("QuerySubmissions");
                 });
 
+            modelBuilder.Entity("ConvicartWebApp.Models.RecipeSteps", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StepNo")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StepDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductId", "StepNo");
+
+                    b.ToTable("RecipeSteps");
+                });
+
             modelBuilder.Entity("ConvicartWebApp.Models.Store", b =>
                 {
                     b.Property<int>("ProductId")
@@ -319,6 +341,17 @@ namespace ConvicartWebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ConvicartWebApp.Models.RecipeSteps", b =>
+                {
+                    b.HasOne("ConvicartWebApp.Models.Store", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
                 });

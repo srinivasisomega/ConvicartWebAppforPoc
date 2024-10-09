@@ -11,24 +11,35 @@ html {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-/* Add to your existing CSS file or inside a <style> tag */
 html, body {
-    height: 100%; /* Ensure the body and html elements take up full height */
-    margin: 0; /* Remove default margin */
-}
-
-.baset {
+    height: 100%;
+    margin: 0;
     display: flex;
-    flex-direction: row;
-   
+    flex-direction: column;
+    width: 100%; /* Ensure body width is 100% */
 }
 
+/* Flex container for the layout */
+.baset {
+    flex: 1; /* Allow the main container to grow */
+    display: flex;
+    width: 100%; /* Set width to 100% to cover the screen */
+}
+
+/* Main container styles */
+.container {
+    flex: 1; /* Allow container to fill remaining space */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    overflow: hidden; /* Prevent overflow */
+    width: 100%; /* Set width to 100% */
+}
+
+/* Main content area */
+main {
+    flex: 1; /* Fill the available space */
+    overflow-y: auto; /* Allow scrolling if needed */
+}
 .Side-nav {
     display: flex;
     flex-direction: column; /* Align items in a column */

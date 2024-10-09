@@ -1,0 +1,43 @@
+﻿@model ConvicartWebApp.Models.Store;
+
+<!-- -->
+<div class="recipe-details" style="display:flex;flex-direction:column;align-items:center;background:rgba(232, 229, 229, 1);height:130vh;width:stretch;">
+     <!-- Hero Section with Recipe Name and Image -->
+    <div class="Product-back" style="height:50vh; width:100%; position:relative; overflow:hidden;">
+        <img src="~/Images/store/@Model.imgUrl" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+
+    <div style="height: 60vh; width: 100%">
+
+    </div>
+    <div class="Product-content" style="background:White;position: absolute;top: 250px;width:50vw;height:fit-content;">
+         <h1>@Model.ProductName</h1>
+         <div class="Recipe-card" style="display:flex; flex-direction:row;" >
+             <div class="recipe-left">
+                @Html.Partial("~/Views/Shared/Recipie/_RecipeSteps.cshtml", ViewBag.RecipeSteps as IEnumerable<ConvicartWebApp.Models.RecipeSteps>)
+            </div>
+             <div class="recipe-right" style="display:flex; flex-direction:column; padding:20px">
+                 <div class="nutrient-info mt-4">
+                     <h2>Nutritional Information</h2>
+                     @Html.Partial("~/Views/Shared/Recipie/_NutrientInfo.cshtml", Model)
+                 </div>
+                 <div class="cooking-details mt-4">
+                     <h2>Cooking Details</h2>
+                     @Html.Partial("~/Views/Shared/Recipie/_CookingDetails.cshtml", Model)
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <script>
+        function loadRecipeSteps(productId) {
+            $.get('@Url.Action("GetRecipeSteps", "Store")', { productId: productId }, function (data) {
+                $('#recipe-steps-container').html(data); // Assuming there's a div with this ID in your main view
+            });
+        }
+
+        // Call this function when the document is ready or as needed
+        $(document).ready(function() {
+            loadRecipeSteps(@Model.ProductId); // Load steps based on the product ID
+        });
+</script>

@@ -14,6 +14,8 @@ namespace ConvicartWebApp.Models
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<QuerySubmission> QuerySubmissions { get; set; }
+        public DbSet<RecipeSteps> RecipeSteps { get; set; }
+
 
         // Constructor accepting DbContextOptions
         public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)
@@ -45,6 +47,10 @@ namespace ConvicartWebApp.Models
             modelBuilder.Entity<Store>()
                 .Property(s => s.Minerals)
                 .HasColumnType("decimal(5, 2)");
+            modelBuilder.Entity<RecipeSteps>()
+                .HasKey(ps => new { ps.ProductId, ps.StepNo }); // Composite key configuration
+
+            
 
             // Add any additional model configurations here
         }

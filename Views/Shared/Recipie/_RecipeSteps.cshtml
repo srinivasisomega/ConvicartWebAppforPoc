@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ConvicartWebApp.Models.RecipeSteps>
+
+<div class="recipe-steps">
+    <h3>Recipe Steps</h3>
+    <ol>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var step in Model)
+            {
+                <li>
+                    <p>@step.StepDescription</p>
+                    @if (!string.IsNullOrEmpty(step.ImageUrl))
+                    {
+                        <img src="@Url.Content($"~/images/{step.ImageUrl}")" alt="Step @step.StepNo" class="recipe-step-image" />
+                    }
+                </li>
+            }
+        }
+        else
+        {
+            <li>No steps available for this recipe.</li>
+        }
+    </ol>
+</div>
+
+<style>
+    .recipe-steps {
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .recipe-step-image {
+        max-width: 100%; /* Ensures the image fits within the container */
+        height: auto; /* Maintains aspect ratio */
+        margin-top: 10px; /* Adds space above the image */
+    }
+</style>
