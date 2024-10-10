@@ -33,7 +33,6 @@
         .Side-nav-item img {
             width: 70px; /* Set image width */
             height: 70px; /* Set image height */
-            margin-right: 10px; /* Spacing between icon and text */
         }
 
         .Side-nav-item h5 {
@@ -45,19 +44,19 @@
 
 <div class="Side-nav">
     <div class="Side-nav-item @(currentController == "Store" && currentAction == "Store" ? "active" : "")">
-        <a class="navbar-brand" asp-area="" asp-controller="Store" asp-action="Store">
+        <a class="navbar-vertical" asp-area="" asp-controller="Store" asp-action="Store">
             <img src="~/Images/SideNav/shop.png" alt="Brand Logo" />
         </a>
         <h5>Store</h5>
     </div>
     <div class="Side-nav-item @(currentController == "Cart" && currentAction == "Index" ? "active" : "")">
-        <a class="navbar-brand" asp-area="" asp-controller="Cart" asp-action="Index">
+        <a class="navbar-vertical" asp-area="" asp-controller="Cart" asp-action="Index">
             <img src="~/Images/SideNav/Cart.png" alt="Brand Logo" />
         </a>
         <h5>Cart</h5>
     </div>
     <div class="Side-nav-item @(currentController == "Orders" && currentAction == "Index" ? "active" : "")">
-        <a class="navbar-brand" asp-area="" asp-controller="Orders" asp-action="Index">
+        <a class="navbar-vertical" asp-area="" asp-controller="Orders" asp-action="Index">
             <img src="~/Images/SideNav/Orders.png" alt="Brand Logo" />
         </a>
         <h5>Orders</h5>

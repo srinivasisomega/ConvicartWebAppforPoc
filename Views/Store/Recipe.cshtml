@@ -1,43 +1,125 @@
 ﻿@model ConvicartWebApp.Models.Store;
 
-<!-- -->
-<div class="recipe-details" style="display:flex;flex-direction:column;align-items:center;background:rgba(232, 229, 229, 1);height:130vh;width:stretch;">
-     <!-- Hero Section with Recipe Name and Image -->
-    <div class="Product-back" style="height:50vh; width:100%; position:relative; overflow:hidden;">
-        <img src="~/Images/store/@Model.imgUrl" style="width:100%; height:100%; object-fit:cover;">
+<!-- Recipe Details Section -->
+<div class="recipe-details">
+    <!-- Hero Section with Recipe Name and Image -->
+    <div class="product-back">
+        <img src="~/Images/store/@Model.imgUrl" alt="Recipe Image">
     </div>
 
-    <div style="height: 60vh; width: 100%">
-
-    </div>
-    <div class="Product-content" style="background:White;position: absolute;top: 250px;width:50vw;height:fit-content;">
-         <h1>@Model.ProductName</h1>
-         <div class="Recipe-card" style="display:flex; flex-direction:row;" >
-             <div class="recipe-left">
+    <div class="product-content">
+        <h1>@Model.ProductName</h1>
+        <h4>@Model.ProductDescription</h4>
+        <div class="recipe-card">
+            <div class="recipe-left">
                 @Html.Partial("~/Views/Shared/Recipie/_RecipeSteps.cshtml", ViewBag.RecipeSteps as IEnumerable<ConvicartWebApp.Models.RecipeSteps>)
             </div>
-             <div class="recipe-right" style="display:flex; flex-direction:column; padding:20px">
-                 <div class="nutrient-info mt-4">
-                     <h2>Nutritional Information</h2>
-                     @Html.Partial("~/Views/Shared/Recipie/_NutrientInfo.cshtml", Model)
-                 </div>
-                 <div class="cooking-details mt-4">
-                     <h2>Cooking Details</h2>
-                     @Html.Partial("~/Views/Shared/Recipie/_CookingDetails.cshtml", Model)
-                 </div>
-             </div>
-         </div>
-     </div>
- </div>
- <script>
-        function loadRecipeSteps(productId) {
-            $.get('@Url.Action("GetRecipeSteps", "Store")', { productId: productId }, function (data) {
-                $('#recipe-steps-container').html(data); // Assuming there's a div with this ID in your main view
-            });
+            <div class="recipe-right">
+                <div class="nutrient-info mt-4">
+                    <h2>Nutritional Information</h2>
+                    @Html.Partial("~/Views/Shared/Recipie/_NutrientInfo.cshtml", Model)
+                </div>
+                <div class="cooking-details mt-4">
+                    <h2>Cooking Details</h2>
+                    @Html.Partial("~/Views/Shared/Recipie/_CookingDetails.cshtml", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script to Load Recipe Steps -->
+<script>
+    function loadRecipeSteps(productId) {
+        $.get('@Url.Action("GetRecipeSteps", "Store")', { productId: productId }, function (data) {
+            $('#recipe-steps-container').html(data); // Assuming there's a div with this ID in your main view
+        });
+    }
+
+    // Call this function when the document is ready or as needed
+    $(document).ready(function () {
+        loadRecipeSteps(@Model.ProductId); // Load steps based on the product ID
+    });
+</script>
+
+<!-- CSS Styles -->
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+    .recipe-left{
+        width:600px;
+    }
+    .recipe-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(232, 229, 229, 1);
+        height: 170vh;
+        width: 100%;
+       
+    }
+
+    .product-back {
+        height: 60vh;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .product-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        // Call this function when the document is ready or as needed
-        $(document).ready(function() {
-            loadRecipeSteps(@Model.ProductId); // Load steps based on the product ID
-        });
-</script>
+    .product-content {
+        background: white;
+        position: absolute;
+        top: 370px;
+        width: 60vw;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+        font-family: 'Roboto', sans-serif;
+        margin-bottom: 10px;
+    }
+
+    .recipe-card {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .recipe-right {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .nutrient-info, .cooking-details {
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        width: 100%;
+    }
+
+        .nutrient-info h2, .cooking-details h2 {
+            font-size: 1.5rem;
+        }
+
+    .nutrient-info {
+        max-width: 300px; /* Reduced size */
+    }
+
+    .cooking-details {
+        max-width: 300px; /* Reduced size */
+    }
+
+    .mt-4 {
+        margin-top: 20px;
+    }
+</style>

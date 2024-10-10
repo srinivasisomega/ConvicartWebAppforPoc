@@ -12,6 +12,9 @@ namespace ConvicartWebApp.Models
         [MaxLength(255)]
         public string? ProductName { get; set; }
 
+        [MaxLength(1000)] // Limit product description length
+        public string? ProductDescription { get; set; }  // New column for product description
+
         [Column(TypeName = "decimal(10, 2)")] // Specify precision and scale
         public decimal Price { get; set; }
 
@@ -36,13 +39,14 @@ namespace ConvicartWebApp.Models
         [MaxLength(20)]
         [RegularExpression("Easy|Medium|Hard")]
         public string? Difficulty { get; set; }
+
         public int? PreferenceId { get; set; }
-        public string? imgUrl {  get; set; }
+
+        public string? imgUrl { get; set; }
 
         [Range(1, 5)]
         public int? Rating { get; set; }
+
         public Preference? Preference { get; set; }
     }
-
-
 }
