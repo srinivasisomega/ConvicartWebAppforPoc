@@ -28,9 +28,10 @@ namespace ConvicartWebApp.Models
         {
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(cp => new { cp.CustomerId, cp.PreferenceId });
+
             modelBuilder.Entity<Store>()
-        .Property(s => s.Price)
-        .HasColumnType("decimal(10, 2)");
+                .Property(s => s.Price)
+                .HasColumnType("decimal(10, 2)");
 
             modelBuilder.Entity<Store>()
                 .Property(s => s.Carbs)

@@ -25,7 +25,7 @@ namespace ConvicartWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(false); // Use ConfigureAwait(false)
 
                 TempData["CustomerId"] = customer.CustomerId;
 
@@ -40,7 +40,7 @@ namespace ConvicartWebApp.Controllers
         {
             if (TempData["CustomerId"] is int customerId)
             {
-                var customer = await _context.Customers.FindAsync(customerId);
+                var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
                 if (customer == null) return NotFound();
 
                 return View(customer);
@@ -53,60 +53,60 @@ namespace ConvicartWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateSubscription(int customerId, string subscriptionType)
         {
-            if (subscriptionType != "Bronze" && subscriptionType != "Silver" && subscriptionType != "Gold")
+            if (!new[] { "Bronze", "Silver", "Gold" }.Contains(subscriptionType))
             {
                 ModelState.AddModelError("", "Invalid subscription type.");
                 return RedirectToAction("Subscription");
             }
 
-            var customer = await _context.Customers.FindAsync(customerId);
+            var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
             if (customer == null) return NotFound();
 
             customer.Subscription = subscriptionType;
             customer.SubscriptionDate = DateTime.Now;
 
             _context.Update(customer);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            // Store customerId in TempData to pass it to Preferences action
             TempData["CustomerId"] = customer.CustomerId;
 
             return RedirectToAction("Preferences");
         }
+
         // GET: Preferences Page
         public async Task<IActionResult> Preferences()
         {
-            // Retrieve customerId from TempData
             if (TempData["CustomerId"] is int customerId)
             {
-                var preferences = await _context.Preferences.ToListAsync();
+                var preferences = await _context.Preferences.ToListAsync().ConfigureAwait(false);
                 ViewBag.CustomerId = customerId; // Pass customerId to view
                 return View(preferences);
             }
 
-            return RedirectToAction("Subscription"); // Redirect back if customerId is not available
+            return RedirectToAction("Subscription");
         }
+
+        // POST: Save Preferences
         [HttpPost]
         public async Task<IActionResult> SavePreferences(int customerId, List<int> selectedPreferences)
         {
-            // Validate if customerId is valid
             if (customerId <= 0)
             {
                 ModelState.AddModelError("", "Invalid customer ID.");
                 return RedirectToAction("Preferences");
             }
 
-            var customer = await _context.Customers.FindAsync(customerId);
+            var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
             if (customer == null) return NotFound();
 
             // Clear existing preferences
-            var existingPreferences = _context.CustomerPreferences.Where(cp => cp.CustomerId == customerId);
+            var existingPreferences = await _context.CustomerPreferences
+                .Where(cp => cp.CustomerId == customerId).ToListAsync().ConfigureAwait(false);
             _context.CustomerPreferences.RemoveRange(existingPreferences);
 
-            // Check if any preferences were selected
+            // Add new preferences
             if (selectedPreferences != null && selectedPreferences.Any())
             {
-                // Add new preferences
                 foreach (var preferenceId in selectedPreferences)
                 {
                     var customerPreference = new CustomerPreference
@@ -118,14 +118,12 @@ namespace ConvicartWebApp.Controllers
                 }
             }
 
-            // Save changes to the database
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction("Profile", "Customer", new { customerId = customer.CustomerId });
-
         }
 
-
+        // GET: Profile Page
         // GET: Confirmation Page
         public async Task<IActionResult> Profile(int customerId)
         {
@@ -150,10 +148,9 @@ namespace ConvicartWebApp.Controllers
                 CustomerPreferences = customerPreferences
             };
 
-            // Pass ViewModel to the view
+            // Dispose of the context before returning the view
             return View(viewModel);
         }
-
 
     }
 }

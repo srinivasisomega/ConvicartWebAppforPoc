@@ -1,27 +1,128 @@
-﻿@model ConvicartWebApp.Models.CustomerProfileViewModel
+﻿@model ConvicartWebApp.Models.CustomerProfileViewModel;
+<div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="~/@Model.Customer?.ProfilePicUrl" alt="Profile Picture" class="profile-pic">
+            <h2>@Model.Customer?.Name</h2>
+            <p class="email">@Model.Customer?.Email</p>
+            <p class="subscription">Subscription: @Model.Customer?.Subscription</p>
+        </div>
 
-<h2>Profile Information</h2>
+        <div class="profile-body">
+            <div class="profile-info">
+                <h3 style="color: silver;">Personal Information</h3>
+                <ul class="d-flex flex-column justify-content-evenly">
+                    <li><strong>Mobile:</strong> @Model.Customer?.Number</li>
+                    <li><strong>Age:</strong> @Model.Customer?.Age</li>
+                    <li><strong>Gender:</strong> @Model.Customer?.Gender</li>
+                    <li>
+                        <strong>Address:</strong>
+                        <ul>
+                            <li>Street: @Model.Address?.StreetAddress</li>
+                            <br />
+                            <li>City: @Model.Address?.City</li>
+                            <li>State: @Model.Address?.State</li>
+                            <li>Country: @Model.Address?.Country</li>
+                            <br />
+                            <li>Postal Code: @Model.Address?.PostalCode</li>
+                        </ul>
+                    </li>
+                    <li><strong>Points Balance:</strong> @Model.Customer?.PointBalance</li>
+                </ul>
+            </div>
+        </div>
 
-<!-- Display Customer Details -->
-<h3>Customer Info</h3>
-<p>Name: @Model.Customer.Name</p>
-<p>Email: @Model.Customer.Email</p>
-<p>Mobile: @Model.Customer.Number</p>
-<p>Subscription: @Model.Customer.Subscription</p>
+        <br>
+        <div class="profile-body">
+            <div class="profile-info ">
+                <h3 style="color:silver">Selected Preferences</h3>
+                @if (Model.CustomerPreferences != null && Model.CustomerPreferences.Any())
+                {
+                    <ul class="d-flex flex-row justify-content-evenly">
+                        @foreach (var cp in Model.CustomerPreferences)
+                        {
+                            <li class="p-3 bg-light" style="">
+                                @cp.Preference?.PreferenceName
+                            </li>
 
-<!-- Display Address Details -->
-<h3>Address Info</h3>
-<p>Street: @Model.Address.StreetAddress</p>
-<p>City: @Model.Address.City</p>
-<p>State: @Model.Address.State</p>
-<p>Postal Code: @Model.Address.PostalCode</p>
-<p>Country: @Model.Address.Country</p>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No preferences selected.</p>
+                }
+            </div>
+        </div>
+    </div>
 
-<!-- Display Preferences -->
-<h3>Selected Preferences</h3>
-<ul>
-    @foreach (var cp in Model.CustomerPreferences)
-    {
-        <li>@cp.Preference.PreferenceName</li>
+
+</div>
+
+<style>
+    .pb-3 {
+        background-image: url('/images/background for contact.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 50px;
     }
-</ul>
+
+    .profile-container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-pic {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin: 10px 0;
+    }
+
+    .email, .subscription {
+        font-size: 1.4rem;
+        font-weight:bold;
+        color: #555;
+    }
+
+    .profile-body {
+        background-color: black;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .profile-info ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .profile-info li {
+        margin: 10px 0;
+        font-size: 1.6rem;
+        border-radius: 50px;
+        display: inline-block;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.5);
+        border: 1px solid #e0e0e0;
+        background: linear-gradient(145deg, #f0f0f0, #cacaca);
+        padding: 16px;
+        width: max-content;
+    }
+
+    .profile-info strong {
+        color: #333;
+    }
+</style>
