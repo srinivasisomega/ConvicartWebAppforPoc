@@ -1,11 +1,14 @@
+using ConvicartWebApp.Filter;
 using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new CacheImageFilter(3600));
+});
 // Register ConvicartWarehouseContext with a connection string
 builder.Services.AddDbContext<ConvicartWarehouseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConvicartWarehouseContextConnection")));
