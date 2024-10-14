@@ -1,6 +1,7 @@
 using ConvicartWebApp.Filter;
 using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddControllersWithViews(options =>
 // Register ConvicartWarehouseContext with a connection string
 builder.Services.AddDbContext<ConvicartWarehouseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConvicartWarehouseContextConnection")));
+
+builder.Services.AddDefaultIdentity<Customer>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ConvicartWarehouseContext>();
 
 var app = builder.Build();
 

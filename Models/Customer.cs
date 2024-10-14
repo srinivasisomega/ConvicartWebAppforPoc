@@ -1,16 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 namespace ConvicartWebApp.Models
 {
    
 
-    public class Customer
+    public class Customer:IdentityUser
     {
-        [Key]
-        public int CustomerId { get; set; }
 
         [MaxLength(255)]
         [Required]
-        public string? Name { get; set; }
+        public override string? UserName { get; set; }
 
         [Required(ErrorMessage = "Mobile number is required.")]
         [Range(1000000000, 9999999999, ErrorMessage = "Mobile number must be a 10-digit number.")]
@@ -19,18 +18,7 @@ namespace ConvicartWebApp.Models
         [MaxLength(255)]
         [Required]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid email format")]
-        public string? Email { get; set; }
-
-        [MaxLength(255)]
-        [Required]
-        [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$", ErrorMessage = "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.")]
-        public string? Password { get; set; }
-
-        [MaxLength(20)]
-        [RegularExpression("Bronze|Silver|Gold")]
-        public string? Subscription { get; set; }
-        public DateTime? SubscriptionDate { get; set; }
-
+        public override string? Email { get; set; }
         [Range(1, int.MaxValue)]
         public int? Age { get; set; }
 

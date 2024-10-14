@@ -27,7 +27,7 @@ namespace ConvicartWebApp.Controllers
                 _context.Add(customer);
                 await _context.SaveChangesAsync().ConfigureAwait(false); // Use ConfigureAwait(false)
 
-                TempData["CustomerId"] = customer.CustomerId;
+                TempData["CustomerId"] = customer.Id;
 
                 return RedirectToAction("Subscription");
             }
@@ -59,16 +59,16 @@ namespace ConvicartWebApp.Controllers
                 return RedirectToAction("Subscription");
             }
 
-            var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
+            var customer = await _context.UserRoles.FindAsync(customerId).ConfigureAwait(false);
             if (customer == null) return NotFound();
 
-            customer.Subscription = subscriptionType;
-            customer.SubscriptionDate = DateTime.Now;
+            customer.RoleId = subscriptionType;
+            customer.SubscriptionStartDate = DateTime.Now;
 
             _context.Update(customer);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            TempData["CustomerId"] = customer.CustomerId;
+            TempData["CustomerId"] = customer.UserId;
 
             return RedirectToAction("Preferences");
         }
@@ -88,9 +88,9 @@ namespace ConvicartWebApp.Controllers
 
         // POST: Save Preferences
         [HttpPost]
-        public async Task<IActionResult> SavePreferences(int customerId, List<int> selectedPreferences)
+        public async Task<IActionResult> SavePreferences(string customerId, List<int> selectedPreferences)
         {
-            if (customerId <= 0)
+            if (customerId == null)
             {
                 ModelState.AddModelError("", "Invalid customer ID.");
                 return RedirectToAction("Preferences");
@@ -120,17 +120,17 @@ namespace ConvicartWebApp.Controllers
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            return RedirectToAction("Profile", "Customer", new { customerId = customer.CustomerId });
+            return RedirectToAction("Profile", "Customer", new { customerId = customer.Id });
         }
 
         // GET: Profile Page
         // GET: Confirmation Page
-        public async Task<IActionResult> Profile(int customerId)
+        public async Task<IActionResult> Profile(string customerId)
         {
             // Fetch customer details
             var customer = await _context.Customers
                 .Include(c => c.Address) // Include Address relationship
-                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+                .FirstOrDefaultAsync(c => c.Id == customerId);
 
             if (customer == null) return NotFound();
 

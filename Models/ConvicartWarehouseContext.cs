@@ -1,10 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Net;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace ConvicartWebApp.Models
 {
-    public class ConvicartWarehouseContext : DbContext
+    public class ConvicartWarehouseContext : IdentityDbContext<Customer, ApplicationRole, string,
+     IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>,
+     IdentityRoleClaim<string>, IdentityUserToken<string>>
+    
     {
+        public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)
+            : base(options)
+        {
+        }
         // DbSets for each table
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -15,13 +23,6 @@ namespace ConvicartWebApp.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<QuerySubmission> QuerySubmissions { get; set; }
         public DbSet<RecipeSteps> RecipeSteps { get; set; }
-
-
-        // Constructor accepting DbContextOptions
-        public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)
-            : base(options) // Pass options to the base constructor
-        {
-        }
 
         // Configure model relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)

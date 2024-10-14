@@ -47,7 +47,7 @@
         }
 </style>
 <form asp-action="UpdateSubscription" method="post" class="Subscription Bronze">
-    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="customerId" value="@Model.Id" />
     <input type="hidden" name="subscriptionType" value="Bronze" />
     <div class="Sub-title">
         <h3>Bronze</h3>
@@ -66,7 +66,7 @@
 
 <!-- Silver Subscription -->
 <form asp-action="UpdateSubscription" method="post" class="Subscription Silver">
-    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="customerId" value="@Model.Id" />
     <input type="hidden" name="subscriptionType" value="Silver" />
     <div class="Sub-title">
         <h3>Silver</h3>
@@ -85,7 +85,7 @@
 
 <!-- Gold Subscription -->
 <form asp-action="UpdateSubscription" method="post" class="Subscription Gold">
-    <input type="hidden" name="customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="customerId" value="@Model.Id" />
     <input type="hidden" name="subscriptionType" value="Gold" />
     <div class="Sub-title">
         <h3>Gold</h3>
