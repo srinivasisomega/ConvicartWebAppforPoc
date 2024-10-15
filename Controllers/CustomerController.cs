@@ -12,6 +12,36 @@ namespace ConvicartWebApp.Controllers
             _context = context;
         }
 
+        
+
+        // POST: Handle SignIn
+        [HttpPost]
+        public async Task<IActionResult> SignIn(string email, string password)
+        {
+            // Check if the model state is valid
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                ModelState.AddModelError("", "Email and password are required.");
+                return View();
+            }
+
+            // Find the customer by email and password
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.Email == email && c.Password == password)
+                .ConfigureAwait(false);
+
+            if (customer == null)
+            {
+                ModelState.AddModelError("", "Invalid email or password.");
+                return View();
+            }
+
+            // Store CustomerId in session
+            HttpContext.Session.SetInt32("CustomerId", customer.CustomerId);
+
+            return RedirectToAction("Profile", new { customerId = customer.CustomerId });
+        }
+
         // GET: SignUp Page
         public IActionResult SignUp()
         {
@@ -25,9 +55,10 @@ namespace ConvicartWebApp.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(customer);
-                await _context.SaveChangesAsync().ConfigureAwait(false); // Use ConfigureAwait(false)
+                await _context.SaveChangesAsync().ConfigureAwait(false);
 
-                TempData["CustomerId"] = customer.CustomerId;
+                // Store CustomerId in session
+                HttpContext.Session.SetInt32("CustomerId", customer.CustomerId);
 
                 return RedirectToAction("Subscription");
             }
@@ -38,21 +69,28 @@ namespace ConvicartWebApp.Controllers
         // GET: Subscription Page
         public async Task<IActionResult> Subscription()
         {
-            if (TempData["CustomerId"] is int customerId)
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
             {
-                var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
-                if (customer == null) return NotFound();
-
-                return View(customer);
+                return RedirectToAction("SignUp");
             }
 
-            return RedirectToAction("SignUp");
+            var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
+            if (customer == null) return NotFound();
+
+            return View(customer);
         }
 
         // POST: Handle Subscription Update
         [HttpPost]
-        public async Task<IActionResult> UpdateSubscription(int customerId, string subscriptionType)
+        public async Task<IActionResult> UpdateSubscription(string subscriptionType)
         {
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+
             if (!new[] { "Bronze", "Silver", "Gold" }.Contains(subscriptionType))
             {
                 ModelState.AddModelError("", "Invalid subscription type.");
@@ -68,31 +106,31 @@ namespace ConvicartWebApp.Controllers
             _context.Update(customer);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            TempData["CustomerId"] = customer.CustomerId;
-
             return RedirectToAction("Preferences");
         }
 
         // GET: Preferences Page
         public async Task<IActionResult> Preferences()
         {
-            if (TempData["CustomerId"] is int customerId)
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
             {
-                var preferences = await _context.Preferences.ToListAsync().ConfigureAwait(false);
-                ViewBag.CustomerId = customerId; // Pass customerId to view
-                return View(preferences);
+                return RedirectToAction("Subscription");
             }
 
-            return RedirectToAction("Subscription");
+            var preferences = await _context.Preferences.ToListAsync().ConfigureAwait(false);
+            ViewBag.CustomerId = customerId; // Pass customerId to view
+
+            return View(preferences);
         }
 
         // POST: Save Preferences
         [HttpPost]
-        public async Task<IActionResult> SavePreferences(int customerId, List<int> selectedPreferences)
+        public async Task<IActionResult> SavePreferences(List<int> selectedPreferences)
         {
-            if (customerId <= 0)
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
             {
-                ModelState.AddModelError("", "Invalid customer ID.");
                 return RedirectToAction("Preferences");
             }
 
@@ -111,7 +149,7 @@ namespace ConvicartWebApp.Controllers
                 {
                     var customerPreference = new CustomerPreference
                     {
-                        CustomerId = customerId,
+                        CustomerId = customerId.Value,
                         PreferenceId = preferenceId
                     };
                     _context.CustomerPreferences.Add(customerPreference);
@@ -120,17 +158,21 @@ namespace ConvicartWebApp.Controllers
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            return RedirectToAction("Profile", "Customer", new { customerId = customer.CustomerId });
+            return RedirectToAction("Profile", new { customerId = customer.CustomerId });
         }
 
         // GET: Profile Page
-        // GET: Confirmation Page
-        public async Task<IActionResult> Profile(int customerId)
+        public async Task<IActionResult> Profile()
         {
-            // Fetch customer details
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignIn");
+            }
+
             var customer = await _context.Customers
                 .Include(c => c.Address) // Include Address relationship
-                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId.Value);
 
             if (customer == null) return NotFound();
 
@@ -151,7 +193,6 @@ namespace ConvicartWebApp.Controllers
             // Dispose of the context before returning the view
             return View(viewModel);
         }
-
     }
 }
 
