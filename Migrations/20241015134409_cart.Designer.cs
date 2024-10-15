@@ -4,6 +4,7 @@ using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConvicartWebApp.Migrations
 {
     [DbContext(typeof(ConvicartWarehouseContext))]
-    partial class ConvicartWarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20241015134409_cart")]
+    partial class cart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,8 +92,15 @@ namespace ConvicartWebApp.Migrations
                     b.Property<int?>("CartId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -98,8 +108,6 @@ namespace ConvicartWebApp.Migrations
                     b.HasKey("CartItemId");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("CartItem");
                 });
@@ -191,7 +199,7 @@ namespace ConvicartWebApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
 
@@ -210,7 +218,7 @@ namespace ConvicartWebApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -226,9 +234,7 @@ namespace ConvicartWebApp.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("ConvicartWebApp.Models.Preference", b =>
@@ -385,14 +391,6 @@ namespace ConvicartWebApp.Migrations
                     b.HasOne("ConvicartWebApp.Models.Cart", null)
                         .WithMany("CartItems")
                         .HasForeignKey("CartId");
-
-                    b.HasOne("ConvicartWebApp.Models.Store", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ConvicartWebApp.Models.Customer", b =>
@@ -425,21 +423,11 @@ namespace ConvicartWebApp.Migrations
 
             modelBuilder.Entity("ConvicartWebApp.Models.OrderItem", b =>
                 {
-                    b.HasOne("ConvicartWebApp.Models.Order", "Order")
+                    b.HasOne("ConvicartWebApp.Models.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ConvicartWebApp.Models.Store", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ConvicartWebApp.Models.RecipeSteps", b =>

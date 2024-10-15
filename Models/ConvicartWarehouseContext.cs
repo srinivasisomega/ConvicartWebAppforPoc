@@ -15,8 +15,8 @@ namespace ConvicartWebApp.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<QuerySubmission> QuerySubmissions { get; set; }
         public DbSet<RecipeSteps> RecipeSteps { get; set; }
-
-
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         // Constructor accepting DbContextOptions
         public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)
             : base(options) // Pass options to the base constructor
@@ -26,6 +26,19 @@ namespace ConvicartWebApp.Models
         // Configure model relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Order>()
+            .Property(o => o.TotalAmount)
+            .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
+
+            // Specify precision and scale for OrderItem Price
+            modelBuilder.Entity<OrderItem>()
+                .Property(oi => oi.Price)
+                .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
+
+            // Specify precision and scale for Store Price (if applicable)
+            modelBuilder.Entity<Store>()
+                .Property(s => s.Price)
+                .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(cp => new { cp.CustomerId, cp.PreferenceId });
 

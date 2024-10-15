@@ -1,0 +1,26 @@
+﻿@model ConvicartWebApp.Models.CartViewModel
+
+<h2>Your Cart</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>@Model.ProductNames[item.ProductId]</td> <!-- Get ProductName from ProductNames dictionary -->
+                <td>@item.Quantity</td>
+                <td>@item.TotalPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>Total Amount: @Model.TotalAmount</p>

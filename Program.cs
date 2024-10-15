@@ -14,6 +14,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddDbContext<ConvicartWarehouseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConvicartWarehouseContextConnection")));
 
+builder.Services.AddMemoryCache();
 // Add session support with custom options (optional configuration for session)
 builder.Services.AddSession(options =>
 {

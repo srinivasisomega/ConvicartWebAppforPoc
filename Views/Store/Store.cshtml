@@ -165,33 +165,31 @@
     <!-- Sidebar for filters -->
     <div class="sidebar">
         <form method="get" action="@Url.Action("Store")">
-            <!-- Difficulty Filter -->
-            <h4>Difficulty</h4>
-            <label><input type="checkbox" name="difficulty" value="Easy" @(ViewBag.Difficulty?.Contains("Easy") == true ? "checked" : "")> Easy</label><br>
-            <label><input type="checkbox" name="difficulty" value="Medium" @(ViewBag.Difficulty?.Contains("Medium") == true ? "checked" : "")> Medium</label><br>
-            <label><input type="checkbox" name="difficulty" value="Hard" @(ViewBag.Difficulty?.Contains("Hard") == true ? "checked" : "")> Hard</label><br>
+                <!-- Difficulty Filter -->
+                <h4>Difficulty</h4>
+                <label><input type="checkbox" name="difficulty" value="Easy" @(ViewBag.Difficulty?.Contains("Easy") == true ? "checked" : "")> Easy</label><br>
+                <label><input type="checkbox" name="difficulty" value="Medium" @(ViewBag.Difficulty?.Contains("Medium") == true ? "checked" : "")> Medium</label><br>
+                <label><input type="checkbox" name="difficulty" value="Hard" @(ViewBag.Difficulty?.Contains("Hard") == true ? "checked" : "")> Hard</label><br>
 
-            <h4>Cook Time (in minutes)</h4>
-            <input type="range" name="cookTimeMin" min="0" max="120" value="@ViewBag.CookTimeMin ?? 0" id="cookTimeMin">
-            <label for="cookTimeMin">Min</label>
-            <span id="minCookTimeValue">@ViewBag.CookTimeMin </span><br>
+                <h4>Cook Time (in minutes)</h4>
+                <input type="range" name="cookTimeMin" min="0" max="120" value="@ViewBag.CookTimeMin ?? 0" id="cookTimeMin">
+                <label for="cookTimeMin">Min</label>
+                <span id="minCookTimeValue">@ViewBag.CookTimeMin </span><br>
 
-            <input type="range" name="cookTimeMax" min="0" max="120" value="@ViewBag.CookTimeMax ?? 120" id="cookTimeMax">
-            <label for="cookTimeMax">Max</label>
-            <span id="maxCookTimeValue">@ViewBag.CookTimeMax </span><br>
+                <input type="range" name="cookTimeMax" min="0" max="120" value="@ViewBag.CookTimeMax ?? 120" id="cookTimeMax">
+                <label for="cookTimeMax">Max</label>
+                <span id="maxCookTimeValue">@ViewBag.CookTimeMax </span><br>
 
-            <!-- Point Range Filter -->
-            <h4>Point Range</h4>
-            <input type="range" name="minPoints" min="0" max="500" value="@ViewBag.MinPoints ?? 0" id="minPoints">
-            <label for="minPoints">Min Points</label>
-            <span id="minPointsValue">@ViewBag.MinPoints</span><br>
+                <!-- Point Range Filter -->
+                <h4>Point Range</h4>
+                <input type="range" name="minPoints" min="0" max="500" value="@ViewBag.MinPoints ?? 0" id="minPoints">
+                <label for="minPoints">Min Points</label>
+                <span id="minPointsValue">@ViewBag.MinPoints</span><br>
 
-            <input type="range" name="maxPoints" min="0" max="500" value="@ViewBag.MaxPoints ?? 500" id="maxPoints">
-            <label for="maxPoints">Max Points</label>
-            <span id="maxPointsValue">@ViewBag.MaxPoints</span><br>
-
-
-            <button type="submit">Apply Filters</button>
+                <input type="range" name="maxPoints" min="0" max="500" value="@ViewBag.MaxPoints ?? 500" id="maxPoints">
+                <label for="maxPoints">Max Points</label>
+                <span id="maxPointsValue">@ViewBag.MaxPoints</span><br>
+                <button type="submit">Apply Filters</button>
         </form>
     </div>
 
@@ -228,16 +226,15 @@
                                 <span class="star" style="color: #ccc">★</span>
                             }
                         </div>
-                        <button class="add-to-cart" onclick="addToCart('@item.ProductName')">Add to Cart</button>
                     </a>
+                    <form method="post" action="@Url.Action("AddToCart", "Cart")">
+                        <input type="hidden" name="productId" value="@item.ProductId" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="submit" class="add-to-cart">Add to Cart</button>
+                    </form>
                 </div>
-
             }
         </div>
-
-
-
-
 
         <!-- Pagination controls -->
         <div class="pagination">
@@ -259,14 +256,6 @@
     </div>
 </main>
 <script>
-    let cartCount = 0; // Initialize cart count
-
-    function addToCart(productName) {
-        cartCount++; // Increment cart count
-        document.getElementById('cart-count').innerText = cartCount; // Update cart count display
-        alert(productName + ' has been added to your cart!'); // Optional alert for feedback
-    }
-    // Function to update the displayed value for cook time
     function updateCookTimeMin() {
         const minValue = document.getElementById("cookTimeMin").value;
         document.getElementById("minCookTimeValue").textContent = minValue;
@@ -293,6 +282,35 @@
     document.getElementById("cookTimeMax").addEventListener("input", updateCookTimeMax);
     document.getElementById("minPoints").addEventListener("input", updateMinPoints);
     document.getElementById("maxPoints").addEventListener("input", updateMaxPoints);
+
+    let cartCount = 0; // Initialize cart count
+
+    // Optional: You can use AJAX for adding to cart without a full page refresh
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+            const form = this.closest('form'); // Get the closest form to the button
+            const formData = new FormData(form); // Create a FormData object to collect form data
+
+            // Send an AJAX POST request to add the item to the cart
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    cartCount++; // Increment cart count
+                    document.getElementById('cart-count').innerText = cartCount; // Update cart count display
+                    alert(formData.get('productId') + ' has been added to your cart!'); // Alert feedback
+                } else {
+                    alert('Error adding product to cart.'); // Handle error
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
 </script>
 
 
