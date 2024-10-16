@@ -17,9 +17,10 @@ namespace ConvicartWebApp.Models
 
         public int Quantity { get; set; }
 
-        // Total price calculation based on the product's price and quantity
-        public decimal TotalPrice => Product.Price * Quantity;
+        // Total price calculation based on the product's price and quantity, with null checks
+        public decimal TotalPrice => (Product?.Price ?? 0) * (Quantity > 0 ? Quantity : 0);
     }
+
 
 
 }
