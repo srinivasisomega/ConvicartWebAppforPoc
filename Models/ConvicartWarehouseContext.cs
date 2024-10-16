@@ -63,8 +63,12 @@ namespace ConvicartWebApp.Models
                 .HasColumnType("decimal(5, 2)");
             modelBuilder.Entity<RecipeSteps>()
                 .HasKey(ps => new { ps.ProductId, ps.StepNo }); // Composite key configuration
+            modelBuilder.Entity<Cart>()
+    .HasMany(c => c.CartItems)
+    .WithOne()
+    .OnDelete(DeleteBehavior.Cascade); // Automatically delete CartItems when a Cart is deleted
 
-            
+
 
             // Add any additional model configurations here
         }

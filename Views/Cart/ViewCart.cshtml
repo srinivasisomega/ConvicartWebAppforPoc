@@ -114,13 +114,13 @@
                 <img src="~/Images/store/@item.Product.imgUrl" alt="@item.Product.ProductName" class="item-image">
                 <h6>@Model.ProductNames[item.ProductId]</h6>
                 <div class="Plusminus">
-                    <form method="post" action="@Url.Action("AddToCart", "Cart")" style="margin-top:2px">
+                    <form method="post" action="@Url.Action("AddToCartMain", "Cart")" style="margin-top:2px">
                         <input type="hidden" name="productId" value="@item.ProductId" />
                         <input type="hidden" name="quantity" value="1" />
                         <button type="submit" class="add-to-cart">+</button>
                     </form>
                     <h6>@item.Quantity</h6>
-                    <form method="post" action="@Url.Action("RemoveFromCart", "Cart")" style="margin-bottom:3px">
+                    <form method="post" action="@Url.Action("RemoveFromCartMain", "Cart")" style="margin-bottom:3px">
                         <input type="hidden" name="productId" value="@item.ProductId" />
                         <input type="hidden" name="quantity" value="1" />
                         <button type="submit" class="remove-from-cart">-</button>
@@ -140,6 +140,30 @@
             <li><strong>Shipping:</strong> @Model.ShippingCost.ToString("C")</li>
             <li><strong>Final Total:</strong> @Model.FinalTotal.ToString("C")</li>
         </ul>
+
+        <!-- Form to submit the purchase action -->
+        <form asp-controller="Cart" asp-action="Purchase" method="post">
+            <!-- Hidden fields to send calculated values to the Purchase action -->
+            <input type="hidden" asp-for="TotalAmount" />
+            <input type="hidden" asp-for="Discount" />
+            <input type="hidden" asp-for="DiscountedSubtotal" />
+            <input type="hidden" asp-for="TaxRate" />
+            <input type="hidden" asp-for="TaxAmount" />
+            <input type="hidden" asp-for="ShippingCost" />
+            <input type="hidden" asp-for="FinalTotal" />
+
+            <!-- Hidden fields for each cart item -->
+            @for (int i = 0; i < Model.CartItems.Count; i++)
+            {
+                <input type="hidden" name="CartItems[@i].ProductId" value="@Model.CartItems[i].ProductId" />
+                <input type="hidden" name="CartItems[@i].Quantity" value="@Model.CartItems[i].Quantity" />
+                <input type="hidden" name="CartItems[@i].TotalPrice" value="@Model.CartItems[i].TotalPrice" />
+            }
+
+            <!-- Purchase button -->
+            <button type="submit" class="btn btn-primary">Purchase</button>
+        </form>
     </div>
+    
 </div>
 

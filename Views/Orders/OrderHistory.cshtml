@@ -1,0 +1,109 @@
+﻿@model IEnumerable<OrderViewModel>
+
+<div class="past-orders">
+    <h2>Past Orders</h2>
+
+    <!-- Filter buttons (e.g., 15 days, 6 months, etc.) -->
+    <div class="filter-buttons">
+        <button class="filter-button">15 days</button>
+        <button class="filter-button">6 months</button>
+        <button class="filter-button">30 days</button>
+        <button class="filter-button">3 months</button>
+    </div>
+
+    <!-- Loop through the orders -->
+    <div class="order-list">
+        @foreach (var order in Model)
+        {
+            <div class="order-item">
+                <div class="order-details">
+                    @if (!string.IsNullOrEmpty(order.ImageUrl))
+                    {
+                        <img src="~/Images/store/@order.ImageUrl"
+                             alt="Product Image" class="order-image" />
+                    }
+
+                    <div class="order-info">
+                        <h3>@order.TotalAmount.ToString("C")</h3> <!-- Display total amount -->
+                        <p>Order Date: @order.OrderDate.ToString("dd/MM/yy")</p> <!-- Display order date -->
+                    </div>
+
+                    <!-- Order again button -->
+                    <div class="order-action">
+                        <button class="order-again-button">Order Again</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Show More Button -->
+    <div class="show-more">
+        <button class="show-more-button">Show More</button>
+    </div>
+</div>
+
+<style>
+    .past-orders {
+        padding: 20px;
+    }
+
+    .filter-buttons {
+        margin-bottom: 20px;
+    }
+
+    .filter-button {
+        margin-right: 10px;
+        background-color: #f5c518;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .order-list {
+        margin-top: 20px;
+    }
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .order-details {
+        display: flex;
+        align-items: center;
+    }
+
+    .order-image {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .order-info h3 {
+        margin: 0;
+    }
+
+    .order-again-button {
+        background-color: #f5c518;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    .show-more {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .show-more-button {
+        background-color: #f5c518;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+</style>
+

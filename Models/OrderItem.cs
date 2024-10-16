@@ -23,6 +23,7 @@ namespace ConvicartWebApp.Models
         public Store Product { get; set; }
 
         // Other properties
+        public string imgUrl { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }

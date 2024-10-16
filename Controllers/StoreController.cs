@@ -77,7 +77,7 @@ namespace ConvicartWebApp.Controllers
             };
 
             // Pagination logic (assuming 9 items per page)
-            int pageSize = 9;
+            int pageSize = 12;
             var totalItems = items.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
             var pagedItems = items.Skip((page - 1) * pageSize).Take(pageSize).ToList();

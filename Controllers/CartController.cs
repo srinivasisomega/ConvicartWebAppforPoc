@@ -17,9 +17,7 @@ namespace ConvicartWebApp.Controllers
             _context = context;
         }
 
-        // Action to add product to the cart
-        [HttpPost]
-        public IActionResult AddToCart(int productId, int quantity)
+        public IActionResult AddToCartMain(int productId, int quantity)
         {
             var product = _context.Stores.Find(productId);
             if (product == null || quantity <= 0)
@@ -69,8 +67,7 @@ namespace ConvicartWebApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("ViewCart");
         }
-        [HttpPost]
-        public IActionResult RemoveFromCart(int productId, int quantity)
+        public IActionResult RemoveFromCartMain(int productId, int quantity)
         {
             // Get the customer ID from the session
             var customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -108,6 +105,93 @@ namespace ConvicartWebApp.Controllers
 
             return RedirectToAction("ViewCart"); // Redirect back to the cart view
         }
+        [HttpPost]
+        public IActionResult AddToCart(int productId, int quantity)
+        {
+            var product = _context.Stores.Find(productId);
+            if (product == null || quantity <= 0)
+            {
+                return Json(new { success = false, message = "Product not found or invalid quantity." });
+            }
+
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignUp", "Customer"); // Redirect to sign-in if not in session
+            }
+
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId.Value);
+            var cart = _context.Cart.Include(c => c.CartItems)
+                                      .FirstOrDefault(c => c.CustomerId == customer.CustomerId)
+                         ?? new Cart { CustomerId = customer.CustomerId };
+
+            var existingItem = cart.CartItems.FirstOrDefault(i => i.ProductId == productId);
+            if (existingItem != null)
+            {
+                existingItem.Quantity += quantity; // Update quantity
+            }
+            else
+            {
+                cart.CartItems.Add(new CartItem
+                {
+                    ProductId = productId,
+                    Quantity = quantity
+                });
+            }
+
+            if (_context.Cart.Any(c => c.CartId == cart.CartId))
+            {
+                _context.Update(cart);
+            }
+            else
+            {
+                _context.Cart.Add(cart);
+            }
+
+            _context.SaveChanges();
+            return Json(new { success = true, message = "Product added to cart." });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveFromCart(int productId, int quantity)
+        {
+            // Get the customer ID from the session
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return Json(new { success = false, redirectUrl = Url.Action("SignIn", "Customer") }); // Redirect to sign-in if not in session
+            }
+
+            var cart = _context.Cart.Include(c => c.CartItems)
+                                      .FirstOrDefault(c => c.CustomerId == customerId.Value);
+
+            if (cart == null)
+            {
+                return Json(new { success = false, redirectUrl = Url.Action("ViewCart") }); // Cart does not exist
+            }
+
+            // Find the item in the cart
+            var item = cart.CartItems.FirstOrDefault(i => i.ProductId == productId);
+            if (item != null)
+            {
+                if (item.Quantity > quantity)
+                {
+                    item.Quantity -= quantity; // Decrease the quantity
+                }
+                else
+                {
+                    // If quantity becomes 0 or less, remove the item from the cart
+                    cart.CartItems.Remove(item);
+                }
+
+                // Save the changes to the database
+                _context.Update(cart);
+                _context.SaveChanges();
+            }
+
+            return Json(new { success = true }); // Return success response
+        }
+
 
 
         public IActionResult ViewCart()
@@ -116,7 +200,7 @@ namespace ConvicartWebApp.Controllers
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                return RedirectToAction("SignIn", "Customer"); // Redirect to sign-in if not in session
+                return RedirectToAction("SignUp", "Customer"); // Redirect to sign-in if not in session
             }
 
             // Fetch the cart for the customer
@@ -195,15 +279,6 @@ namespace ConvicartWebApp.Controllers
 
             return View(viewModel); // Ensure you're passing the viewModel to the view
         }
-
-
-
-
-
-
-
-        // Action to handle purchase
-        [HttpPost]
         public IActionResult Purchase(CartViewModel cartViewModel)
         {
             // Get the customer ID from the session
@@ -229,11 +304,25 @@ namespace ConvicartWebApp.Controllers
             // Add cart items to the order
             foreach (var item in cartViewModel.CartItems)
             {
+                // Fetch product details from the database using the ProductId
+                var product = _context.Stores.Find(item.ProductId);
+                if (product == null)
+                {
+                    // Handle product not found scenario
+                    ModelState.AddModelError("", $"Product with ID {item.ProductId} not found.");
+                    return View(cartViewModel); // Return to cart view with an error
+                }
+
+                // Create the order item
                 var orderItem = new OrderItem
                 {
                     ProductId = item.ProductId,
-                    Quantity = item.Quantity
+                    ProductName = product.ProductName, // Set the product name
+                    Price = product.Price, // Set the price
+                    Quantity = item.Quantity,
+                    imgUrl = product.imgUrl
                 };
+
                 order.OrderItems.Add(orderItem); // Add item to the order
             }
 
@@ -254,14 +343,28 @@ namespace ConvicartWebApp.Controllers
             _context.Orders.Add(order);
             _context.SaveChanges(); // Commit the transaction
 
-            // Optionally, clear the cart after purchase
-            // _context.Carts.Remove(cart); 
-            // _context.SaveChanges();
+            // Clear the cart after purchase (assuming you have a Cart table)
+            var cartItems = _context.Cart.Where(c => c.CustomerId == customerId.Value).ToList();
+            _context.Cart.RemoveRange(cartItems); // Remove all items from the cart
+            _context.SaveChanges(); // Save changes to remove items
 
-            return RedirectToAction("OrderConfirmation"); // Redirect to a confirmation page
+            // Redirect to a temporary confirmation page
+            return RedirectToAction("OrderConfirmation"); // Redirect to confirmation page
         }
+
+
+
+        // Confirmation action method
+        public IActionResult OrderConfirmation()
+        {
+            // Return a view to show the purchase confirmation
+            return View();
+        }
+
+        // Redirect to store after a delay (in the view for OrderConfirmation)
+
+
+
+
     }
-
-
-
 }
