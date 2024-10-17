@@ -281,76 +281,88 @@ namespace ConvicartWebApp.Controllers
         }
         public IActionResult Purchase(CartViewModel cartViewModel)
         {
-            // Get the customer ID from the session
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                return RedirectToAction("SignIn", "Customer"); // Redirect to sign-in if not in session
+                return RedirectToAction("SignIn", "Customer");
             }
 
-            var customer = _context.Customers.Find(customerId.Value); // Fetch customer details
+            var customer = _context.Customers.Find(customerId.Value);
 
-            // Calculate the total cost from the cart items
-            decimal totalCost = cartViewModel.TotalAmount;
+            // Initialize variables
+            decimal totalCost = 0; // Sum of cart item prices
+            decimal discount = cartViewModel.Discount; // Percentage discount
+            decimal shippingCost = cartViewModel.ShippingCost; // Fixed shipping cost
+            decimal taxAmount = cartViewModel.TaxAmount; // Tax amount
 
             // Create a new order
             var order = new Order
             {
                 CustomerId = customer.CustomerId,
-                TotalAmount = totalCost,
                 OrderDate = DateTime.Now
             };
 
-            // Add cart items to the order
+            // Add cart items to the order and calculate the total cost
             foreach (var item in cartViewModel.CartItems)
             {
-                // Fetch product details from the database using the ProductId
                 var product = _context.Stores.Find(item.ProductId);
                 if (product == null)
                 {
-                    // Handle product not found scenario
                     ModelState.AddModelError("", $"Product with ID {item.ProductId} not found.");
-                    return View(cartViewModel); // Return to cart view with an error
+                    return View(cartViewModel);
                 }
+
+                // Add the price for each item (Price * Quantity)
+                totalCost += product.Price * item.Quantity;
 
                 // Create the order item
                 var orderItem = new OrderItem
                 {
                     ProductId = item.ProductId,
-                    ProductName = product.ProductName, // Set the product name
-                    Price = product.Price, // Set the price
+                    ProductName = product.ProductName,
+                    Price = product.Price,
                     Quantity = item.Quantity,
                     imgUrl = product.imgUrl
                 };
 
-                order.OrderItems.Add(orderItem); // Add item to the order
+                order.OrderItems.Add(orderItem);
             }
 
-            // Deduct points from the customer based on total cost
-            if (customer.PointBalance >= totalCost)
+            // Apply the discount to the total cost
+            decimal discountAmount = totalCost * discount;
+
+            // Final total after applying discount, shipping, and tax
+            decimal finalTotal = totalCost - discountAmount + shippingCost + taxAmount;
+
+            // Update the order's total amount
+            order.TotalAmount = finalTotal;
+
+            // Deduct points from the customer's balance
+            if (customer.PointBalance >= finalTotal)
             {
-                customer.PointBalance -= (int)totalCost; // Deduct the points
-                _context.Customers.Update(customer); // Update customer points
+                customer.PointBalance -= (int)finalTotal; // Deduct points
+                _context.Customers.Update(customer); // Update customer in the database
             }
             else
             {
-                // Handle insufficient points scenario (e.g., return an error message)
                 ModelState.AddModelError("", "Insufficient points for this purchase.");
-                return View(cartViewModel); // Return to cart view with an error
+                return View(cartViewModel);
             }
 
             // Save the order and order items to the database
             _context.Orders.Add(order);
-            _context.SaveChanges(); // Commit the transaction
+            _context.SaveChanges();
 
-            // Clear the cart after purchase (assuming you have a Cart table)
+            // Clear the cart after purchase
             var cartItems = _context.Cart.Where(c => c.CustomerId == customerId.Value).ToList();
-            _context.Cart.RemoveRange(cartItems); // Remove all items from the cart
-            _context.SaveChanges(); // Save changes to remove items
+            _context.Cart.RemoveRange(cartItems);
+            _context.SaveChanges();
 
-            // Redirect to a temporary confirmation page
-            return RedirectToAction("OrderConfirmation"); // Redirect to confirmation page
+            // Redirect to confirmation page
+            return RedirectToAction("OrderConfirmation");
         }
+
+
 
 
 

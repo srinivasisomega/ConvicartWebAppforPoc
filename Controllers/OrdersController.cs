@@ -19,26 +19,23 @@ namespace ConvicartWebApp.Controllers
             _context = context;
         }
 
-        // Action method to fetch past orders
-        public IActionResult OrderHistory(string timeFilter = "6months")
+        
+        public IActionResult OrderHistory()
         {
-            var customerId = HttpContext.Session.GetInt32("CustomerId"); ; // Replace with actual logic to get customer ID
-            DateTime filterDate = GetFilterDate(timeFilter);
-
-            // Fetch orders for the customer within the filter date range
-            var orders = _context.Orders
-                .Where(o => o.CustomerId == customerId && o.OrderDate >= filterDate)
-                .OrderByDescending(o => o.OrderDate)
-                .ToList();
-            var orderViewModels = orders.Select(order => new OrderViewModel
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
             {
-                OrderId = order.OrderId,
-                OrderDate = order.OrderDate,
-                TotalAmount = order.TotalAmount,
-                ImageUrl = order.OrderItems.FirstOrDefault()?.imgUrl // Get the first item's image URL
-            }).ToList();
-            return View("OrderHistory",orderViewModels);
+                return RedirectToAction("SignIn", "Customer");
+            }
+
+            var orders = _context.Orders
+                .Where(o => o.CustomerId == customerId.Value)
+                .Include(o => o.OrderItems) // Include related OrderItems
+                .ToList();
+
+            return View(orders);
         }
+
 
         // Action for 'Order Again' functionality
         //[HttpPost]

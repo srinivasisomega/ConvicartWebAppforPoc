@@ -1,47 +1,27 @@
-﻿@model IEnumerable<OrderViewModel>
+﻿@model IEnumerable<Order>
 
-<div class="past-orders">
-    <h2>Past Orders</h2>
-
-    <!-- Filter buttons (e.g., 15 days, 6 months, etc.) -->
-    <div class="filter-buttons">
-        <button class="filter-button">15 days</button>
-        <button class="filter-button">6 months</button>
-        <button class="filter-button">30 days</button>
-        <button class="filter-button">3 months</button>
-    </div>
-
-    <!-- Loop through the orders -->
-    <div class="order-list">
+<h2>Your Order History</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>First Item Image</th>
+            <th>Total Amount Spent</th>
+        </tr>
+    </thead>
+    <tbody>
         @foreach (var order in Model)
         {
-            <div class="order-item">
-                <div class="order-details">
-                    @if (!string.IsNullOrEmpty(order.ImageUrl))
-                    {
-                        <img src="~/Images/store/@order.ImageUrl"
-                             alt="Product Image" class="order-image" />
-                    }
-
-                    <div class="order-info">
-                        <h3>@order.TotalAmount.ToString("C")</h3> <!-- Display total amount -->
-                        <p>Order Date: @order.OrderDate.ToString("dd/MM/yy")</p> <!-- Display order date -->
-                    </div>
-
-                    <!-- Order again button -->
-                    <div class="order-action">
-                        <button class="order-again-button">Order Again</button>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td>
+                    <img src="~/Images/store/@order.OrderItems.FirstOrDefault()?.imgUrl" alt="Product Image" width="50" height="50" />
+                </td>
+                <td>@order.TotalAmount.ToString("C")</td> <!-- Display the correct TotalAmount -->
+            </tr>
         }
-    </div>
-
-    <!-- Show More Button -->
-    <div class="show-more">
-        <button class="show-more-button">Show More</button>
-    </div>
-</div>
+    </tbody>
+</table>
 
 <style>
     .past-orders {
