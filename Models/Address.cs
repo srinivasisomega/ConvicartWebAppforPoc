@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace ConvicartWebApp.Models
 {
-    
+
     public class Address
     {
         [Key]
-        public int? AddressId { get; set; }
+        public int AddressId { get; set; } 
 
         [Required]
         [MaxLength(255)]
@@ -27,5 +27,6 @@ namespace ConvicartWebApp.Models
         [MaxLength(100)]
         public string Country { get; set; }
     }
+
 
 }

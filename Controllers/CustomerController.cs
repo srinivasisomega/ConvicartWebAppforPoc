@@ -193,6 +193,166 @@ namespace ConvicartWebApp.Controllers
             // Dispose of the context before returning the view
             return View(viewModel);
         }
+        public async Task<IActionResult> UpdatePreference()
+        {
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("Subscription");
+            }
+
+            // Get all preferences available in the system
+            var preferences = await _context.Preferences.ToListAsync().ConfigureAwait(false);
+
+            // Get the customer's currently selected preferences
+            var selectedPreferences = await _context.CustomerPreferences
+                .Where(cp => cp.CustomerId == customerId.Value)
+                .Select(cp => cp.PreferenceId)
+                .ToListAsync();
+
+            ViewBag.CustomerId = customerId;
+            ViewBag.SelectedPreferences = selectedPreferences; // Pass selected preferences to the view
+
+            return View(preferences);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatedPreferences(List<int> selectedPreferences)
+        {
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+
+            // Find the customer by ID
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId.Value)
+                .ConfigureAwait(false);
+
+            if (customer == null) return NotFound();
+
+            // Clear existing preferences for the customer
+            var existingPreferences = await _context.CustomerPreferences
+                .Where(cp => cp.CustomerId == customer.CustomerId)
+                .ToListAsync()
+                .ConfigureAwait(false);
+            _context.CustomerPreferences.RemoveRange(existingPreferences);
+
+            // Add the newly selected preferences
+            if (selectedPreferences != null && selectedPreferences.Any())
+            {
+                foreach (var preferenceId in selectedPreferences)
+                {
+                    var customerPreference = new CustomerPreference
+                    {
+                        CustomerId = customer.CustomerId,
+                        PreferenceId = preferenceId
+                    };
+                    _context.CustomerPreferences.Add(customerPreference);
+                }
+            }
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            return RedirectToAction("Profile", new { customerId = customer.CustomerId });
+        }
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            // Check if CustomerId exists in session
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                // Redirect to SignUp if CustomerId is not found
+                return RedirectToAction("SignUp", "Customer");
+            }
+
+            // Retrieve the customer data using CustomerId from session
+            var customer = _context.Customers.Find(customerId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return View(customer);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditProfileSave(Customer model)
+        {
+            
+                var customer = _context.Customers.Find(model.CustomerId);
+
+                if (customer != null)
+                {
+                    customer.Name = model.Name;
+                    customer.Number = model.Number;
+                    customer.Email = model.Email;
+                    customer.Age = model.Age;
+                    customer.Gender = model.Gender;
+
+                    _context.SaveChanges();
+                    return RedirectToAction("Profile", new { customerId = model.CustomerId });
+                }
+           
+
+            return View(model);
+        }
+        // GET: Upload Profile Image
+        [HttpGet]
+        public IActionResult UploadProfileImage()
+        {
+            return View();
+        }
+
+        
+        
+        [HttpPost]
+        public async Task<IActionResult> UploadProfileImage(int id, IFormFile image)
+        {
+            if (image != null && image.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await image.CopyToAsync(memoryStream);
+                    memoryStream.Position = 0; // Reset position
+
+                    var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+                    if (customer != null)
+                    {
+                        // Convert uploaded image to byte[] and store in database
+                        customer.ProfileImage = memoryStream.ToArray();
+                        _context.Update(customer);
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return NotFound(); // Handle case where customer is not found
+                    }
+                }
+            }
+            return RedirectToAction("ProfilePic", new { id });
+        }
+
+
+        // GET: Get Profile Image to display in view
+        public IActionResult GetProfileImage(int id)
+        {
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+            if (customer?.ProfileImage != null)
+            {
+                return File(customer.ProfileImage, "image/jpeg"); // Assuming image type is jpeg
+            }
+            else
+            {
+                return NotFound();  // Handle case where no image exists
+            }
+        }
     }
+
 }
+
 

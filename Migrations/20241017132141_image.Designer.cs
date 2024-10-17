@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConvicartWebApp.Migrations
 {
     [DbContext(typeof(ConvicartWarehouseContext))]
-    [Migration("20241016102846_cart3")]
-    partial class cart3
+    [Migration("20241017132141_image")]
+    partial class image
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,8 @@ namespace ConvicartWebApp.Migrations
 
             modelBuilder.Entity("ConvicartWebApp.Models.Address", b =>
                 {
-                    b.Property<int?>("AddressId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("AddressId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("AddressId"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -146,9 +143,8 @@ namespace ConvicartWebApp.Migrations
                     b.Property<int>("PointBalance")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProfilePicUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    b.Property<byte[]>("ProfileImage")
+                        .HasColumnType("VARBINARY(MAX)");
 
                     b.Property<string>("Subscription")
                         .HasMaxLength(20)
@@ -224,6 +220,10 @@ namespace ConvicartWebApp.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("imgUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderItemId");
 
@@ -403,7 +403,8 @@ namespace ConvicartWebApp.Migrations
                 {
                     b.HasOne("ConvicartWebApp.Models.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Address");
                 });

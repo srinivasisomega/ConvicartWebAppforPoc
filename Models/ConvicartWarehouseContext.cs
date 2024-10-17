@@ -26,6 +26,14 @@ namespace ConvicartWebApp.Models
         // Configure model relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Customer>()
+       .HasOne(c => c.Address)
+       .WithMany() // Adjust if Address has a navigation property back to Customer
+       .HasForeignKey(c => c.AddressId)
+       .OnDelete(DeleteBehavior.Restrict); // Use appropriate delete behavior
+            modelBuilder.Entity<Address>()
+        .Property(a => a.AddressId)
+        .ValueGeneratedNever();
             modelBuilder.Entity<Order>()
             .Property(o => o.TotalAmount)
             .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2

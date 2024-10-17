@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace ConvicartWebApp.Models
 {
    
@@ -41,8 +42,8 @@ namespace ConvicartWebApp.Models
 
         public int PointBalance { get; set; }
 
-        [MaxLength(255)]
-        public string? ProfilePicUrl { get; set; }
+        [Column(TypeName = "VARBINARY(MAX)")]  // Ensure the correct column type is used
+        public byte[]? ProfileImage { get; set; }
 
         public Address? Address { get; set; }
     }

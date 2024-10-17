@@ -2,10 +2,14 @@
 <div>
     <div class="profile-container">
         <div class="profile-header">
-            <img src="~/@Model.Customer?.ProfilePicUrl" alt="Profile Picture" class="profile-pic">
+            <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.Customer.CustomerId })"
+                 alt="Profile Image" class="profile-image" />
+            <a asp-controller="Customer" asp-action="UploadProfileImage" class="btn btn-primary">Upload image</a>
             <h2>@Model.Customer?.Name</h2>
             <p class="email">@Model.Customer?.Email</p>
             <p class="subscription">Subscription: @Model.Customer?.Subscription</p>
+            <a asp-controller="Customer" asp-action="EditProfile" class="btn btn-primary">Update Profile</a>
+
         </div>
 
         <div class="profile-body">
@@ -17,6 +21,8 @@
                     <li><strong>Gender:</strong> @Model.Customer?.Gender</li>
                     <li>
                         <strong>Address:</strong>
+                        <a asp-controller="Address" asp-action="CreateOrUpdateAddress" class="btn btn-primary">Add/Update Address</a>
+
                         <ul>
                             <li>Street: @Model.Address?.StreetAddress</li>
                             <br />
@@ -35,7 +41,11 @@
         <br>
         <div class="profile-body">
             <div class="profile-info ">
+                <div>
                 <h3 style="color:silver">Selected Preferences</h3>
+                    <a asp-controller="Customer" asp-action="UpdatePreference" class="btn btn-primary">Add/Update Preferences</a>
+
+                </div>
                 @if (Model.CustomerPreferences != null && Model.CustomerPreferences.Any())
                 {
                     <ul class="d-flex flex-row justify-content-evenly">
