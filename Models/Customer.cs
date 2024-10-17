@@ -44,7 +44,7 @@ namespace ConvicartWebApp.Models
 
         [Column(TypeName = "VARBINARY(MAX)")]  // Ensure the correct column type is used
         public byte[]? ProfileImage { get; set; }
-
+        public DateTime? LastPointsAddedDate { get; set; }
         public Address? Address { get; set; }
     }
 

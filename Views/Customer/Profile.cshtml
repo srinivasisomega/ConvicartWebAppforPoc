@@ -1,138 +1,170 @@
-﻿@model ConvicartWebApp.Models.CustomerProfileViewModel;
-<div>
-    <div class="profile-container">
-        <div class="profile-header">
-            <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.Customer.CustomerId })"
-                 alt="Profile Image" class="profile-image" />
-            <a asp-controller="Customer" asp-action="UploadProfileImage" class="btn btn-primary">Upload image</a>
-            <h2>@Model.Customer?.Name</h2>
-            <p class="email">@Model.Customer?.Email</p>
-            <p class="subscription">Subscription: @Model.Customer?.Subscription</p>
-            <a asp-controller="Customer" asp-action="EditProfile" class="btn btn-primary">Update Profile</a>
+﻿@model ConvicartWebApp.Models.CustomerProfileViewModel
 
-        </div>
+<div class="custom-container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
 
-        <div class="profile-body">
-            <div class="profile-info">
-                <h3 style="color: silver;">Personal Information</h3>
-                <ul class="d-flex flex-column justify-content-evenly">
-                    <li><strong>Mobile:</strong> @Model.Customer?.Number</li>
-                    <li><strong>Age:</strong> @Model.Customer?.Age</li>
-                    <li><strong>Gender:</strong> @Model.Customer?.Gender</li>
-                    <li>
-                        <strong>Address:</strong>
-                        <a asp-controller="Address" asp-action="CreateOrUpdateAddress" class="btn btn-primary">Add/Update Address</a>
+            <div class="d-flex-1 flex-column align-items-center text-center p-3 py-5">
 
-                        <ul>
-                            <li>Street: @Model.Address?.StreetAddress</li>
-                            <br />
-                            <li>City: @Model.Address?.City</li>
-                            <li>State: @Model.Address?.State</li>
-                            <li>Country: @Model.Address?.Country</li>
-                            <br />
-                            <li>Postal Code: @Model.Address?.PostalCode</li>
-                        </ul>
-                    </li>
-                    <li><strong>Points Balance:</strong> @Model.Customer?.PointBalance</li>
-                </ul>
+                <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.Customer.CustomerId })"
+                     class="rounded-circle mt-5" width="150px" alt="Profile Image" />
+
+                <a asp-controller="Customer" asp-action="UploadProfileImage" class="btn btn-primary profile-button">Upload Image</a>
+
+                <span class="text-black-50">Subscription: @Model.Customer?.Subscription</span>
+
             </div>
         </div>
 
-        <br>
-        <div class="profile-body">
-            <div class="profile-info ">
-                <div>
-                <h3 style="color:silver">Selected Preferences</h3>
-                    <a asp-controller="Customer" asp-action="UpdatePreference" class="btn btn-primary">Add/Update Preferences</a>
+        <div class="col-md-5 border-right">
+
+            <div class="p-3 py-5">
+                <h3 class="text-center">Profile</h3>
+
+                <div class="inrow mt-3">
+
+                    <div class="col-md-6">
+                        <p>Name</p> 
+                        <h5>@Model.Customer?.Name</h5>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p>Mobile Number</p>
+                        <h5>@Model.Customer?.Number</h5>
+                    </div>
 
                 </div>
+
+                <div class="inrow mt-3">
+                    <div class="col-md-12">
+                        <p>Email</p>
+                        <h5>@Model.Customer?.Email</h5>
+                    </div>
+                </div>
+
+                <div class="inrow mt-3">
+                    <div class="col-md-6">
+                        <p>Age</p>
+                        <h5>@Model.Customer?.Age</h5>
+                    </div>
+
+                    <div class="col-md-6">
+                        <p>Gender</p>
+                        <h5>@Model.Customer?.Gender</h5>
+                    </div>
+
+                </div>
+
+                <div class="mt-5 text-center">
+                     <a asp-controller="Customer" asp-action="EditProfile" class="btn btn-primary profile-button">Update Profile</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="address-p-3 py-5">
+                <h3 class="text-center-h3">Address</h3>
+                <a asp-controller="Address" asp-action="CreateOrUpdateAddress" class="btn-add btn-primary mb-3 profile-button">Add/Update Address</a>
+
+                <ul class="list-unstyled">
+                    <li>Street: @Model.Address?.StreetAddress</li>
+                    <li>City: @Model.Address?.City</li>
+                    <li>State: @Model.Address?.State</li>
+                    <li>Country: @Model.Address?.Country</li>
+                    <li>Postal Code: @Model.Address?.PostalCode</li>
+                </ul>
+
+                <h5 class="text-center">Points Balance</h5>
+                <a asp-action="DisplayPurchaseForm" asp-controller="Points">Purchase more points</a>
+                <h3 class="text-center-pb">@Model.Customer?.PointBalance</h3>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row-2 mt-5">
+
+        <div class="col-md-12-2">
+            <h4 class="text-center" style="color: silver;">Selected Preferences</h4>
+            <a asp-controller="Customer" asp-action="UpdatePreference" class="btn-sle-pre btn-primary profile-button">Add/Update Preferences</a>
+
+            <div class="mt-3-pref">
+
                 @if (Model.CustomerPreferences != null && Model.CustomerPreferences.Any())
                 {
-                    <ul class="d-flex flex-row justify-content-evenly">
+                    <ul class="d-flex flex-row justify-content-evenly list-unstyled">
                         @foreach (var cp in Model.CustomerPreferences)
                         {
-                            <li class="p-3 bg-light" style="">
-                                @cp.Preference?.PreferenceName
-                            </li>
-
+                            <li class="p-3 bg-light rounded">@cp.Preference?.PreferenceName</li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <p>No preferences selected.</p>
+                    <p class="text-center">No preferences selected.</p>
                 }
             </div>
         </div>
     </div>
-
-
 </div>
 
 <style>
-    .pb-3 {
-        background-image: url('/images/background for contact.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        padding: 50px;
+    h5{
+        margin-bottom:20px;
+    }
+    .custom-container {
+        width: 75%;
+        margin: 0 auto; /* Center the container */
     }
 
-    .profile-container {
-        width: 80%;
-        margin: 0 auto;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        .custom-container > div {
+            transform: scale(0.9); /* Scale down the contents */
+            transform-origin: top; /* Ensure scaling starts from the top */
+        }
+
+    .btn {
+        font-size: 0.85rem; /* Slightly reduce button size */
+        padding: 0.5rem 1rem; /* Adjust padding for buttons */
     }
 
-    .profile-header {
-        text-align: center;
-        margin-bottom: 30px;
+    body {
+        background: rgb(99, 39, 120);
     }
 
-    .profile-pic {
-        border-radius: 50%;
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
+    .profile-button {
+        background: rgb(99, 39, 120);
+        box-shadow: none;
+        border: none;
     }
 
-    h2 {
-        font-size: 2rem;
-        margin: 10px 0;
+        .profile-button:hover {
+            background: #682773;
+        }
+
+        .profile-button:focus {
+            background: #682773;
+            box-shadow: none;
+        }
+
+        .profile-button:active {
+            background: #682773;
+            box-shadow: none;
+        }
+
+    .labels {
+        font-size: 11px;
     }
 
-    .email, .subscription {
-        font-size: 1.4rem;
-        font-weight:bold;
-        color: #555;
+    .add-experience:hover {
+        background: #BA68C8;
+        color: #fff;
+        cursor: pointer;
+        border: solid 1px #BA68C8;
     }
 
-    .profile-body {
-        background-color: black;
-        padding: 20px;
-        border-radius: 10px;
-    }
+    
 
-    .profile-info ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .profile-info li {
-        margin: 10px 0;
-        font-size: 1.6rem;
-        border-radius: 50px;
-        display: inline-block;
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.5);
-        border: 1px solid #e0e0e0;
-        background: linear-gradient(145deg, #f0f0f0, #cacaca);
-        padding: 16px;
-        width: max-content;
-    }
-
-    .profile-info strong {
-        color: #333;
-    }
 </style>

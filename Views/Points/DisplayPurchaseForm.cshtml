@@ -1,0 +1,56 @@
+﻿@model ConvicartWebApp.Models.PurchasePointsViewModel
+
+@{
+    ViewData["Title"] = "Purchase Points";
+}
+
+<h2>Purchase Points</h2>
+
+<form asp-action="ProcessPointPurchase" method="post">
+    <div class="form-group">
+        <label asp-for="PointsToPurchase" class="control-label"></label>
+        <input asp-for="PointsToPurchase" class="form-control" id="pointsInput" oninput="updateAmountToPay()" />
+        <span asp-validation-for="PointsToPurchase" class="text-danger"></span>
+    </div>
+
+    <!-- Hidden field for CustomerId -->
+    <input type="hidden" asp-for="CustomerId" />
+
+    <div class="form-group">
+        <label asp-for="AmountToPay" class="control-label">Amount to Pay: </label>
+        <input asp-for="AmountToPay" class="form-control" id="amountToPay" readonly />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Purchase" class="btn btn-primary" />
+    </div>
+
+    @if (Model.ConfirmationMessage != null)
+    {
+        <div class="alert alert-success">
+            @Model.ConfirmationMessage
+        </div>
+    }
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Define the rate for points to currency (this should match the rate in your server-side logic)
+        const pointsToCurrencyRate = 20;
+
+        // JavaScript function to update the amount to pay dynamically
+        function updateAmountToPay() {
+            // Get the number of points from the input field
+            const points = parseInt(document.getElementById("pointsInput").value) || 0;
+
+            // Calculate the amount to pay
+            const amountToPay = points * pointsToCurrencyRate;
+
+            // Update the amount to pay field
+            document.getElementById("amountToPay").value = amountToPay.toFixed(2); // Limit to 2 decimal places
+        }
+    </script>
+}
+
