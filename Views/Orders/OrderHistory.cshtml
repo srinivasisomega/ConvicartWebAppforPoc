@@ -1,6 +1,69 @@
 ﻿@model IEnumerable<Order>
+<style>
+    .container{
+        align-items:center;
+    }
+h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
 
-<h2>Your Order History</h2>
+/* Table styling */
+.table {
+    width: 900px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #2c3e50;
+    color: #fff;
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table th {
+    font-weight: bold;
+}
+
+.table td {
+    border-bottom: 1px solid #ddd;
+    
+}
+
+.table img {
+    border-radius: 5px;
+
+}
+
+/* Hover effect for table rows */
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Add some spacing between rows */
+.table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Style for the order date and amount */
+.table td:nth-child(1), .table td:nth-child(3) {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+
+</style>
+<h2 style="display:flex; text-align:left; padding-left:3vw; font-family: Roboto; font-weight:bold; color:grey; margin-top:30px;">
+    Your Order History
+</h2>
 <table class="table">
     <thead>
         <tr>
@@ -13,77 +76,14 @@
         @foreach (var order in Model)
         {
             <tr>
-                <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td style="border-left:1px solid #ddd;">@order.OrderDate.ToString("dd MMM yyyy")</td>
                 <td>
-                    <img src="~/Images/store/@order.OrderItems.FirstOrDefault()?.imgUrl" alt="Product Image" width="50" height="50" />
+                    <img src="~/Images/store/@order.OrderItems.FirstOrDefault()?.imgUrl" alt="Product Image" width="90" height="80" />
                 </td>
-                <td>@order.TotalAmount.ToString("C")</td> <!-- Display the correct TotalAmount -->
+                <td style="border-right:1px solid #ddd;">@order.TotalAmount.ToString("C")</td> <!-- Display the correct TotalAmount -->
             </tr>
         }
     </tbody>
 </table>
 
-<style>
-    .past-orders {
-        padding: 20px;
-    }
-
-    .filter-buttons {
-        margin-bottom: 20px;
-    }
-
-    .filter-button {
-        margin-right: 10px;
-        background-color: #f5c518;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-    }
-
-    .order-list {
-        margin-top: 20px;
-    }
-
-    .order-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .order-details {
-        display: flex;
-        align-items: center;
-    }
-
-    .order-image {
-        width: 100px;
-        height: 100px;
-        margin-right: 20px;
-    }
-
-    .order-info h3 {
-        margin: 0;
-    }
-
-    .order-again-button {
-        background-color: #f5c518;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
-
-    .show-more {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .show-more-button {
-        background-color: #f5c518;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
-</style>
 

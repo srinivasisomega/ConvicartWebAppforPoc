@@ -9,19 +9,19 @@
 <h2 class="text-center mb-4">Sign In</h2>
 <form asp-action="SignIn" method="post" class="needs-validation" novalidate>
     <div class="form-group">
-        <label for="Email">Email</label>
+        <label for="Email">Email*</label>
         <input asp-for="Email" class="form-control" placeholder="Enter your email" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label for="Password">Password</label>
+        <label for="Password">Password*</label>
         <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div class="form-group mb-3 text-right">
-        <a href="#" class="forgot-password">Did you forget the password?</a>
+        <a href="#" class="forgot-password">Forget the password</a>
     </div>
 
     <button type="submit" class="btn btn-primary btn-block">Sign In</button>

@@ -11,7 +11,7 @@ else
     <p>No profile image uploaded.</p>
 }
 
-<form asp-action="UploadProfileImage" asp-controller="Profile" enctype="multipart/form-data" method="post">
+<form asp-action="UploadProfileImageSave" asp-controller="Profile" enctype="multipart/form-data" method="post">
     <input type="hidden" name="id" value="@Model.CustomerId" />
 
     <div>

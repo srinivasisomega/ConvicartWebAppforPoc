@@ -6,7 +6,11 @@
     border-right: 1px solid grey;
     height: 85vh;
 }
-
+.Point-balencediv{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
 .col-md-4 {
 }
 

@@ -11,8 +11,10 @@ html {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+
 html, body {
     height: 100%;
+    min-height: 100vh;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -40,6 +42,7 @@ main {
     flex: 1; /* Fill the available space */
     overflow-y: auto; /* Allow scrolling if needed */
 }
+
 .Side-nav {
     display: flex;
     flex-direction: column; /* Align items in a column */
@@ -55,34 +58,30 @@ main {
     margin-bottom: 15px; /* Add space between items */
 }
 
-    
-
 /* Global Styles */
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display:flex;
-    flex-direction:column;
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    white-space: nowrap;
-    line-height: 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     max-width: 100%;
-    margin: 0 ;
+    margin: 0;
     padding: 0;
-    height:auto;
-    flex-shrink:0;
+    height: auto;
+    flex-shrink: 0;
 }
 
 /* Header Styles */
+.header2 {
+    background-color: #F3BE57;
+    padding: 2px;
+    border-bottom: 1px solid #ddd;
+}
 
 .header1 {
     background-color: #F3BE57;
@@ -99,7 +98,10 @@ body {
 
 .navbar-nav {
     margin-left: 20px;
-    align-items:center;
+    align-items: center;
+    font-family: Giga 'Gill Sans';
+    font: 26px;
+    font-weight: bold;
 }
 
 .nav-link {
@@ -148,9 +150,6 @@ body {
         background-color: #2ecc71;
     }
 
-/* Footer Styles */
-
-
 /* Profile Avatar Styles */
 
 .nav-profile img {
@@ -160,201 +159,20 @@ body {
     margin-left: 20px;
 }
 
-footer {
-    width: 100%;
-   /* position: absolute;*/
-    bottom: 0;
-    line-height: 60px;
-    font-size: small;
-    flex-shrink:0;
-}
-
-    footer .container1 {
-        display: flex;
-        flex-direction: column;
-        width: inherit;
-    }
-
-        footer .container1 .footer-top {
-            display: flex;
-            flex-direction: row;
-            align-content: space-around;
-            justify-content: flex-start;
-            background-color: #F3BE57;
-            padding-top:5px;
-        }
-
-            footer .container1 .footer-top .footer-contact .footer-contact ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            footer .container1 .footer-top .footer-contact .footer-contact li {
-                height: fit-content;
-                line-height: 1.2;
-                margin-bottom: 5px;
-            }
-
-            footer .container1 .footer-top .footer-logos {
-                width: fit-content;
-                height: fit-content;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-left:50px;
-            }
-
-                footer .container1 .footer-top .footer-logos .footer-logo-top {
-                    height: fit-content;
-                    width: fit-content;
-                }
-
-                    footer .container1 .footer-top .footer-logos .footer-logo-top .footer-brand img {
-                        height: 90px;
-                        width: 120px;
-                    }
-
-                footer .container1 .footer-top .footer-logos .footer-logo-bottom {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-evenly;
-                }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .facebook{
-                        padding-left:5px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .facebook img {
-                        height: 30px;
-                        width: 30px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .insta {
-                        padding-left: 5px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .insta img {
-                        height: 30px;
-                        width: 30px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .youtube {
-                        padding-left: 5px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .youtube img {
-                        height: 30px;
-                        width: 30px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .linkedin {
-                        padding-left: 5px;
-                    }
-                    footer .container1 .footer-top .footer-logos .footer-logo-bottom .linkedin img {
-                        height: 30px;
-                        width: 30px;
-                    }
-
-            footer .container1 .footer-top .footer-contact {
-                width: fit-content;
-                margin-left:60px;
-            }
-
-                footer .container1 .footer-top .footer-contact ul {
-                    list-style-type: none;
-                    padding: 2px 5px;
-                    margin: 0;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                footer .container1 .footer-top .footer-contact li {
-                    padding: 2px 5px;
-                    width: fit-content;
-                    height: fit-content;
-                    display: inline-block;
-                    margin-bottom: 5px;
-                    line-height: 1.2;
-                }
-            footer .container1 .footer-top .footer-service{
-                margin-left:40px;
-            }
-            footer .container1 .footer-top .footer-service .footer-service-list {
-                list-style-type: none;
-                display: flex;
-                flex-direction: column;
-                padding:0px;
-            }
-
-            footer .container1 .footer-top .footer-service li {
-                padding: 2px 5px;
-                width: fit-content;
-                height: auto;
-                display: inline-block;
-                margin-bottom: 5px;
-                line-height: 1.2;
-            }
-
-                footer .container1 .footer-top .footer-service li a {
-                    padding: 0px;
-                }
-
-        footer .container1 .footer-bottom {
-            display: flex;
-            flex-direction: row;
-            width: inherit;
-            align-content: space-between;
-            background-color:black;
-            justify-content:space-around;
-        }
-
-            footer .container1 .footer-bottom .footer-bottom-left {
-                list-style-type: none;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                padding: 0px;
-                margin: 0px;
-            }
-
-            footer .container1 .footer-bottom .footer-bottom-right {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                width: fit-content;
-            }
-
-            footer .container1 .footer-bottom .footer-bottom-left li {
-                padding: 1.5px 3px;
-                width: fit-content;
-                height: auto;
-                display: inline-block;
-                margin-bottom: 5px;
-                line-height: 1.2;
-                font-size: small;
-                
-            }
-
-            footer .container1 .footer-bottom .footer-bottom-right span {
-                padding: 1.5px 3px;
-                width: fit-content;
-                height: auto;
-                display: inline-block;
-                margin-bottom: 5px;
-                line-height: 1.2;
-                font-size: small;
-                color: white;
-            }
 /*index page*/
 /* Hero Section */
 .hero-section {
     position: relative;
-    background-image: url('/images/hero-banner.png');
+    background-image: url('../Images/Hero-Banner.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 600px;
-    width:stretch;
+    width: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-
 
 .hero-text {
     position: absolute;
@@ -414,13 +232,161 @@ footer {
     }
 
     .service-box h3 {
-        font-size: 22px;
-        margin-top: 20px;
+        margin: 15px 0;
+        font-size: 24px;
     }
-.aboutus-body{
-    width:75%;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-around;
+
+    .service-box p {
+        font-size: 16px;
+    }
+/* Footer Global Styles */
+footer {
+    background-color: #F3BE57; /* Dark background for footer */
+    color: black; /* Black text color */
+   
+    margin-top: auto; /* Pushes footer to the bottom */
 }
 
+.footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #555;
+    margin-top:10px;
+}
+.footer-top li {
+    list-style-type: none; /* Removes bullet points */
+    margin: 0; /* Optional: removes default margin */
+    padding: 0; /* Optional: removes default padding */
+}
+.footer-section {
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Container for the footer */
+.container1 {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Footer Links */
+.footer-link {
+    color: black;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+    .footer-link:hover {
+        color: white;
+    }
+
+/* Social media icons */
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-social-link img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    border-top: 1px solid #555;
+    padding-top: 15px;
+    color:black;
+    align-items:center;
+}
+
+.footer-bottom-left {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-bottom-right {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Responsive Design */
+
+/* Small screens (up to 576px) */
+@media (max-width: 576px) {
+    .footer-top {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+    }
+
+    .footer-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .footer-bottom-left {
+        flex-direction: column;
+    }
+}
+
+/* Medium screens (576px - 768px) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .footer-section {
+        width: 45%; /* Each section takes half the width */
+        text-align: left;
+    }
+
+    .footer-social {
+        justify-content: flex-start;
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-bottom-left {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .footer-bottom-right {
+        margin-top: 0;
+    }
+}
+
+/* Large screens (768px and up) */
+@media (min-width: 768px) {
+    .footer-section {
+        width: 23%; /* Each section takes one-quarter of the width */
+        text-align: left;
+    }
+
+    .footer-top {
+        padding-bottom: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .footer-bottom-right {
+        font-size: 14px;
+        margin-top: 0;
+    }
+}

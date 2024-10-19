@@ -345,9 +345,11 @@ namespace ConvicartWebApp.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Insufficient points for this purchase.");
-                return View(cartViewModel);
+                // Redirect to the profile page if points are insufficient
+                TempData["ErrorMessage"] = "Insufficient points for this purchase. Please review your balance on your profile page.";
+                return RedirectToAction("Profile", "Customer");
             }
+
 
             // Save the order and order items to the database
             _context.Orders.Add(order);

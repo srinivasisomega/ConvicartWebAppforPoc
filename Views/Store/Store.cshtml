@@ -4,6 +4,12 @@
     * {
         box-sizing: border-box; /* Include padding in element's total width */
     }
+    .Original-add-tocart{
+        margin-bottom:5px;
+        background-color: #F3BE57;
+        color:black;
+        font:400;
+    }
     .Plusminus {
         
         flex-direction: row;
@@ -104,7 +110,7 @@
         width: 261px;
         background-color: #fff;
         border-radius: 8px;
-        padding: 20px;
+        padding: 30px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         text-align: center;
         position: relative;
@@ -112,7 +118,6 @@
 
     .Cart-switch {
         display: none;
-        background-color: darkgoldenrod;
         color: white;
         border: none;
         border-radius: 5px;
@@ -134,6 +139,8 @@
     }
     .Cart-switch .Original-add-tocart{
         display:block;
+        width:fit-content;
+        height:16px;
     }
     .Cart-switch .Original-add-tocart:click
     .cart-count {
@@ -195,36 +202,70 @@
             background-color: #333;
             color: #fff;
         }
+
+    input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 10px;
+        border-radius: 5px;
+        background: #F3BE57;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #F3BE57;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #F3BE57;
+            cursor: pointer;
+        }
 </style>
 <main>
     <!-- Sidebar for filters -->
     <div class="sidebar">
         <form method="get" action="@Url.Action("Store")">
-                <!-- Difficulty Filter -->
-                <h4>Difficulty</h4>
-                <label><input type="checkbox" name="difficulty" value="Easy" @(ViewBag.Difficulty?.Contains("Easy") == true ? "checked" : "")> Easy</label><br>
-                <label><input type="checkbox" name="difficulty" value="Medium" @(ViewBag.Difficulty?.Contains("Medium") == true ? "checked" : "")> Medium</label><br>
-                <label><input type="checkbox" name="difficulty" value="Hard" @(ViewBag.Difficulty?.Contains("Hard") == true ? "checked" : "")> Hard</label><br>
+            <!-- Difficulty Filter -->
+            <h5>Difficulty</h5>
+            <label><input type="checkbox" name="difficulty" value="Easy" @(ViewBag.Difficulty?.Contains("Easy") == true ? "checked" : "")> Easy</label><br>
+            <label><input type="checkbox" name="difficulty" value="Medium" @(ViewBag.Difficulty?.Contains("Medium") == true ? "checked" : "")> Medium</label><br>
+            <label><input type="checkbox" name="difficulty" value="Hard" @(ViewBag.Difficulty?.Contains("Hard") == true ? "checked" : "")> Hard</label><br>
+            <h5>Cook Time (in minutes)</h5>
+            <input type="range" name="cookTimeMin" min="0" max="120" value="@ViewBag.CookTimeMin ?? 10" id="cookTimeMin">
+            <label for="cookTimeMin">Min</label>
+            <span id="minCookTimeValue">@ViewBag.CookTimeMin</span><br>
 
-                <h4>Cook Time (in minutes)</h4>
-                <input type="range" name="cookTimeMin" min="0" max="120" value="@ViewBag.CookTimeMin ?? 0" id="cookTimeMin">
-                <label for="cookTimeMin">Min</label>
-                <span id="minCookTimeValue">@ViewBag.CookTimeMin </span><br>
+            <input type="range" name="cookTimeMax" min="0" max="120" value="@ViewBag.CookTimeMax ?? 90" id="cookTimeMax">
+            <label for="cookTimeMax">Max</label>
+            <span id="maxCookTimeValue">@ViewBag.CookTimeMax</span><br>
 
-                <input type="range" name="cookTimeMax" min="0" max="120" value="@ViewBag.CookTimeMax ?? 120" id="cookTimeMax">
-                <label for="cookTimeMax">Max</label>
-                <span id="maxCookTimeValue">@ViewBag.CookTimeMax </span><br>
+            <!-- Point Range Filter -->
+            <h5>Point Range</h5>
+            <input type="range" name="minPoints" min="0" max="100" value="@ViewBag.MinPoints ?? 0" id="minPoints">
+            <label for="minPoints">Min Points</label>
+            <span id="minPointsValue">@ViewBag.MinPoints</span><br>
 
-                <!-- Point Range Filter -->
-                <h4>Point Range</h4>
-                <input type="range" name="minPoints" min="0" max="500" value="@ViewBag.MinPoints ?? 0" id="minPoints">
-                <label for="minPoints">Min Points</label>
-                <span id="minPointsValue">@ViewBag.MinPoints</span><br>
-
-                <input type="range" name="maxPoints" min="0" max="500" value="@ViewBag.MaxPoints ?? 500" id="maxPoints">
-                <label for="maxPoints">Max Points</label>
-                <span id="maxPointsValue">@ViewBag.MaxPoints</span><br>
-                <button type="submit">Apply Filters</button>
+            <input type="range" name="maxPoints" min="0" max="100" value="@ViewBag.MaxPoints ?? 50" id="maxPoints">
+            <label for="maxPoints">Max Points</label>
+            <span id="maxPointsValue">@ViewBag.MaxPoints</span><br>
+            <button type="submit">Apply Filters</button>
+            
         </form>
     </div>
 
@@ -276,8 +317,6 @@
                             <button type="button" class="remove-from-cart" data-product-id="@item.ProductId">-</button>
                         </div>
                     </div>
-
-
                 </div>
             }
         </div>
@@ -301,129 +340,121 @@
         </div>
     </div>
 </main>
+
 <script>
+    // Update the displayed cook time and points values
     function updateCookTimeMin() {
-    const minValue = document.getElementById("cookTimeMin").value;
-    document.getElementById("minCookTimeValue").textContent = minValue;
-}
+        const minValue = document.getElementById("cookTimeMin").value;
+        document.getElementById("minCookTimeValue").textContent = minValue;
+    }
 
-function updateCookTimeMax() {
-    const maxValue = document.getElementById("cookTimeMax").value;
-    document.getElementById("maxCookTimeValue").textContent = maxValue;
-}
+    function updateCookTimeMax() {
+        const maxValue = document.getElementById("cookTimeMax").value;
+        document.getElementById("maxCookTimeValue").textContent = maxValue;
+    }
 
-// Function to update the displayed value for points
-function updateMinPoints() {
-    const minPointsValue = document.getElementById("minPoints").value;
-    document.getElementById("minPointsValue").textContent = minPointsValue;
-}
+    function updateMinPoints() {
+        const minPointsValue = document.getElementById("minPoints").value;
+        document.getElementById("minPointsValue").textContent = minPointsValue;
+    }
 
-function updateMaxPoints() {
-    const maxPointsValue = document.getElementById("maxPoints").value;
-    document.getElementById("maxPointsValue").textContent = maxPointsValue;
-}
+    function updateMaxPoints() {
+        const maxPointsValue = document.getElementById("maxPoints").value;
+        document.getElementById("maxPointsValue").textContent = maxPointsValue;
+    }
 
-// Event listeners to call the update functions on input change
-document.getElementById("cookTimeMin").addEventListener("input", updateCookTimeMin);
-document.getElementById("cookTimeMax").addEventListener("input", updateCookTimeMax);
-document.getElementById("minPoints").addEventListener("input", updateMinPoints);
-document.getElementById("maxPoints").addEventListener("input", updateMaxPoints);
+    // Event listeners for sliders to update displayed values
+    document.getElementById("cookTimeMin").addEventListener("input", updateCookTimeMin);
+    document.getElementById("cookTimeMax").addEventListener("input", updateCookTimeMax);
+    document.getElementById("minPoints").addEventListener("input", updateMinPoints);
+    document.getElementById("maxPoints").addEventListener("input", updateMaxPoints);
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Select all add to cart buttons
-    const addToCartButtons = document.querySelectorAll(".Original-add-tocart .add-to-cart");
-    
-    // Select the original add to cart div and plusminus div
-    const originalAddToCartDivs = document.querySelectorAll(".Original-add-tocart");
-    const plusminusDivs = document.querySelectorAll(".Plusminus");
+    document.addEventListener("DOMContentLoaded", function () {
+        const addToCartButtons = document.querySelectorAll(".Original-add-tocart .add-to-cart");
+        const originalAddToCartDivs = document.querySelectorAll(".Original-add-tocart");
+        const plusminusDivs = document.querySelectorAll(".Plusminus");
 
-    addToCartButtons.forEach(function(addToCartButton, index) {
-        addToCartButton.addEventListener("click", function(event) {
-            event.preventDefault(); // Prevent form submission if needed
-
-            // Hide the corresponding Original-add-tocart div
-            originalAddToCartDivs[index].style.display = "none";
-
-            // Show the corresponding Plusminus div
-            plusminusDivs[index].style.display = "flex";
-        });
-    });
-});
-document.addEventListener('DOMContentLoaded', () => {
-    // Handle Add to Cart button
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.dataset.productId;
-            addToCart(productId, 1);
+        // Show plusminus div and hide original add to cart div on add-to-cart click
+        addToCartButtons.forEach(function (button, index) {
+            button.addEventListener("click", function (event) {
+                event.preventDefault();
+                originalAddToCartDivs[index].style.display = "none";
+                plusminusDivs[index].style.display = "flex";
+            });
         });
     });
 
-    // Handle Remove from Cart button
-    document.querySelectorAll('.remove-from-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.dataset.productId;
-            removeFromCart(productId, 1);
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle Add to Cart button clicks for each card
+        document.querySelectorAll('.add-to-cart-plus').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+                addToCart(productId, 1);
+            });
+        });
+
+        // Handle Remove from Cart button clicks for each card
+        document.querySelectorAll('.remove-from-cart').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const productId = this.dataset.productId;
+                removeFromCart(productId, 1);
+            });
         });
     });
-});
 
-// Function to add item to cart
-function addToCart(productId, quantity) {
-    fetch('/Cart/AddToCart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest' // Make it an AJAX request
-        },
-        body: new URLSearchParams({
-            productId: productId,
-            quantity: quantity
+    // Function to add item to cart
+    function addToCart(productId, quantity) {
+        fetch('/Cart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                productId: productId,
+                quantity: quantity
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update UI accordingly
-            const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
-            quantityDisplay.textContent = parseInt(quantityDisplay.textContent) + 1;
-        } else {
-            window.location.href = data.redirectUrl; // Redirect if not successful
-        }
-    });
-}
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
+                    quantityDisplay.textContent = parseInt(quantityDisplay.textContent) + quantity;
+                } else {
+                    window.location.href = data.redirectUrl;
+                }
+            });
+    }
 
-// Function to remove item from cart
-function removeFromCart(productId, quantity) {
-    fetch('/Cart/RemoveFromCart', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Requested-With': 'XMLHttpRequest' // Make it an AJAX request
-        },
-        body: new URLSearchParams({
-            productId: productId,
-            quantity: quantity
+    // Function to remove item from cart
+    function removeFromCart(productId, quantity) {
+        fetch('/Cart/RemoveFromCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                productId: productId,
+                quantity: quantity
+            })
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update UI accordingly
-            const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
-            const currentQuantity = parseInt(quantityDisplay.textContent);
-            if (currentQuantity > 0) {
-                quantityDisplay.textContent = currentQuantity - 1;
-            }
-            // Remove the item if quantity is 0
-            if (currentQuantity <= 1) {
-                // Optionally, hide the item or perform other UI updates
-            }
-        } else {
-            window.location.href = data.redirectUrl; // Redirect if not successful
-        }
-    });
-}
-
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
+                    const currentQuantity = parseInt(quantityDisplay.textContent);
+                    if (currentQuantity - quantity > 0) {
+                        quantityDisplay.textContent = currentQuantity - quantity;
+                    } else {
+                        // If quantity is 0 or less, hide or disable the plus/minus UI
+                        quantityDisplay.textContent = 0;
+                        document.querySelector(`.Plusminus[data-product-id="${productId}"]`).style.display = "none";
+                        document.querySelector(`.Original-add-tocart[data-product-id="${productId}"]`).style.display = "block";
+                    }
+                } else {
+                    window.location.href = data.redirectUrl;
+                }
+            });
+    }
 </script>
-
-

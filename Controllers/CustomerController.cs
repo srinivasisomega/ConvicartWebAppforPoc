@@ -301,18 +301,37 @@ namespace ConvicartWebApp.Controllers
 
             return View(model);
         }
-        // GET: Upload Profile Image
         [HttpGet]
         public IActionResult UploadProfileImage()
         {
-            return View();
+            // Retrieve the CustomerId from the session as a string
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                // Redirect to SignUp if CustomerId is not found
+                return RedirectToAction("SignUp", "Customer");
+            }
+            var customer = _context.Customers.Find(customerId); // Ensure customerId is of type int
+
+            if (customer == null)
+            {
+                // Handle the case where the customer is not found
+                return NotFound(); // Or redirect to an error page
+            }
+
+            // Pass the customer model to the view
+            return View(customer);
         }
 
-        
-        
         [HttpPost]
-        public async Task<IActionResult> UploadProfileImage(int id, IFormFile image)
+        public async Task<IActionResult> UploadProfileImageSave(IFormFile image)
         {
+            var customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                // Redirect to SignUp if CustomerId is not found
+                return RedirectToAction("SignUp", "Customer");
+            }
             if (image != null && image.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -320,7 +339,7 @@ namespace ConvicartWebApp.Controllers
                     await image.CopyToAsync(memoryStream);
                     memoryStream.Position = 0; // Reset position
 
-                    var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+                    var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId);
                     if (customer != null)
                     {
                         // Convert uploaded image to byte[] and store in database
@@ -334,8 +353,9 @@ namespace ConvicartWebApp.Controllers
                     }
                 }
             }
-            return RedirectToAction("ProfilePic", new { id });
+            return RedirectToAction("ProfilePic", new { id = customerId });
         }
+
 
 
         // GET: Get Profile Image to display in view
@@ -350,6 +370,12 @@ namespace ConvicartWebApp.Controllers
             {
                 return NotFound();  // Handle case where no image exists
             }
+        }
+        public IActionResult Logout()
+        {
+            // Clear the CustomerId from the session
+            HttpContext.Session.Remove("CustomerId");
+            return RedirectToAction("Index", "Home");
         }
     }
 

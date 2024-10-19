@@ -27,7 +27,7 @@
 
     @if (Model.ConfirmationMessage != null)
     {
-        <div class="alert alert-success">
+        <div class="alert alert-success" id="confirmationMessage">
             @Model.ConfirmationMessage
         </div>
     }
@@ -51,6 +51,15 @@
             // Update the amount to pay field
             document.getElementById("amountToPay").value = amountToPay.toFixed(2); // Limit to 2 decimal places
         }
+
+        // Redirect to profile page after 5 seconds if the confirmation message is present
+        window.onload = function () {
+            const confirmationMessage = document.getElementById("confirmationMessage");
+            if (confirmationMessage) {
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Profile", "Customer")';
+                }, 3000); // 5000 milliseconds = 5 seconds
+            }
+        };
     </script>
 }
-

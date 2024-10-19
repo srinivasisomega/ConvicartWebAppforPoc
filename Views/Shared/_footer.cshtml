@@ -6,65 +6,73 @@
 <footer>
     <div class="container1">
         <div class="footer-top">
-            <div class="footer-logos">
-                <div class="footer-logo-top">
-                    <a class="footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/logo.png" alt="Brand Logo" />
-                    </a>
-                </div>
-                <div class="footer-logo-bottom">
-                    <a class="facebook" href="">
-                        <img src="~/Images/twitter.png" alt="Brand Logo" />
-                    </a>
-                    <a class="insta" href="">
-                        <img src="~/Images/insta.png" alt="Brand Logo" />
-                    </a>
-                    <a class="youtube" href="">
-                        <img src="~/Images/youtube.png" alt="Brand Logo" />
-                    </a>
-                    <a class="linkedin" href="">
-                        <img src="~/Images/linkedin.png" alt="Brand Logo" />
-                    </a>
-                </div>
-
+            <!-- First div: Logo -->
+            <div class="footer-section">
+                <a class="footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/logo.png" alt="Brand Logo" />
+                </a>
             </div>
-            <div class="footer-contact">
-                <ul>
-                    <li><strong>Contact Us</strong></li>
+
+            <!-- Second div: Services -->
+            <div class="footer-section">
+                <h5>Services</h5>
+                <ul class="footer-service-list">
+                    
+                    <li><a href="#" class="footer-link">Ingredient Delivery</a></li>
+                    <li><a href="#" class="footer-link">Cooking Tutorials</a></li>
+                </ul>
+            </div>
+
+            <!-- Third div: Contact Information -->
+            <div class="footer-section">
+                <h5>Contact Us</h5>
+                <ul class="footer-contact-list">
+                    
                     <li>+918332456123</li>
                     <li>+919948234145</li>
                     <li>Sabsbs@gmail.com</li>
                     <li>Customer.Convicart@gmail.com</li>
                 </ul>
             </div>
-            <div class="footer-service">
-                <ul class="footer-service-list">
-                    <li><strong>Services</strong></li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Store">Ingredient Delivery</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Recipe">Cooking Tutorials</a>
-                    </li>
-                </ul>
+
+            <!-- Fourth div: Social Media Links -->
+            <div class="footer-section">
+                <h5>Social Media</h5>
+                <div class="footer-social">
+                    <a class="footer-social-link" href="#">
+                        <img src="~/Images/twitter.png" alt="Twitter Logo" />
+                    </a>
+                    <a class="footer-social-link" href="#">
+                        <img src="~/Images/insta.png" alt="Instagram Logo" />
+                    </a>
+                    <a class="footer-social-link" href="#">
+                        <img src="~/Images/youtube.png" alt="YouTube Logo" />
+                    </a>
+                    <a class="footer-social-link" href="#">
+                        <img src="~/Images/linkedin.png" alt="LinkedIn Logo" />
+                    </a>
+                </div>
             </div>
         </div>
+
+
+
         <div class="footer-bottom">
             <ul class="footer-bottom-left">
                 <li>
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Subscription">Terms of use</a>
+                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Subscription">Terms of use</a>
                 </li>
                 <li>
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Store">Privacy</a>
+                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Store">Privacy</a>
                 </li>
                 <li>
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Recipe">Cookie Policy</a>
+                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Recipe">Cookie Policy</a>
                 </li>
                 <li>
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="About">Site Map</a>
+                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="About">Site Map</a>
                 </li>
                 <li>
-                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Contact">Report Vulnerability</a>
+                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Contact">Report Vulnerability</a>
                 </li>
             </ul>
             <div class="footer-bottom-right">

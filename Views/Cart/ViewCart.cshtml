@@ -1,169 +1,77 @@
 ﻿@model ConvicartWebApp.Models.CartViewModel
-
-<style>
-
-    .Bill {
-        margin-right:20px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-        .Bill h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .Bill ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .Bill li {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-
-            .Bill li strong {
-                font-weight: bold;
-            }
-
-            .Bill li span {
-                color: #888;
-                font-size: 0.9rem;
-            }
-
-
-    .Cart {
-        margin-left:20%;
-        margin-top:5%;
-        display: flex;
-        flex-direction: row;
-        justify-content:space-between;
-        width: 60%;
-        border: 1px solid #ddd;
-        padding: 20px;
-        border-radius: 5px;
-        background-color: #fff;
-    }
-
-    .Cart-items {
-        margin-left:20px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-        .Cart-items h2 {
-            margin-top: 0;
-        }
-
-    .card {
-        min-width: 420px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-        .card .item-image {
-            width: 50px;
-            height: auto;
-        }
-
-    .Plusminus {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #d9d9d9;
-        border-radius: 20px;
-        padding: 5px 10px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-    }
-
-        .Plusminus h6 {
-            margin-left: 5px;
-            margin-right: 5px;
-            margin-bottom: 0px;
-        }
-
-        .Plusminus button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-
-</style>
 <div class="Cart">
-    <div class="Cart-items">
-        <h2>Your Cart</h2>
-        @foreach (var item in Model.CartItems)
-        {
-            <div class="card">
-                <img src="~/Images/store/@item.Product.imgUrl" alt="@item.Product.ProductName" class="item-image">
-                <h6>@Model.ProductNames[item.ProductId]</h6>
-                <div class="Plusminus">
-                    <form method="post" action="@Url.Action("AddToCartMain", "Cart")" style="margin-top:2px">
-                        <input type="hidden" name="productId" value="@item.ProductId" />
-                        <input type="hidden" name="quantity" value="1" />
-                        <button type="submit" class="add-to-cart">+</button>
-                    </form>
-                    <h6>@item.Quantity</h6>
-                    <form method="post" action="@Url.Action("RemoveFromCartMain", "Cart")" style="margin-bottom:3px">
-                        <input type="hidden" name="productId" value="@item.ProductId" />
-                        <input type="hidden" name="quantity" value="1" />
-                        <button type="submit" class="remove-from-cart">-</button>
-                    </form>
-                </div>
-                <p>Total: @item.TotalPrice</p>
-            </div>
-        }
-    </div>
-    <div class="Bill">
-        <h3>Cart Summary</h3>
-        <ul>
-            <li><strong>Total Amount (before discount):</strong> @Model.TotalAmount.ToString("C")</li>
-            <li><strong>Discount (@(Model.Discount * 100)%):</strong> -@((Model.TotalAmount * Model.Discount).ToString("C"))</li>
-            <li><strong>Subtotal (after discount):</strong> @Model.DiscountedSubtotal.ToString("C")</li>
-            <li><strong>Tax (@(Model.TaxRate * 100)%):</strong> @Model.TaxAmount.ToString("C")</li>
-            <li><strong>Shipping:</strong> @Model.ShippingCost.ToString("C")</li>
-            <li><strong>Final Total:</strong> @Model.FinalTotal.ToString("C")</li>
-        </ul>
-
-        <!-- Form to submit the purchase action -->
-        <form asp-controller="Cart" asp-action="Purchase" method="post">
-            <!-- Hidden fields to send calculated values to the Purchase action -->
-            <input type="hidden" asp-for="TotalAmount" />
-            <input type="hidden" asp-for="Discount" />
-            <input type="hidden" asp-for="DiscountedSubtotal" />
-            <input type="hidden" asp-for="TaxRate" />
-            <input type="hidden" asp-for="TaxAmount" />
-            <input type="hidden" asp-for="ShippingCost" />
-            <input type="hidden" asp-for="FinalTotal" />
-
-            <!-- Hidden fields for each cart item -->
-            @for (int i = 0; i < Model.CartItems.Count; i++)
+    <div class="Cart-Part-A">
+        <div class="Cart-heading">
+            <img src="~/titlelogo.png" />
+            <h1>Your Cart</h1>
+        </div>
+        <div class="Cart-items">
+       
+            @foreach (var item in Model.CartItems)
             {
-                <input type="hidden" name="CartItems[@i].ProductId" value="@Model.CartItems[i].ProductId" />
-                <input type="hidden" name="CartItems[@i].Quantity" value="@Model.CartItems[i].Quantity" />
-                <input type="hidden" name="CartItems[@i].TotalPrice" value="@Model.CartItems[i].TotalPrice" />
+                <div class="card">
+                    <img src="~/Images/store/@item.Product.imgUrl" alt="@item.Product.ProductName" class="item-image">
+                    <h6>@Model.ProductNames[item.ProductId]</h6>
+                    <div class="Plusminus">
+                        <h6>@item.Quantity</h6>
+                        <div class="Cart-symbols">
+                            <form method="post" action="@Url.Action("AddToCartMain", "Cart")" style="margin-top:2px">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="add-to-cart">+</button>
+                            </form>
+                            <form method="post" action="@Url.Action("RemoveFromCartMain", "Cart")" style="margin-bottom:3px">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="remove-from-cart">-</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p>Total: @item.TotalPrice</p>
+                </div>
             }
-
-            <!-- Purchase button -->
-            <button type="submit" class="btn btn-primary">Purchase</button>
-        </form>
+        </div>
     </div>
-    
+    <div class="Cart-Part-B">
+        <div class="Bill">
+            <h1>Cart Summary</h1>
+            <ul>
+                <li> Total Amount :  @Model.TotalAmount.ToString("C")</li>
+                <li> Discount (@(Model.Discount * 100)%) :  -@((Model.TotalAmount * Model.Discount).ToString("C"))</li>
+                <li> Subtotal (after discount) :  @Model.DiscountedSubtotal.ToString("C")</li>
+                <hr />
+                <li> Tax (@(Model.TaxRate * 100)%) :  @Model.TaxAmount.ToString("C")</li>
+                <li> Shipping :  @Model.ShippingCost.ToString("C")</li>
+                <hr />
+                <li> Final Total :  @Model.FinalTotal.ToString("C")</li>
+            </ul>
+
+            <!-- Form to submit the purchase action -->
+            <form asp-controller="Cart" asp-action="Purchase" method="post">
+                <!-- Hidden fields to send calculated values to the Purchase action -->
+                <input type="hidden" asp-for="TotalAmount" />
+                <input type="hidden" asp-for="Discount" />
+                <input type="hidden" asp-for="DiscountedSubtotal" />
+                <input type="hidden" asp-for="TaxRate" />
+                <input type="hidden" asp-for="TaxAmount" />
+                <input type="hidden" asp-for="ShippingCost" />
+                <input type="hidden" asp-for="FinalTotal" />
+
+                <!-- Hidden fields for each cart item -->
+                @for (int i = 0; i < Model.CartItems.Count; i++)
+                {
+                    <input type="hidden" name="CartItems[@i].ProductId" value="@Model.CartItems[i].ProductId" />
+                    <input type="hidden" name="CartItems[@i].Quantity" value="@Model.CartItems[i].Quantity" />
+                    <input type="hidden" name="CartItems[@i].TotalPrice" value="@Model.CartItems[i].TotalPrice" />
+                }
+
+                <!-- Purchase button -->
+                <button type="submit" class="button-colorme" style="background-color:#BAA118; color:black; margin-top:30px; width:100%; text-align:center;height:60px;">
+                    Purchase
+                </button>
+
+            </form>
+        </div>
+    </div>
 </div>
 

@@ -1,4 +1,4 @@
-﻿<header class="header1">
+﻿<header class="header2">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -13,7 +13,8 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Subscription">Subscription</a>
                     </li>
-                    <br /><br />
+                    <br />
+                    <br />
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Store">Convi-Store</a>
                     </li>
@@ -29,16 +30,9 @@
                     </li>
                 </ul>
             </div>
-            <!-- Profile Dropdown -->
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="~/profile avatar.png" alt="User Profile" style="width:70px;height:70px" />
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Profile">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Logout">Logout</a></li>
-                </ul>
+            <!-- Sign-Up Button -->
+            <div class="navbar-nav" style="margin-right:20px;">
+                <a class="btn btn-primary" asp-area="" asp-controller="Customer" asp-action="SignUp">Sign Up</a>
             </div>
         </div>
     </nav>

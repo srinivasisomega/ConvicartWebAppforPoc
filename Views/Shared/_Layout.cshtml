@@ -6,11 +6,21 @@
     <title>@ViewData["Title"] - ConvicartWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/StyleSheet.css" />
+    <link rel="stylesheet" href="~/css/CartStyle.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ConvicartWebApp.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @Html.Partial("_header")
+    @if (Context.Session.GetString("CustomerId") != null)
+    {
+        <!-- Render Header1 if CustomerId exists -->
+        @await Html.PartialAsync("_header")
+    }
+    else
+    {
+        <!-- Render Header2 if CustomerId does not exist -->
+        @await Html.PartialAsync("_headerBeforeLogin")
+    }
     <div class="baset">
         
         @if (ViewContext.RouteData.Values["controller"].ToString() == "Orders" || ViewContext.RouteData.Values["controller"].ToString() == "Cart" || ViewContext.RouteData.Values["controller"].ToString() == "Store" ||

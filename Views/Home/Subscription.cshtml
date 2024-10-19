@@ -1,5 +1,297 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+<style>
+    .Sub-title {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .Subscription ul {
+        height: 144px;
+    }
+
+    .Subscription {
+        width: 404px;
+        height: 463px;
+        margin-left: 30px;
+        padding-left: 20px;
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: flex-start;
+    }
+
+    .Bronze {
+        background-color: #CD7F32;
+    }
+
+    .Silver {
+        background-color: #C0C0C0;
+    }
+
+    .Gold {
+        background-color: #FFD700;
+    }
+
+    .amount {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+        .amount h2 {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .amount h5 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+    .container {
+        background-color: black;
+    }
+
+    .Switch-in-out {
+        background-color: black;
+    }
+    /* Style for the progress bar */
+    .progress-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #333;
+        padding: 10px 20px;
+    }
+
+    /* Section labels in progress bar */
+    .section {
+        font-family: 'Arial', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: #ccc;
+        text-align: center;
+        padding: 0 15px;
+        white-space: nowrap;
+        font-size:24px;
+    }
+
+        /* Highlight active section in progress bar */
+        .section.active {
+            color: white;
+            font-weight: bold;
+            border-bottom: 2px solid #007BFF;
+        }
+
+    .separator {
+        flex-grow: 1;
+        height: 4px;
+        background-color: silver;
+        opacity: 0.4;
+        margin: 0 10px;
+        border: none;
+    }
+
+        .separator.active-bar {
+            background-color: #007BFF;
+            opacity: 1;
+        }
+
+    /* Style for the subscription switch (Month/Year) */
+    .nav-sign-in {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .nav-sign-in h3 {
+            margin: 10px 10px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+            color: white;
+            background-color: grey;
+        }
+
+            .nav-sign-in h3:hover {
+                background-color: blue;
+            }
+
+            .nav-sign-in h3.active {
+                font-weight: bold;
+                border-bottom: 2px solid #007BFF;
+            }
+
+    /* Container for partial forms */
+    .form-container-in-out {
+        display: flex;
+        justify-content: center;
+        padding:10px;
+    }
+
+    .partial-Year-Switch {
+        display: none;
+    }
+
+    .partial-Month-Switch {
+        display: none;
+    }
+
+        .partial-Month-Switch.active1 {
+            display: flex;
+            flex-direction: row;
+            width: max-content;
+        }
+
+    .partial-Year-Switch.active1 {
+        display: flex;
+        flex-direction: row;
+        width: max-content;
+    }
+</style>
+
+<div class="Switch-in-out">
+    <div class="nav-sign-in">
+        <h3 class="switch-Month">Month</h3>
+        <h3 class="switch-Year">Year</h3>
+    </div>
+    <div class="form-container-in-out">
+        <div class="partial-Year-Switch">
+            <!-- Bronze Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Bronze">
+                <div class="Sub-title">
+                    <h3>Bronze</h3>
+                    <div class="amount">
+                        <h2>₹ 50000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for one person.</li>
+                    <li>Get access to basic recipes.</li>
+                    <li>Get info about calories consumed.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+
+            <!-- Silver Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Silver">
+                <div class="Sub-title">
+                    <h3>Silver</h3>
+                    <div class="amount">
+                        <h2>₹ 80000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for two people.</li>
+                    <li>Get access to all recipes.</li>
+                    <li>Get complete nutritional info about the meals made using the app.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+
+            <!-- Gold Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Gold">
+                <div class="Sub-title">
+                    <h3>Gold</h3>
+                    <div class="amount">
+                        <h2>₹ 100000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for up to 4 people.</li>
+                    <li>Get access to all recipes.</li>
+                    <li>Get complete analysis of nutrients based on the meals consumed by the user.</li>
+                    <li>Get suggested recipes to get nutrients neglected in your other meals.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+        </div>
+        <div class="partial-Month-Switch">
+            <!-- Bronze Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Bronze">
+                <div class="Sub-title">
+                    <h3>Bronze</h3>
+                    <div class="amount">
+                        <h2>₹ 5000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for one person.</li>
+                    <li>Get access to basic recipes.</li>
+                    <li>Get info about calories consumed.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+
+            <!-- Silver Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Silver">
+                <div class="Sub-title">
+                    <h3>Silver</h3>
+                    <div class="amount">
+                        <h2>₹ 8000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for two people.</li>
+                    <li>Get access to all recipes.</li>
+                    <li>Get complete nutritional info about the meals made using the app.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+
+            <!-- Gold Subscription -->
+            <form asp-action="Signup" method="post" class="Subscription Gold">
+                <div class="Sub-title">
+                    <h3>Gold</h3>
+                    <div class="amount">
+                        <h2>₹ 10000</h2>
+                        <h5>/Month</h5>
+                    </div>
+                </div>
+                <ul>
+                    <li>Order ingredients for up to 4 people.</li>
+                    <li>Get access to all recipes.</li>
+                    <li>Get complete analysis of nutrients based on the meals consumed by the user.</li>
+                    <li>Get suggested recipes to get nutrients neglected in your other meals.</li>
+                </ul>
+                <button type="submit" class="btn btn-primary btn-block">Purchase</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const monthSwitch = document.querySelector(".switch-Month");
+        const yearSwitch = document.querySelector(".switch-Year");
+        const monthPartial = document.querySelector(".partial-Month-Switch");
+        const yearPartial = document.querySelector(".partial-Year-Switch");
+
+        // Set initial active tab (Month active by default)
+        monthSwitch.classList.add("active1");
+        monthPartial.classList.add("active1");
+
+        monthSwitch.addEventListener("click", function () {
+            // Switch to month view
+            monthSwitch.classList.add("active1");
+            yearSwitch.classList.remove("active1");
+            monthPartial.classList.add("active1");
+            yearPartial.classList.remove("active1");
+        });
+
+        yearSwitch.addEventListener("click", function () {
+            // Switch to year view
+            yearSwitch.classList.add("active1");
+            monthSwitch.classList.remove("active1");
+            yearPartial.classList.add("active1");
+            monthPartial.classList.remove("active1");
+        });
+    });
+</script>
