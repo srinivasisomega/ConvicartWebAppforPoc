@@ -1,3 +1,4 @@
+using ConvicartWebApp.Filter;
 using ConvicartWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -5,6 +6,8 @@ using System.Diagnostics;
 
 namespace ConvicartWebApp.Controllers
 {
+    [TypeFilter(typeof(CustomerInfoFilter))]
+
     public class HomeController : Controller
     {
         private readonly ConvicartWarehouseContext _context;

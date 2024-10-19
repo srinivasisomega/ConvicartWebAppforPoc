@@ -1,10 +1,12 @@
-﻿using ConvicartWebApp.Models;
+﻿using ConvicartWebApp.Filter;
+using ConvicartWebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace ConvicartWebApp.Controllers
 {
+    [TypeFilter(typeof(CustomerInfoFilter))]
     public class StoreController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
@@ -111,7 +113,7 @@ namespace ConvicartWebApp.Controllers
 
             // Pass the product and steps to the view
             ViewBag.RecipeSteps = steps; // Use ViewBag to pass the recipe steps or adjust to pass it directly
-
+            ViewBag.ProductId = id;
             return View(product); // Pass the product model to the view
         }
 

@@ -8,7 +8,9 @@ namespace ConvicartWebApp.Controllers
     using System.Linq;
     using System.Collections.Generic;
     using ConvicartWebApp.Models;
+    using ConvicartWebApp.Filter;
 
+    [TypeFilter(typeof(CustomerInfoFilter))]
     public class OrdersController : Controller
     {
         private readonly ConvicartWarehouseContext _context;

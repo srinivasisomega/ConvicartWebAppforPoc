@@ -1,6 +1,4 @@
 ﻿@model ConvicartWebApp.Models.Store;
-
-<!-- Recipe Details Section -->
 <div class="recipe-details">
     <!-- Hero Section with Recipe Name and Image -->
     <div class="product-back">
@@ -10,116 +8,257 @@
     <div class="product-content">
         <h1>@Model.ProductName</h1>
         <h4>@Model.ProductDescription</h4>
+
         <div class="recipe-card">
             <div class="recipe-left">
+                <!-- Display Recipe Steps -->
                 @Html.Partial("~/Views/Shared/Recipie/_RecipeSteps.cshtml", ViewBag.RecipeSteps as IEnumerable<ConvicartWebApp.Models.RecipeSteps>)
             </div>
+
             <div class="recipe-right">
+                <!-- Nutritional Information -->
                 <div class="nutrient-info mt-4">
                     <h2>Nutritional Information</h2>
                     @Html.Partial("~/Views/Shared/Recipie/_NutrientInfo.cshtml", Model)
                 </div>
+
+                <!-- Cooking Details -->
                 <div class="cooking-details mt-4">
                     <h2>Cooking Details</h2>
                     @Html.Partial("~/Views/Shared/Recipie/_CookingDetails.cshtml", Model)
+                </div>
+
+                <!-- Add to Cart Section -->
+                <div class="Cart-switch">
+                    <div class="Original-add-tocart">
+                        <input type="hidden" name="productId" value="@ViewBag.ProductId" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="button" class="add-to-cart-original" data-product-id="@ViewBag.ProductId">Add to Cart</button>
+                    </div>
+
+                    <!-- Quantity Adjustment Section -->
+                    <div class="Plusminus">
+                        <input type="hidden" name="productId" value="@ViewBag.ProductId" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="button" class="add-to-cart-plus" data-product-id="@ViewBag.ProductId">+</button>
+                        <h6 id="quantity-display-@ViewBag.ProductId">0</h6>
+                        <button type="button" class="remove-from-cart" data-product-id="@ViewBag.ProductId">-</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Script to Load Recipe Steps -->
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const productId = @Html.Raw(ViewBag.ProductId); // Get ProductId from ViewBag
+
+        // Call this function when the document is ready or as needed
+        loadRecipeSteps(productId); // Load steps based on the product ID
+
+        // Add to Cart functionality
+        document.querySelectorAll('.add-to-cart-original').forEach(function (button) {
+            button.addEventListener('click', function () {
+                addToCart(productId, 1); // Use productId from ViewBag
+                const originalAddToCartDiv = this.closest('.Original-add-tocart');
+                const plusminusDiv = originalAddToCartDiv.nextElementSibling;
+                originalAddToCartDiv.style.display = "none";
+                plusminusDiv.style.display = "flex";
+            });
+        });
+
+        // Increment quantity
+        document.querySelectorAll('.add-to-cart-plus').forEach(function (button) {
+            button.addEventListener('click', function () {
+                addToCart(productId, 1); // Use productId from ViewBag
+            });
+        });
+
+        // Decrement quantity
+        document.querySelectorAll('.remove-from-cart').forEach(function (button) {
+            button.addEventListener('click', function () {
+                removeFromCart(productId, 1); // Use productId from ViewBag
+            });
+        });
+    });
+
+    // Function to load recipe steps
     function loadRecipeSteps(productId) {
         $.get('@Url.Action("GetRecipeSteps", "Store")', { productId: productId }, function (data) {
             $('#recipe-steps-container').html(data); // Assuming there's a div with this ID in your main view
         });
     }
 
-    // Call this function when the document is ready or as needed
-    $(document).ready(function () {
-        loadRecipeSteps(@Model.ProductId); // Load steps based on the product ID
-    });
+    // Function to add item to cart
+    function addToCart(productId, quantity) {
+        fetch('/Cart/AddToCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                productId: productId,
+                quantity: quantity
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
+                    quantityDisplay.textContent = parseInt(quantityDisplay.textContent) + quantity;
+                } else {
+                    window.location.href = data.redirectUrl;
+                }
+            });
+    }
+
+    // Function to remove item from cart
+    function removeFromCart(productId, quantity) {
+        fetch('/Cart/RemoveFromCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                productId: productId,
+                quantity: quantity
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const quantityDisplay = document.getElementById(`quantity-display-${productId}`);
+                    const currentQuantity = parseInt(quantityDisplay.textContent);
+                    if (currentQuantity - quantity > 0) {
+                        quantityDisplay.textContent = currentQuantity - quantity;
+                    } else {
+                        // If quantity is 0 or less, hide or disable the plus/minus UI
+                        quantityDisplay.textContent = 0;
+                        document.querySelector(`.Plusminus[data-product-id="${productId}"]`).style.display = "none";
+                        document.querySelector(`.Original-add-tocart[data-product-id="${productId}"]`).style.display = "block";
+                    }
+                } else {
+                    window.location.href = data.redirectUrl;
+                }
+            });
+    }
 </script>
-
-<!-- CSS Styles -->
 <style>
-    body {
-        font-family: 'Roboto', sans-serif;
-    }
-    .recipe-left{
-        width:600px;
-    }
-    .recipe-details {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: rgba(232, 229, 229, 1);
-        height: 170vh;
-        width: 100%;
-       
-    }
+body {
+    font-family: 'Roboto', sans-serif;
+}
 
-    .product-back {
-        height: 60vh;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-    }
+.recipe-left {
+    width: 600px;
+}
 
-        .product-back img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.recipe-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(232, 229, 229, 1);
+    height: 170vh;
+    width: 100%;
+}
 
-    .product-content {
-        background: white;
-        position: absolute;
-        top: 370px;
-        width: 60vw;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+.product-back {
+    height: 60vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
 
-    h1, h2, h3 {
-        font-family: 'Roboto', sans-serif;
-        margin-bottom: 10px;
-    }
+.product-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    .recipe-card {
-        display: flex;
-        flex-direction: row;
-    }
+.product-content {
+    background: white;
+    position: absolute;
+    top: 370px;
+    width: 60vw;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-    .recipe-right {
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-    }
+h1, h2, h3 {
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+}
 
-    .nutrient-info, .cooking-details {
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        width: 100%;
-    }
+.recipe-card {
+    display: flex;
+    flex-direction: row;
+}
 
-        .nutrient-info h2, .cooking-details h2 {
-            font-size: 1.5rem;
-        }
+.recipe-right {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
 
-    .nutrient-info {
-        max-width: 300px; /* Reduced size */
-    }
+.nutrient-info, .cooking-details {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
 
-    .cooking-details {
-        max-width: 300px; /* Reduced size */
-    }
+.nutrient-info h2, .cooking-details h2 {
+    font-size: 1.5rem;
+}
 
-    .mt-4 {
-        margin-top: 20px;
-    }
+.nutrient-info {
+    max-width: 300px; /* Reduced size */
+}
+
+.cooking-details {
+    max-width: 300px; /* Reduced size */
+}
+
+.mt-4 {
+    margin-top: 20px;
+}
+
+/* Add to Cart and Plus-minus styling */
+.Cart-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Original-add-tocart {
+    display: block; /* Initially display the Add to Cart button */
+}
+
+.Plusminus {
+    display: none; /* Hide the Plus-minus by default */
+    align-items: center;
+}
+
+.Plusminus button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.Plusminus h6 {
+    margin: 0;
+    padding: 0 10px;
+    font-size: 1.2rem;
+}
+
+.Plusminus button:hover {
+    background-color: #0056b3;
+}
 </style>

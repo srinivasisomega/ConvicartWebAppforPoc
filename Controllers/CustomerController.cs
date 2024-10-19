@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
+using ConvicartWebApp.Filter;
 namespace ConvicartWebApp.Controllers
 {
+    [TypeFilter(typeof(CustomerInfoFilter))]
     public class CustomerController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
@@ -80,10 +82,8 @@ namespace ConvicartWebApp.Controllers
 
             return View(customer);
         }
-
-        // POST: Handle Subscription Update
         [HttpPost]
-        public async Task<IActionResult> UpdateSubscription(string subscriptionType)
+        public IActionResult UpdateSubscription(string subscriptionType, int days, decimal amount)
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
@@ -96,18 +96,27 @@ namespace ConvicartWebApp.Controllers
                 ModelState.AddModelError("", "Invalid subscription type.");
                 return RedirectToAction("Subscription");
             }
+            // Fetch the customer from the database using customerId
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId);
+            // Calculate the new subscription end date
+            DateTime currentDate = DateTime.Now;
+            DateTime newSubscriptionEndDate = currentDate.AddDays(days);
 
-            var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
-            if (customer == null) return NotFound();
+            // Calculate points based on the amount
+            int points = (int)(amount / 20);
 
+            // Update the customer's subscription and points balance
             customer.Subscription = subscriptionType;
-            customer.SubscriptionDate = DateTime.Now;
+            customer.SubscriptionDate = newSubscriptionEndDate; // Assuming you have a SubscriptionEndDate field
+            customer.PointBalance += points; // Assuming customer has a PointBalance property
 
-            _context.Update(customer);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            // Save changes to the database
+            _context.SaveChanges();
 
+            // Return a success message or redirect to a different page
             return RedirectToAction("Preferences");
         }
+
 
         // GET: Preferences Page
         public async Task<IActionResult> Preferences()

@@ -1,4 +1,8 @@
-﻿<header class="header1">
+﻿@{
+    var customerName = ViewContext.HttpContext.Items["CustomerName"] as string;
+    var pointBalance = ViewContext.HttpContext.Items["PointBalance"];
+}
+<header class="header1">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -17,7 +21,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Store">Convi-Store</a>
                     </li>
-                    <br />
+                    <br/>
                     <br />
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About us</a>
@@ -28,6 +32,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
                 </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="me-3">Hello, @customerName!</span>
+                <span class="me-3">Points: @pointBalance</span>
             </div>
             <!-- Profile Dropdown -->
             <div class="dropdown">

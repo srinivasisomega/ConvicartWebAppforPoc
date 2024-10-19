@@ -2,10 +2,11 @@
 
 namespace ConvicartWebApp.Controllers
 {
+    using ConvicartWebApp.Filter;
     using ConvicartWebApp.Models;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-
+    [TypeFilter(typeof(CustomerInfoFilter))]
     public class PointsController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
