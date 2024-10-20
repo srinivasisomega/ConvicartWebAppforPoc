@@ -313,23 +313,20 @@ namespace ConvicartWebApp.Controllers
         [HttpGet]
         public IActionResult UploadProfileImage()
         {
-            // Retrieve the CustomerId from the session as a string
+            // Retrieve the CustomerId from the session
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                // Redirect to SignUp if CustomerId is not found
-                return RedirectToAction("SignUp", "Customer");
+                return RedirectToAction("SignUp", "Customer");  // Redirect if not found
             }
-            var customer = _context.Customers.Find(customerId); // Ensure customerId is of type int
 
+            var customer = _context.Customers.Find(customerId);
             if (customer == null)
             {
-                // Handle the case where the customer is not found
-                return NotFound(); // Or redirect to an error page
+                return NotFound();  // Handle case where customer is not found
             }
 
-            // Pass the customer model to the view
-            return View(customer);
+            return View(customer);  // Return the customer model to the view
         }
 
         [HttpPost]
@@ -338,48 +335,46 @@ namespace ConvicartWebApp.Controllers
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                // Redirect to SignUp if CustomerId is not found
-                return RedirectToAction("SignUp", "Customer");
+                return RedirectToAction("SignUp", "Customer");  // Redirect if not found
             }
+
             if (image != null && image.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
                 {
                     await image.CopyToAsync(memoryStream);
-                    memoryStream.Position = 0; // Reset position
+                    memoryStream.Position = 0;  // Reset position for reading
 
                     var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId);
                     if (customer != null)
                     {
-                        // Convert uploaded image to byte[] and store in database
-                        customer.ProfileImage = memoryStream.ToArray();
+                        customer.ProfileImage = memoryStream.ToArray();  // Save image as byte array
                         _context.Update(customer);
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
-                        return NotFound(); // Handle case where customer is not found
+                        return NotFound();  // Customer not found
                     }
                 }
             }
+
             return RedirectToAction("ProfilePic", new { id = customerId });
         }
 
-
-
-        // GET: Get Profile Image to display in view
         public IActionResult GetProfileImage(int id)
         {
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
             if (customer?.ProfileImage != null)
             {
-                return File(customer.ProfileImage, "image/jpeg"); // Assuming image type is jpeg
+                return File(customer.ProfileImage, "image/jpeg");  // Serve image
             }
             else
             {
-                return NotFound();  // Handle case where no image exists
+                return NotFound();  // No image found
             }
         }
+
         public IActionResult Logout()
         {
             // Clear the CustomerId from the session

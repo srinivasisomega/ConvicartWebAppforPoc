@@ -2,8 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace ConvicartWebApp.Models
 {
-   
-
     public class Customer
     {
         [Key]
@@ -42,8 +40,9 @@ namespace ConvicartWebApp.Models
 
         public int PointBalance { get; set; }
 
-        [Column(TypeName = "VARBINARY(MAX)")]  // Ensure the correct column type is used
+        [Column(TypeName = "VARBINARY(MAX)")]
         public byte[]? ProfileImage { get; set; }
+
         public DateTime? LastPointsAddedDate { get; set; }
         public Address? Address { get; set; }
     }

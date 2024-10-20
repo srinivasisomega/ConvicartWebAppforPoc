@@ -1,18 +1,20 @@
 ﻿@model ConvicartWebApp.Models.Customer
 
-<h1>ProfilePic</h1>
+<h1>Profile Picture</h1>
 
+<!-- Display profile image if uploaded -->
 @if (Model.ProfileImage != null)
 {
-    <img src="@Url.Action("GetProfileImage", "Profile", new { id = Model.CustomerId })" alt="Profile Image" width="200" height="200" />
+    <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.CustomerId })" alt="Profile Image" width="200" height="200" />
 }
 else
 {
     <p>No profile image uploaded.</p>
 }
 
-<form asp-action="UploadProfileImageSave" asp-controller="Profile" enctype="multipart/form-data" method="post">
-    <input type="hidden" name="id" value="@Model.CustomerId" />
+<!-- Form to upload new profile image -->
+<form asp-action="UploadProfileImageSave" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="CustomerId" value="@Model.CustomerId" />
 
     <div>
         <label for="image">Upload Profile Image</label>
