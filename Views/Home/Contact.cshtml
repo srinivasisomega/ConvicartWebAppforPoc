@@ -150,6 +150,112 @@
         border-radius: .25rem;
         transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
+    /* Main Container Styling */
+    .new-contact-holder {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        padding: 50px 0;
+    }
+
+    /* Left Section (Image and Text) */
+    .contact-form-bg {
+        background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://avtrix.co.nz/assets/NewImages/contact-3.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+        .contact-form-bg h5 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .contact-form-bg h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+    /* Right Section (Form) */
+    #contact-form {
+        width: 50%;
+        padding: 40px;
+    }
+
+        #contact-form h2 {
+            font-size: 28px;
+            color: #003366;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #contact-form p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+    /* Form Styling */
+    .input-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+            .form-group input:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: #ff9800;
+                box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
+            }
+
+    /* Submit Button Styling */
+    .submit-btn {
+        background-color: #ff9800;
+        color: white;
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .submit-btn:hover {
+            background-color: #e68900;
+        }
+
 </style>
 <div style="position: relative; width: 100%; height: 500px;">
     <a href="#contact-form">
@@ -177,39 +283,46 @@
         </div>
       
     </div>
-    <div id="contact-form" class="details-left">
-        <h2>Kindly share your details</h2>
-        <p>Our service executive will get back to you</p>
+    <div class="new-contact-holder">
+        <div class="col-lg-5 contact-form-bg d-flex justify-content-center align-items-center overflow-hidden aos-init aos-animate" data-aos="fade-up" data-aos-offset="0">
+            <div class="border-left-main m-5 overflow-hidden">
+                <h5 class="main-sub-heading text-white">Have a Project in Mind</h5>
+                <h1 class="h1-heading text-white">Let's Have a Conversation</h1>
+            </div>
+        </div>
+        <div id="contact-form" class="details-left">
+            <h2>Fill out the form below.</h2>
+            <p>Looking to work with us on a new project, or need business consultation?</p>
 
-        <div class="input-section">
-            <!-- Bind the form to the model using asp-for -->
-            <form method="post" asp-action="Create">
-                <div>
-                    <label asp-for="Name">Name*</label>
-                    <input asp-for="Name" placeholder="Your name.." />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
+            <div class="input-section">
+                <form method="post" asp-action="Create">
+                    <div class="form-group">
+                        <label asp-for="Name">Name*</label>
+                        <input asp-for="Name" placeholder="Your name.." />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-                <div>
-                    <label asp-for="Mobile">Mobile*</label>
-                    <input asp-for="Mobile" placeholder="Your mobile number.." />
-                    <span asp-validation-for="Mobile" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="Mobile">Mobile*</label>
+                        <input asp-for="Mobile" placeholder="Your mobile number.." />
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                    </div>
 
-                <div>
-                    <label asp-for="Email">Email*</label>
-                    <input asp-for="Email" placeholder="Your email.." />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="Email">Email*</label>
+                        <input asp-for="Email" placeholder="Your email.." />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
 
-                <div>
-                    <label asp-for="Description">Description*</label>
-                    <textarea asp-for="Description" placeholder="Describe your query.." rows="4"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description*</label>
+                        <textarea asp-for="Description" placeholder="Describe your query.." rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
-                <button type="submit" class="submit-btn">Submit</button>
-            </form>
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
