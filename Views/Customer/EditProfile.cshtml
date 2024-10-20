@@ -1,54 +1,149 @@
 ﻿@model ConvicartWebApp.Models.Customer
 
-<div class="profile-header">
-    <h2>@Model.Name</h2>
-    <p class="email">@Model.Email</p>
+<div class="profile-container">
+    <!-- Profile Header Section -->
+    <div class="profile-header">
+        <h2>@Model.Name</h2>
+        <p class="email">@Model.Email</p>
+    </div>
+
+    <!-- Profile Body Section -->
+    <div class="profile-body">
+        <h3>Edit Profile</h3>
+        <form asp-action="EditProfileSave" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CustomerId" />
+
+            <div class="form-group">
+                <label asp-for="Name">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Number">Mobile</label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Age">Age</label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Gender">Gender</label>
+                <select asp-for="Gender" class="form-control">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                    <option value="O">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
 </div>
+<style>
+    /* General styles for the profile page */
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
 
-<div class="profile-body">
-    <h3>Edit Profile</h3>
-    <form asp-action="EditProfileSave" method="post" enctype="multipart/form-data">
-        <input type="hidden" asp-for="CustomerId" />
+    /* Profile container styling */
+    .profile-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        <div class="form-group">
-            <label asp-for="Name">Name</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
+    /* Profile header section */
+    .profile-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-        <div class="form-group">
-            <label asp-for="Number">Mobile</label>
-            <input asp-for="Number" class="form-control" />
-            <span asp-validation-for="Number" class="text-danger"></span>
-        </div>
+        .profile-header h2 {
+            font-size: 32px;
+            color: #007BFF;
+            margin-bottom: 5px;
+        }
 
-        <div class="form-group">
-            <label asp-for="Email">Email</label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
+        .profile-header .email {
+            font-size: 16px;
+            color: #555;
+        }
 
-        <div class="form-group">
-            <label asp-for="Age">Age</label>
-            <input asp-for="Age" class="form-control" />
-            <span asp-validation-for="Age" class="text-danger"></span>
-        </div>
+    /* Profile body and form styling */
+    .profile-body h3 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
 
-        <div class="form-group">
-            <label asp-for="Gender">Gender</label>
-            <select asp-for="Gender" class="form-control">
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-                <option value="O">Other</option>
-            </select>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
-        
+    /* Form group styling */
+    .profile-body .form-group {
+        margin-bottom: 20px;
+    }
 
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
-</div>
+    .profile-body label {
+        font-weight: 600;
+        color: #333;
+    }
 
+    .profile-body .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        font-size: 16px;
+        transition: border-color 0.2s ease;
+    }
+
+        .profile-body .form-control:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+    /* Validation error message */
+    .text-danger {
+        color: #dc3545;
+        font-size: 14px;
+    }
+
+    /* Save button styling */
+    .btn-primary {
+        width: 100%;
+        padding: 12px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+</style>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

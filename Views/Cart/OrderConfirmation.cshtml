@@ -2,11 +2,78 @@
     ViewData["Title"] = "Order Confirmation";
 }
 
-<h2>Your Order Has Been Successfully Placed!</h2>
-<p>Thank you for your purchase. You will be redirected to the store shortly.</p>
+<div class="confirmation-container">
+    <div class="confirmation-box">
+        <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Success Icon" class="success-icon">
+        <h2>Your Order Has Been Successfully Placed!</h2>
+        <p>Thank you for your purchase. You will be redirected to the store shortly.</p>
+    </div>
+</div>
 
 <script>
-    setTimeout(function() {
+    setTimeout(function () {
         window.location.href = '@Url.Action("Store", "Store")'; // Redirect to Store
-    }, 3000); // 5000 milliseconds = 5 seconds
+    }, 3000); // 3000 milliseconds = 3 seconds
 </script>
+<style>
+    /* General page styling */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for confirmation message */
+.confirmation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: #f0f4f8;
+}
+
+/* Box containing the confirmation content */
+.confirmation-box {
+    background-color: white;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 500px;
+    margin: 0 auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Add slight hover effect on the confirmation box */
+.confirmation-box:hover {
+    transform: translateY(-5px);
+}
+
+/* Success icon */
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+/* Heading styling */
+h2 {
+    color: #007BFF;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+/* Paragraph styling */
+p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+</style>
