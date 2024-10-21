@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Net;
-
 namespace ConvicartWebApp.Models
 {
     public class ConvicartWarehouseContext : DbContext
@@ -10,13 +9,13 @@ namespace ConvicartWebApp.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Preference> Preferences { get; set; }
         public DbSet<CustomerPreference> CustomerPreferences { get; set; }
-       
         public DbSet<Store> Stores { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<QuerySubmission> QuerySubmissions { get; set; }
         public DbSet<RecipeSteps> RecipeSteps { get; set; }
         public DbSet<Cart> Cart { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+
         // Constructor accepting DbContextOptions
         public ConvicartWarehouseContext(DbContextOptions<ConvicartWarehouseContext> options)
             : base(options) // Pass options to the base constructor
@@ -27,16 +26,24 @@ namespace ConvicartWebApp.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>()
-       .HasOne(c => c.Address)
-       .WithMany() // Adjust if Address has a navigation property back to Customer
-       .HasForeignKey(c => c.AddressId)
-       .OnDelete(DeleteBehavior.Restrict); // Use appropriate delete behavior
+                .HasOne(c => c.Address)
+                .WithMany() // Adjust if Address has a navigation property back to Customer
+                .HasForeignKey(c => c.AddressId)
+                .OnDelete(DeleteBehavior.Restrict); // Use appropriate delete behavior
+
             modelBuilder.Entity<Address>()
-        .Property(a => a.AddressId)
-        .ValueGeneratedNever();
+                .Property(a => a.AddressId)
+                .ValueGeneratedNever();
+
             modelBuilder.Entity<Order>()
-            .Property(o => o.TotalAmount)
-            .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
+                .Property(o => o.TotalAmount)
+                .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
+
+            modelBuilder.Entity<Order>()
+                .Property(o => o.Status) // Configure the enum as a string or integer
+                .HasConversion(
+                    os => os.ToString(), // Convert enum to string when saving
+                    os => (OrderStatus)Enum.Parse(typeof(OrderStatus), os)); // Convert string back to enum when reading
 
             // Specify precision and scale for OrderItem Price
             modelBuilder.Entity<OrderItem>()
@@ -47,12 +54,9 @@ namespace ConvicartWebApp.Models
             modelBuilder.Entity<Store>()
                 .Property(s => s.Price)
                 .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
+
             modelBuilder.Entity<CustomerPreference>()
                 .HasKey(cp => new { cp.CustomerId, cp.PreferenceId });
-
-            modelBuilder.Entity<Store>()
-                .Property(s => s.Price)
-                .HasColumnType("decimal(10, 2)");
 
             modelBuilder.Entity<Store>()
                 .Property(s => s.Carbs)
@@ -69,18 +73,16 @@ namespace ConvicartWebApp.Models
             modelBuilder.Entity<Store>()
                 .Property(s => s.Minerals)
                 .HasColumnType("decimal(5, 2)");
+
             modelBuilder.Entity<RecipeSteps>()
                 .HasKey(ps => new { ps.ProductId, ps.StepNo }); // Composite key configuration
+
             modelBuilder.Entity<Cart>()
-    .HasMany(c => c.CartItems)
-    .WithOne()
-    .OnDelete(DeleteBehavior.Cascade); // Automatically delete CartItems when a Cart is deleted
-
-
+                .HasMany(c => c.CartItems)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade); // Automatically delete CartItems when a Cart is deleted
 
             // Add any additional model configurations here
         }
     }
-
-
 }

@@ -20,8 +20,6 @@ namespace ConvicartWebApp.Controllers
         {
             _context = context;
         }
-
-        
         public IActionResult OrderHistory()
         {
             var customerId = HttpContext.Session.GetInt32("CustomerId");
