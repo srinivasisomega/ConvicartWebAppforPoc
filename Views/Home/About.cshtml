@@ -2,32 +2,37 @@
     ViewData["Title"] = "About us";
 }
 <style>
-    .pb-3{
-        display:flex;
-        flex-direction:row;
-        justify-content:center;
+    body {
+        font-family: Arial, sans-serif; /* Set the font family for the entire page */
+        font-size: 16px; /* Set the font size for the entire page */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        height:fit-content;
+    }
+
+    .pb-3 {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
         background-image: url('/images/hero-banner.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-    }
-    .aboutus-body {
-        background-color: #f4f4f4; /* Background color */
-        padding: 10px;
-        font-family: Arial, sans-serif;
-        margin-top:40px;
+        height:fit-content;
     }
 
-        .aboutus-body .convi-title {
-            margin-left:50px;
-        }
+    .aboutus-body {
+        width:100%
+    }
 
     .content-section {
+        margin-left:90px;
+        width:50%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
+        align-items: baseline;
+        padding:30px;
     }
 
         .content-section img {
@@ -40,21 +45,23 @@
         }
 
         .content-section .text-section {
-            max-width: 600px;
+            width:90%;
         }
 
     h1, h2 {
         color: #333;
+
     }
 
     p {
         color: #555;
     }
 
-    ul {
-        color: #555;
+    .Why-convi-div ul {
+        color: white;
         list-style: none;
         padding-left: 0;
+        font-weight:500;
     }
 
         ul li {
@@ -62,46 +69,120 @@
         }
 
             ul li strong {
-                color: #333;
+                color: #F3BE57;
             }
+
+    .title-div {
+        background-image: url("https://images.pexels.com/photos/4553111/pexels-photo-4553111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+        background-position: left;
+        background-size: cover;
+        min-height: 650px;
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        justify-content:flex-start;
+    }
+    .title-div h1{
+        
+            color: #844113;
+            font-size: 6rem;
+        font-weight: 900;
+        margin: 0;
+        height:fit-content;
+        width:min-content;
+    }
+
+    .Story-div{
+        background-image: url('/Images/pexels-karolina-grabowska-5202127.jpg');
+        min-height: 650px;
+        background-size: cover;
+        background-position: right;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-end;        
+        
+    }
+
+        .Story-div p{
+            color:black;
+        }
+
+    .Why-convi-div {
+        background-image: url('/Images/third-div-2.jpg');
+        background-size: cover;
+        background-position: left;
+    }
+
+    .Why-convi-div h1, p{
+            color: #F3BE57;
+
+    }
+
+    .Why-convi-div p {
+        color: white;
+    }
+
+    .vision-div {
+        background-image: url('/Images/4th-div.jpg');
+        min-height: 400px;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction:row;
+        justify-content:center;
+
+    }
+    
+    
 </style>
 
+
 <div class="aboutus-body">
-    <h1 class="convi-title">About Convicart</h1>
-    <div class="content-section">
-        <div class="text-section">
-            <h4>Welcome to Convicart, where we combine the convenience of meal delivery with the joy of home cooking. Our mission is simple: to make healthy, delicious meals accessible to everyone, no matter how busy life gets.</h4>
+    <div class="title-div">
+        <h1 style="margin-left:30px;margin-bottom:80px;" class="convi-title">About Convicart</h1>
+    </div>
+    <div class="Story-div">
+        <div class="content-section">
+                <h1 class="convi-title">The Story Behind Convicart</h1>
+            <div class="text-section">
+                    <p>Welcome to Convicart, where cooking becomes a journey of flavors and connections.</p>
+
+                    <p>Our story begins with Srinivas, an avid home cook who discovered the power of food during the challenging times of the COVID-19 pandemic. As the world outside grew quiet and loneliness settled in, Sam found solace in his kitchen. Each dish he prepared was not just a meal but a heartfelt escape, a way to transport himself to distant lands and cultures.</p>
+
+                    <p>Sam’s culinary curiosity led him to explore recipes from around the globe. He savored the spices of Indian curry, the freshness of Thai salads, and the comfort of Italian pasta. However, as he dove deeper into these diverse cuisines, he encountered a significant challenge: sourcing the unique ingredients essential for authentic dishes. Local stores often lacked the specialty spices and rare vegetables, leaving him frustrated and yearning for more.</p>
+
+                    <p>It was in this moment of struggle that inspiration struck. What if he could create a way for others to experience these flavors without the hassle? Sam envisioned Convicart—a meal kit service designed to make cooking accessible and enjoyable for everyone. Each kit would contain just the right amount of ingredients for one person, ensuring a perfect portion without waste.</p>
+
+                    <p>Convicart is more than just a meal kit; it’s a celebration of culinary diversity. Each box is thoughtfully curated, featuring ingredients sourced from local suppliers and recipes crafted to evoke the essence of traditional dishes. We believe that cooking can be a source of joy, connection, and healing, especially during times of uncertainty.</p>
+
+                    <p>At Convicart, we understand that cooking is not just about feeding the body; it’s about nourishing the soul. With each kit, we hope to inspire you to explore new flavors, embrace creativity in the kitchen, and share moments of joy—even if it’s just with yourself.</p>
+
+                    <p>Join us on this culinary journey, and let’s transform the way we cook, one meal at a time. Welcome to Convicart—where every dish tells a story.</p>
+            </div>
         </div>
-        <img src="~/Images/A-1.png" alt="Abstract Frame 1">
+    </div>
+    <div class="Why-convi-div">
+            <div class="content-section">
+                <h1>Why Convicart?</h1>
+                <div class="text-section">                    
+                    <p>At Convicart, we believe that food is more than just fuel—it’s an experience. We aim to take the stress out of meal planning and shopping by offering a unique blend of:</p>
+                    <ul>
+                        <li><strong>Fresh Ingredients Delivered:</strong> Receive farm-fresh, high-quality ingredients that are perfectly portioned for your meals.</li>
+                        <li><strong>Easy-to-Follow Recipes:</strong> Step-by-step instructions designed for all skill levels.</li>
+                        <li><strong>Healthy Choices:</strong> Options for various dietary preferences, from vegetarian to keto.</li>
+                        <li><strong>More Than a Meal Kit:</strong> Explore and create your favorite dishes anytime.</li>
+                    </ul>
+                </div>
+            </div>
     </div>
 
-    <div class="content-section">
-        <img src="~/Images/A-2.png" alt="Abstract Frame 2">
-        <div class="text-section">
-            <h2>Why Convicart?</h2>
-            <p>At Convicart, we believe that food is more than just fuel—it’s an experience. We aim to take the stress out of meal planning and shopping by offering a unique blend of:</p>
-            <ul>
-                <li><strong>Fresh Ingredients Delivered:</strong> Receive farm-fresh, high-quality ingredients that are perfectly portioned for your meals.</li>
-                <li><strong>Easy-to-Follow Recipes:</strong> Step-by-step instructions designed for all skill levels.</li>
-                <li><strong>Healthy Choices:</strong> Options for various dietary preferences, from vegetarian to keto.</li>
-                <li><strong>More Than a Meal Kit:</strong> Explore and create your favorite dishes anytime.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="content-section">
-        <div class="text-section">
-            <h2>Our Vision</h2>
-            <p>We envision a world where everyone can enjoy the art of cooking at home, regardless of their schedule or skill level.</p>
-        </div>
-        <img src="~/Images/A-3.png" alt="Abstract Frame 3">
-    </div>
-
-    <div class="content-section">
-        <img src="~/Images/A-4.png" alt="Abstract Frame 4">
-        <div class="text-section">
-            <h2>Our Commitment to You</h2>
-            <p>We are dedicated to delivering fresh, quality ingredients and creating an easy, enjoyable cooking experience for you.</p>
+    <div class="vision-div">
+        <div class="content-section" style="align-items:center;">
+            <h2 style="font-size:40px;font-weight:800;">Our Vision</h2>
+            <div class="text-section">            
+                <p style=" color:black;font-size:20px;font-weight:300;">"At Convicart, we envision a world where culinary exploration is accessible to all. We aim to inspire individuals to connect through the art of cooking, fostering joy, creativity, and cultural appreciation. By providing thoughtfully curated meal kits that celebrate global flavors, we strive to transform everyday cooking into an enriching experience, one dish at a time."</p>
+            </div>
         </div>
     </div>
 </div>

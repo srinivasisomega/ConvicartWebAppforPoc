@@ -3,25 +3,39 @@ using ConvicartWebApp.Models;
 using ConvicartWebApp.Filter;
 namespace ConvicartWebApp.Controllers
 {
-
+    /// <summary>
+    /// Controller for managing customer addresses.
+    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class AddressController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddressController"/> class.
+        /// </summary>
+        /// <param name="context">The database context for accessing data.</param>
         public AddressController(ConvicartWarehouseContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Displays the view for creating or updating an address.
+        /// </summary>
+        /// <returns>The view for creating or updating an address.</returns>
         // GET: Address/CreateOrUpdate
         public IActionResult CreateOrUpdateAddress()
         {
             return View();
         }
 
+        /// <summary>
+        /// Saves a customer address, either creating a new one or updating an existing address.
+        /// </summary>
+        /// <param name="address">The address information to save.</param>
+        /// <returns>A redirect to the customer's profile page.</returns>
         // POST: Address/SaveAddress
-        [HttpPost]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveAddress(Address address)
@@ -30,7 +44,8 @@ namespace ConvicartWebApp.Controllers
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if session is null
+                // Redirect to login if session is null
+                return RedirectToAction("Login", "Account");
             }
 
             // Set AddressId to CustomerId
@@ -40,6 +55,7 @@ namespace ConvicartWebApp.Controllers
             var existingAddress = await _context.Addresses.FindAsync(customerId.Value);
             if (existingAddress != null)
             {
+                // Update existing address details
                 existingAddress.StreetAddress = address.StreetAddress;
                 existingAddress.City = address.City;
                 existingAddress.State = address.State;
@@ -66,8 +82,8 @@ namespace ConvicartWebApp.Controllers
                 await _context.SaveChangesAsync(); // Save changes to Customer
             }
 
-            return RedirectToAction("Profile", "Customer"); // Redirect to customer index or any page you need
+            // Redirect to customer profile page
+            return RedirectToAction("Profile", "Customer");
         }
     }
-
 }

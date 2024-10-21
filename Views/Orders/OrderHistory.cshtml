@@ -67,6 +67,7 @@ h2 {
 <table class="table">
     <thead>
         <tr>
+            <th>OrderId</th>
             <th>Order Date</th>
             <th>First Item Image</th>
             <th>Total Amount Spent</th>
@@ -76,7 +77,8 @@ h2 {
         @foreach (var order in Model)
         {
             <tr>
-                <td style="border-left:1px solid #ddd;">@order.OrderDate.ToString("dd MMM yyyy")</td>
+                <td style="border-left:1px solid #ddd;">@order.OrderId</td>
+                <td >@order.OrderDate.ToString("dd MMM yyyy")</td>
                 <td>
                     <img src="~/Images/store/@order.OrderItems.FirstOrDefault()?.imgUrl" alt="Product Image" width="90" height="80" />
                 </td>

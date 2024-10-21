@@ -2,6 +2,7 @@
 using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using ConvicartWebApp.Filter;
+using ConvicartWebApp.ViewModels;
 namespace ConvicartWebApp.Controllers
 {
     [TypeFilter(typeof(CustomerInfoFilter))]
@@ -402,6 +403,58 @@ namespace ConvicartWebApp.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+            return View(new ChangePasswordViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Get the customer ID from the session
+            int? customerId = HttpContext.Session.GetInt32("CustomerId");
+            if (customerId == null)
+            {
+                return RedirectToAction("SignUp");
+            }
+
+            // Find the customer by ID
+            var customer = await _context.Customers.FindAsync(customerId);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the current password is correct
+            if (customer.Password != model.CurrentPassword)
+            {
+                ModelState.AddModelError("", "Current password is incorrect.");
+                return View(model);
+            }
+
+            // Update the password
+            customer.Password = model.NewPassword;
+
+            // Save changes to the database
+            await _context.SaveChangesAsync();
+
+            // Optionally, redirect or return a success message
+            TempData["SuccessMessage"] = "Password changed successfully.";
+            return RedirectToAction("Profile");
+        }
+
         public IActionResult Logout()
         {
             // Clear the CustomerId from the session

@@ -4,19 +4,29 @@ using Microsoft.EntityFrameworkCore;
 using ConvicartWebApp.Filter;
 namespace ConvicartWebApp.Controllers
 {
-
-
+    /// <summary>
+    /// Controller for managing the shopping cart functionality.
+    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
-
     public class CartController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CartController"/> class.
+        /// </summary>
+        /// <param name="context">The database context for accessing data.</param>
         public CartController(ConvicartWarehouseContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Adds a specified quantity of a product to the customer's cart.
+        /// </summary>
+        /// <param name="productId">The ID of the product to add.</param>
+        /// <param name="quantity">The quantity of the product to add.</param>
+        /// <returns>A redirect to the view cart page or a NotFound result.</returns>
         public IActionResult AddToCartMain(int productId, int quantity)
         {
             var product = _context.Stores.Find(productId);
@@ -32,7 +42,7 @@ namespace ConvicartWebApp.Controllers
                 return RedirectToAction("SignIn", "Customer"); // Redirect to sign-in if not in session
             }
 
-            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId.Value); // Find customer by session CustomerId
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId.Value);
 
             // Find or create the cart for the customer
             var cart = _context.Cart.Include(c => c.CartItems)
@@ -67,6 +77,13 @@ namespace ConvicartWebApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("ViewCart");
         }
+
+        /// <summary>
+        /// Removes a specified quantity of a product from the customer's cart.
+        /// </summary>
+        /// <param name="productId">The ID of the product to remove.</param>
+        /// <param name="quantity">The quantity of the product to remove.</param>
+        /// <returns>A redirect to the view cart page.</returns>
         public IActionResult RemoveFromCartMain(int productId, int quantity)
         {
             // Get the customer ID from the session
@@ -105,6 +122,13 @@ namespace ConvicartWebApp.Controllers
 
             return RedirectToAction("ViewCart"); // Redirect back to the cart view
         }
+
+        /// <summary>
+        /// Adds a specified quantity of a product to the customer's cart via a POST request.
+        /// </summary>
+        /// <param name="productId">The ID of the product to add.</param>
+        /// <param name="quantity">The quantity of the product to add.</param>
+        /// <returns>A JSON response indicating success or failure.</returns>
         [HttpPost]
         public IActionResult AddToCart(int productId, int quantity)
         {
@@ -152,6 +176,12 @@ namespace ConvicartWebApp.Controllers
             return Json(new { success = true, message = "Product added to cart." });
         }
 
+        /// <summary>
+        /// Removes a specified quantity of a product from the customer's cart via a POST request.
+        /// </summary>
+        /// <param name="productId">The ID of the product to remove.</param>
+        /// <param name="quantity">The quantity of the product to remove.</param>
+        /// <returns>A JSON response indicating success or failure.</returns>
         [HttpPost]
         public IActionResult RemoveFromCart(int productId, int quantity)
         {
@@ -192,8 +222,10 @@ namespace ConvicartWebApp.Controllers
             return Json(new { success = true }); // Return success response
         }
 
-
-
+        /// <summary>
+        /// Displays the customer's cart with all items and total calculations.
+        /// </summary>
+        /// <returns>A view displaying the cart and its details.</returns>
         public IActionResult ViewCart()
         {
             // Get the customer ID from the session
@@ -279,6 +311,12 @@ namespace ConvicartWebApp.Controllers
 
             return View(viewModel); // Ensure you're passing the viewModel to the view
         }
+
+        /// <summary>
+        /// Processes the purchase of items in the cart and creates an order.
+        /// </summary>
+        /// <param name="cartViewModel">The view model containing cart details.</param>
+        /// <returns>A redirect to the order confirmation page or the view with error messages.</returns>
         public IActionResult Purchase(CartViewModel cartViewModel)
         {
             var customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -350,7 +388,6 @@ namespace ConvicartWebApp.Controllers
                 return RedirectToAction("Profile", "Customer");
             }
 
-
             // Save the order and order items to the database
             _context.Orders.Add(order);
             _context.SaveChanges();
@@ -364,21 +401,14 @@ namespace ConvicartWebApp.Controllers
             return RedirectToAction("OrderConfirmation");
         }
 
-
-
-
-
-        // Confirmation action method
+        /// <summary>
+        /// Displays the order confirmation view after a successful purchase.
+        /// </summary>
+        /// <returns>The confirmation view.</returns>
         public IActionResult OrderConfirmation()
         {
             // Return a view to show the purchase confirmation
             return View();
         }
-
-        // Redirect to store after a delay (in the view for OrderConfirmation)
-
-
-
-
     }
 }
