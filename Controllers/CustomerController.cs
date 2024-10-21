@@ -176,7 +176,7 @@ namespace ConvicartWebApp.Controllers
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                return RedirectToAction("SignIn");
+                return RedirectToAction("SignUp");
             }
 
             var customer = await _context.Customers
@@ -359,7 +359,7 @@ namespace ConvicartWebApp.Controllers
                 }
             }
 
-            return RedirectToAction("ProfilePic", new { id = customerId });
+            return RedirectToAction("Profile", new { id = customerId });
         }
 
         public IActionResult GetProfileImage(int id)
@@ -374,7 +374,34 @@ namespace ConvicartWebApp.Controllers
                 return NotFound();  // No image found
             }
         }
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
+        // POST: Customer/ForgotPassword
+        [HttpPost]
+        public IActionResult ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                ModelState.AddModelError("Email", "Email is required.");
+                return View();
+            }
+
+            // Add your logic here to send a password reset email.
+            // e.g., Check if the email exists, generate a token, send an email.
+
+            TempData["Message"] = "If the email exists, a reset link has been sent.";
+            return RedirectToAction("ForgotPasswordConfirmation");
+        }
+
+        // GET: Customer/ForgotPasswordConfirmation
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
         public IActionResult Logout()
         {
             // Clear the CustomerId from the session

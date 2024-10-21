@@ -27,9 +27,10 @@
                     <h2>Cooking Details</h2>
                     @Html.Partial("~/Views/Shared/Recipie/_CookingDetails.cshtml", Model)
                 </div>
-
+                <br />
+                <br />
                 <!-- Add to Cart Section -->
-                <div class="Cart-switch">
+                <div class="Cart-switch-recipie">
                     <div class="Original-add-tocart">
                         <input type="hidden" name="productId" value="@ViewBag.ProductId" />
                         <input type="hidden" name="quantity" value="1" />
@@ -227,10 +228,11 @@ h1, h2, h3 {
 }
 
 /* Add to Cart and Plus-minus styling */
-.Cart-switch {
+.Cart-switch-recipie {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left:10px;
 }
 
 .Original-add-tocart {

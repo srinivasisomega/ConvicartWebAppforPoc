@@ -15,30 +15,30 @@
         window.location.href = '@Url.Action("Store", "Store")'; // Redirect to Store
     }, 3000); // 3000 milliseconds = 3 seconds
 </script>
+
 <style>
-    /* General page styling */
+/* General body styling */
 body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #f0f4f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Make sure body takes full height */
 }
 
-/* Container for confirmation message */
+/* Centering confirmation content */
 .confirmation-container {
+    flex: 1; /* Take up available space */
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100vh;
     background-color: #f0f4f8;
+    margin-top:30px;
 }
 
-/* Box containing the confirmation content */
+/* Confirmation message box */
 .confirmation-box {
     background-color: white;
     text-align: center;
@@ -46,16 +46,17 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 40px;
     max-width: 500px;
+    width: 100%;
     margin: 0 auto;
     transition: transform 0.3s ease-in-out;
 }
 
-/* Add slight hover effect on the confirmation box */
+/* Slight hover effect for confirmation box */
 .confirmation-box:hover {
     transform: translateY(-5px);
 }
 
-/* Success icon */
+/* Success icon styling */
 .success-icon {
     width: 80px;
     height: 80px;
@@ -75,5 +76,29 @@ p {
     color: #555;
     margin-bottom: 20px;
 }
+
+/* Footer adjustments */
+footer {
+    background-color: #F3BE57;
+    color: black;
+    margin-top: auto; /* Pushes footer to the bottom */
+    padding: 20px;
+    text-align: center;
+}
+
+/* Make sure the footer content stays intact and centered */
+footer .footer-section {
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Header adjustments to make sure it looks consistent */
+.header1, .header2 {
+    background-color: #F3BE57;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Ensure footer and header are responsive */
 
 </style>

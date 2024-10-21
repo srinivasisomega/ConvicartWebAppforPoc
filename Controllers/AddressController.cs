@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using ConvicartWebApp.Models;
+using ConvicartWebApp.Filter;
 namespace ConvicartWebApp.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using ConvicartWebApp.Models;
-    using Microsoft.AspNetCore.Http;
-    using System.Threading.Tasks;
-    using ConvicartWebApp.Models;
-    using ConvicartWebApp.Filter;
 
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class AddressController : Controller

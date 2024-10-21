@@ -7,7 +7,8 @@
             <div class="d-flex-1 flex-column align-items-center text-center p-3 py-5">
 
                 <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.Customer.CustomerId })"
-                     class="rounded-circle mt-5" width="150px" alt="Profile Image" />
+                      alt="Profile Image" />
+                      <br />
 
                 <a asp-controller="Customer" asp-action="UploadProfileImage" class="btn btn-primary profile-button">Upload Image</a>
 
@@ -114,6 +115,12 @@
 </div>
 
 <style>
+    img{
+        width :140px;
+height:140px;
+        border-radius:100%;
+
+    }
     h5{
         margin-bottom:20px;
     }

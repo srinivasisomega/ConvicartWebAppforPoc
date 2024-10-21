@@ -11,9 +11,10 @@
         margin: 0;
         padding: 0;
         display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
+    }
+    .container{
+    align-items:center;
     }
 
     /* Container for the form */
@@ -119,5 +120,5 @@
 </div>
 
 @section Scripts {
-    @await Html.RenderPartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
