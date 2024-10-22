@@ -23,6 +23,7 @@ namespace ConvicartWebApp.Filter
                 {
                     context.HttpContext.Items["CustomerName"] = customer.Name;
                     context.HttpContext.Items["PointBalance"] = customer.PointBalance;
+                    context.HttpContext.Items["CustomerId"] = customer.CustomerId;
                 }
             }
         }

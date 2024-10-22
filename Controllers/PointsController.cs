@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using ConvicartWebApp.Filter;
+using ConvicartWebApp.Models;
+using System.Linq;
 namespace ConvicartWebApp.Controllers
 {
-    using ConvicartWebApp.Filter;
-    using ConvicartWebApp.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
+    /// <summary>
+    /// this controller is responsible for adding ponts to customer and rendering the view for buying points.
+    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class PointsController : Controller
     {

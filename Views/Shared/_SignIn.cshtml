@@ -7,6 +7,18 @@
 </style>
 
 <h2 class="text-center mb-4">Sign In</h2>
+
+<!-- Display validation summary -->
+@if (!ViewData.ModelState.IsValid)
+{
+    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <h6 style="color:darkred;">@error.ErrorMessage</h6>
+    }
+
+
+}
+
 <form asp-action="SignIn" method="post" class="needs-validation" novalidate>
     <div class="form-group">
         <label for="Email">Email*</label>

@@ -25,7 +25,7 @@ namespace ConvicartWebApp.Controllers
             var customerId = HttpContext.Session.GetInt32("CustomerId");
             if (customerId == null)
             {
-                return RedirectToAction("SignIn", "Customer");
+                return RedirectToAction("SignUp", "Customer");
             }
 
             var orders = _context.Orders
@@ -70,25 +70,25 @@ namespace ConvicartWebApp.Controllers
         //}
 
         // Utility to get the customer ID (replace with actual user context logic)
-        private int GetLoggedInCustomerId()
-        {
-            // Simulate getting logged-in customer ID
-            return 1; // Replace with actual customer ID
-        }
+        //private int GetLoggedInCustomerId()
+        //{
+        //    // Simulate getting logged-in customer ID
+        //    return 1; // Replace with actual customer ID
+        //}
 
-        // Utility to calculate the filter date based on timeFilter
-        private DateTime GetFilterDate(string timeFilter)
-        {
-            DateTime now = DateTime.Now;
-            return timeFilter switch
-            {
-                "15days" => now.AddDays(-15),
-                "30days" => now.AddDays(-30),
-                "3months" => now.AddMonths(-3),
-                "6months" => now.AddMonths(-6),
-                _ => now.AddMonths(-6) // Default to 6 months
-            };
-        }
+        //// Utility to calculate the filter date based on timeFilter
+        //private DateTime GetFilterDate(string timeFilter)
+        //{
+        //    DateTime now = DateTime.Now;
+        //    return timeFilter switch
+        //    {
+        //        "15days" => now.AddDays(-15),
+        //        "30days" => now.AddDays(-30),
+        //        "3months" => now.AddMonths(-3),
+        //        "6months" => now.AddMonths(-6),
+        //        _ => now.AddMonths(-6) // Default to 6 months
+        //    };
+        //}
     }
 
 }

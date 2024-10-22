@@ -5,6 +5,10 @@ using ConvicartWebApp.Filter;
 using ConvicartWebApp.ViewModels;
 namespace ConvicartWebApp.Controllers
 {
+    /// <summary>
+    /// This controller is responsible for signup, signin, supscription selection, preference selection, viewing profile page, updating profilepage,
+    /// uploading profile photo, displaying profile photo, logout, forgot password
+    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class CustomerController : Controller
     {
@@ -17,7 +21,8 @@ namespace ConvicartWebApp.Controllers
 
         
 
-        // POST: Handle SignIn
+        // POST: Handle SignIn by checking if there are matching email and password in the customer table, if
+        //they match customer id is saved in session
         [HttpPost]
         public async Task<IActionResult> SignIn(string email, string password)
         {
@@ -36,7 +41,7 @@ namespace ConvicartWebApp.Controllers
             if (customer == null)
             {
                 ModelState.AddModelError("", "Invalid email or password.");
-                return View();
+                return View("SignUp");
             }
 
             // Store CustomerId in session
@@ -45,13 +50,13 @@ namespace ConvicartWebApp.Controllers
             return RedirectToAction("Profile", new { customerId = customer.CustomerId });
         }
 
-        // GET: SignUp Page
+        // GET: Renders the Signup page and sigin partial views
         public IActionResult SignUp()
         {
             return View();
         }
 
-        // POST: Handle SignUp
+        // POST: Saves data sent by the form from sigup partial view into customers table an redirectes to Subscription action
         [HttpPost]
         public async Task<IActionResult> SignUp([Bind("Name,Number,Email,Password")] Customer customer)
         {
@@ -69,7 +74,7 @@ namespace ConvicartWebApp.Controllers
             return View(customer);
         }
 
-        // GET: Subscription Page
+        // GET: checks if there is customer id in session if yes sends the customer's data to view for selection the type of subscription.
         public async Task<IActionResult> Subscription()
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -83,6 +88,7 @@ namespace ConvicartWebApp.Controllers
 
             return View(customer);
         }
+        //this method is responsible for add no of days to subscription date, adding points to point balence, and adding subscription to the customers table.
         [HttpPost]
         public IActionResult UpdateSubscription(string subscriptionType, int days, decimal amount)
         {
@@ -119,7 +125,8 @@ namespace ConvicartWebApp.Controllers
         }
 
 
-        // GET: Preferences Page
+        // GET: Preferences Page  checks if there is customer id in session if yes sends the customer's data to view for selection of preferences.
+
         public async Task<IActionResult> Preferences()
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -134,7 +141,7 @@ namespace ConvicartWebApp.Controllers
             return View(preferences);
         }
 
-        // POST: Save Preferences
+        // POST: Save Preferences this methods saves the data in customer prefrences table.
         [HttpPost]
         public async Task<IActionResult> SavePreferences(List<int> selectedPreferences)
         {
@@ -171,7 +178,7 @@ namespace ConvicartWebApp.Controllers
             return RedirectToAction("Profile", new { customerId = customer.CustomerId });
         }
 
-        // GET: Profile Page
+        // GET: Profile Page this page displays the address, preferences, pointbalence, subscription and other importent details related to customer
         public async Task<IActionResult> Profile()
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -203,6 +210,7 @@ namespace ConvicartWebApp.Controllers
             // Dispose of the context before returning the view
             return View(viewModel);
         }
+        // it is responsible for rendering a view that show existing preferences slected by customer and show all other preferences from preferences table.
         public async Task<IActionResult> UpdatePreference()
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -267,6 +275,7 @@ namespace ConvicartWebApp.Controllers
 
             return RedirectToAction("Profile", new { customerId = customer.CustomerId });
         }
+        //renders a page that changes name,email,gender,number,age of customer in table.
         [HttpGet]
         public IActionResult EditProfile()
         {
@@ -288,7 +297,7 @@ namespace ConvicartWebApp.Controllers
             return View(customer);
         }
 
-
+        // the method that updates customer name,email,gender,number,age in edit profile page.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditProfileSave(Customer model)
@@ -311,6 +320,7 @@ namespace ConvicartWebApp.Controllers
 
             return View(model);
         }
+        //renders a page to upload the image.
         [HttpGet]
         public IActionResult UploadProfileImage()
         {
@@ -329,7 +339,7 @@ namespace ConvicartWebApp.Controllers
 
             return View(customer);  // Return the customer model to the view
         }
-
+        //converts the image into an array to be stored in database.
         [HttpPost]
         public async Task<IActionResult> UploadProfileImageSave(IFormFile image)
         {
@@ -362,7 +372,7 @@ namespace ConvicartWebApp.Controllers
 
             return RedirectToAction("Profile", new { id = customerId });
         }
-
+        //converts the array into an image
         public IActionResult GetProfileImage(int id)
         {
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);

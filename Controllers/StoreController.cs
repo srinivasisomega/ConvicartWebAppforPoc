@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace ConvicartWebApp.Controllers
 {
+    /// <summary>
+    /// This controller is resposible for displaing all products stored in store table and shows recipie of the product.
+    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class StoreController : Controller
     {
@@ -15,7 +18,7 @@ namespace ConvicartWebApp.Controllers
         {
             _context = context;
         }
-
+        //displays products acoring to pagination, difficulty, points range, duration range, it also diplays products inthe order of acending and decending points.
         public IActionResult Store(string searchTerm = "",string sortOrder = "New",int page = 1,List<string> preferences = null, List<string> difficulty = null, int? cookTimeMin = null,int? cookTimeMax = null,int? minPoints = null, int? maxPoints = null)
 
         {
@@ -116,7 +119,7 @@ namespace ConvicartWebApp.Controllers
             ViewBag.ProductId = id;
             return View(product); // Pass the product model to the view
         }
-
+        //displays recipie steps of product
         public IActionResult GetRecipeSteps(int productId)
         {
             // Retrieve the recipe steps from the database

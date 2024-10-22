@@ -1,15 +1,91 @@
 ﻿@model ConvicartWebApp.Models.Customer
+<style>
+form {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-<h1>Profile Picture</h1>
+/* Header styling */
+h2 {
+    text-align: center;
+    color: #007BFF;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+/* Form labels */
+.form-group label {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Input field styling */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Read-only fields */
+#amountToPay[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Success message */
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    border: 1px solid #c3e6cb;
+    text-align: center;
+
+}
+</style>
+<h1 style="margin-top:20px;margin-left:40px;">Profile Picture</h1>
 
 <!-- Display profile image if uploaded -->
 @if (Model.ProfileImage != null)
 {
-    <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.CustomerId })" alt="Profile Image" width="200" height="200" />
+    <img src="@Url.Action("GetProfileImage", "Customer", new { id = Model.CustomerId })"style="margin-left:40px;margin-top:10px;" alt="Profile Image" width="100px" height="100px" />
 }
 else
 {
-    <p>No profile image uploaded.</p>
+    <p style ="margin-left:40px;margin-top:10px;">No profile image uploaded.</p>
 }
 
 <!-- Form to upload new profile image -->

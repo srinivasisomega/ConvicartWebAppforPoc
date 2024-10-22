@@ -11,28 +11,20 @@ namespace ConvicartWebApp.Controllers
     {
         private readonly ConvicartWarehouseContext _context;
 
-        /// <summary>
         /// Initializes a new instance of the <see cref="AddressController"/> class.
-        /// </summary>
         /// <param name="context">The database context for accessing data.</param>
         public AddressController(ConvicartWarehouseContext context)
         {
             _context = context;
         }
-
-        /// <summary>
         /// Displays the view for creating or updating an address.
-        /// </summary>
         /// <returns>The view for creating or updating an address.</returns>
         // GET: Address/CreateOrUpdate
         public IActionResult CreateOrUpdateAddress()
         {
             return View();
         }
-
-        /// <summary>
         /// Saves a customer address, either creating a new one or updating an existing address.
-        /// </summary>
         /// <param name="address">The address information to save.</param>
         /// <returns>A redirect to the customer's profile page.</returns>
         // POST: Address/SaveAddress

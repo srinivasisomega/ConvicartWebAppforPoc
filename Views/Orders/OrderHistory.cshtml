@@ -9,7 +9,6 @@
         font-size: 28px;
         margin-bottom: 20px;
     }
-    /* Table styling */
     .table {
         width: 900px;
         border-collapse: collapse;
@@ -53,6 +52,26 @@
             font-weight: 500;
             color: #2c3e50;
         }
+
+    .profile-button {
+        background: rgb(99, 39, 120);
+        box-shadow: none;
+        border: none;
+    }
+
+        .profile-button:hover {
+            background: #682773;
+        }
+
+        .profile-button:focus {
+            background: #682773;
+            box-shadow: none;
+        }
+
+        .profile-button:active {
+            background: #682773;
+            box-shadow: none;
+        }
 </style>
 
 <h2 style="display:flex; text-align:left; padding-left:3vw; font-family: Roboto; font-weight:bold; color:grey; margin-top:30px;">
@@ -78,8 +97,8 @@
                 <td>
                     <img src="~/Images/store/@order.OrderItems.FirstOrDefault()?.imgUrl" alt="Product Image" width="90" height="80" />
                 </td>
-                <td style="border-right:1px solid #ddd;">@order.TotalAmount.ToString("C")</td> <!-- Display the correct TotalAmount -->
-                <td>@order.Status</td> <!-- Display the new OrderStatus -->
+                <td>@order.TotalAmount.ToString("C")</td> <!-- Display the correct TotalAmount -->
+                <td style="border-right:1px solid #ddd;">@order.Status<br /><a class="btn btn-primary profile-button" asp-controller="Home" asp-action="Contact">Report an Issue</a></td>
             </tr>
         }
     </tbody>

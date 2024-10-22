@@ -25,7 +25,7 @@ html, body {
 .baset {
     flex: 1; /* Allow the main container to grow */
     display: flex;
-    width: 100%; /* Set width to 100% to cover the screen */
+    width: 100%;
 }
 
 /* Main container styles */
@@ -34,7 +34,7 @@ html, body {
     display: flex;
     flex-direction: column; /* Stack children vertically */
     overflow: hidden; /* Prevent overflow */
-    width: 100%; /* Set width to 100% */
+    width: 100%;
 }
 
 /* Main content area */

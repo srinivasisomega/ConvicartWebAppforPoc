@@ -12,7 +12,7 @@
 
                 <a asp-controller="Customer" asp-action="UploadProfileImage" class="btn btn-primary profile-button">Upload Image</a>
 
-                <span class="text-black-50">Subscription: @Model.Customer?.Subscription</span>
+                <span class="text-black" style="font-size:20px; font-weight:500;">Subscription: @Model.Customer?.Subscription</span>
                 <div class="Point-balencediv">
                     <h3 class="text-center-h3" style="margin-top:20px; padding:0px;width:260px; margin-left:40px; margin-right:auto">Points Balance</h3>
                     <a asp-action="DisplayPurchaseForm" asp-controller="Points" class="btn-primary mb-3 profile-button" style="font-size: 0.85rem;padding: 0.2rem 0.7rem;text-decoration: none;text-align: center; border-radius: 5px; width: max-content; margin-left: auto;margin-right:auto; margin-top: 10px;">Purchase more points</a>

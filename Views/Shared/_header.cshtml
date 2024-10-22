@@ -1,6 +1,7 @@
 ﻿@{
     var customerName = ViewContext.HttpContext.Items["CustomerName"] as string;
     var pointBalance = ViewContext.HttpContext.Items["PointBalance"];
+    var customerid = ViewContext.HttpContext.Items["CustomerId"];
 }
 <header class="header1">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light">
@@ -40,7 +41,10 @@
             <!-- Profile Dropdown -->
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="~/profile avatar.png" alt="User Profile" style="width:70px;height:70px" />
+                    <img src="@Url.Action("GetProfileImage", "Customer", new { id = @customerid })"
+                         alt="User Profile"
+                         style="width:70px;height:70px"
+                         onerror="this.onerror=null; this.src='~/default-avatar.png';" />
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                     <li><a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Profile">Profile</a></li>
