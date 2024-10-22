@@ -43,6 +43,9 @@ namespace ConvicartWebApp.Models
 
         public string? imgUrl { get; set; }
 
+        [Column(TypeName = "VARBINARY(MAX)")]
+        public byte[]? ProductImage { get; set; }
+
         [Range(1, 5)]
         public int? Rating { get; set; }
 

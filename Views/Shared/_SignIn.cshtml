@@ -8,15 +8,13 @@
 
 <h2 class="text-center mb-4">Sign In</h2>
 
-<!-- Display validation summary -->
-@if (!ViewData.ModelState.IsValid)
+<!-- Display validation summary specific to the Sign In form -->
+@if (ViewData["SignInErrors"] != null)
 {
-    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    @foreach (var error in (List<string>)ViewData["SignInErrors"])
     {
-        <h6 style="color:darkred;">@error.ErrorMessage</h6>
+        <h6 style="color:darkred;">@error</h6>
     }
-
-
 }
 
 <form asp-action="SignIn" method="post" class="needs-validation" novalidate>

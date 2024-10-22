@@ -126,6 +126,18 @@ namespace ConvicartWebApp.Controllers
             var steps = _context.RecipeSteps.Where(s => s.ProductId == productId).OrderBy(s => s.StepNo).ToList();
             return PartialView("_RecipeSteps", steps); // Return the partial view with the steps
         }
+        public IActionResult GetProfileImage(int id)
+        {
+            var customer = _context.Stores.FirstOrDefault(c => c.ProductId == id);
+            if (customer?.ProductImage != null)
+            {
+                return File(customer.ProductImage, "image/jpeg");  // Serve image
+            }
+            else
+            {
+                return NotFound();  // No image found
+            }
+        }
     }
 }
 

@@ -3,6 +3,7 @@ using ConvicartWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using ConvicartWebApp.Filter;
 using ConvicartWebApp.ViewModels;
+using System.Net.Mail;
 namespace ConvicartWebApp.Controllers
 {
     /// <summary>
@@ -19,7 +20,7 @@ namespace ConvicartWebApp.Controllers
             _context = context;
         }
 
-        
+
 
         // POST: Handle SignIn by checking if there are matching email and password in the customer table, if
         //they match customer id is saved in session
@@ -29,7 +30,7 @@ namespace ConvicartWebApp.Controllers
             // Check if the model state is valid
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                ModelState.AddModelError("", "Email and password are required.");
+                ViewData["SignInErrors"] = new List<string> { "Email and password are required." };
                 return View();
             }
 
@@ -40,8 +41,8 @@ namespace ConvicartWebApp.Controllers
 
             if (customer == null)
             {
-                ModelState.AddModelError("", "Invalid email or password.");
-                return View("SignUp");
+                ViewData["SignInErrors"] = new List<string> { "Invalid email or password." };
+                return View();
             }
 
             // Store CustomerId in session
@@ -50,18 +51,28 @@ namespace ConvicartWebApp.Controllers
             return RedirectToAction("Profile", new { customerId = customer.CustomerId });
         }
 
+
         // GET: Renders the Signup page and sigin partial views
         public IActionResult SignUp()
         {
             return View();
         }
 
-        // POST: Saves data sent by the form from sigup partial view into customers table an redirectes to Subscription action
         [HttpPost]
         public async Task<IActionResult> SignUp([Bind("Name,Number,Email,Password")] Customer customer)
         {
             if (ModelState.IsValid)
             {
+                // Check if email already exists
+                var existingCustomer = await _context.Customers
+                    .FirstOrDefaultAsync(c => c.Email == customer.Email);
+
+                if (existingCustomer != null)
+                {
+                    ModelState.AddModelError("Email", "Email is already in use.");
+                    return View(customer); // Return the view with an error message
+                }
+
                 _context.Add(customer);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -73,6 +84,7 @@ namespace ConvicartWebApp.Controllers
 
             return View(customer);
         }
+
 
         // GET: checks if there is customer id in session if yes sends the customer's data to view for selection the type of subscription.
         public async Task<IActionResult> Subscription()
@@ -385,6 +397,9 @@ namespace ConvicartWebApp.Controllers
                 return NotFound();  // No image found
             }
         }
+        private static Dictionary<string, string> resetCodes = new Dictionary<string, string>();
+
+        // GET: Customer/ForgotPassword
         [HttpGet]
         public IActionResult ForgotPassword()
         {
@@ -401,18 +416,100 @@ namespace ConvicartWebApp.Controllers
                 return View();
             }
 
-            // Add your logic here to send a password reset email.
-            // e.g., Check if the email exists, generate a token, send an email.
+            // Generate a 6-digit reset code
+            var resetCode = new Random().Next(100000, 999999).ToString();
+            resetCodes[email] = resetCode;
 
-            TempData["Message"] = "If the email exists, a reset link has been sent.";
+            // Send the reset code via email
+            SendResetCodeEmail(email, resetCode);
+
+            TempData["Message"] = "If the email exists, a reset code has been sent.";
+            TempData["Email"] = email;  // Pass email to the next view
             return RedirectToAction("ForgotPasswordConfirmation");
+        }
+
+        private void SendResetCodeEmail(string email, string resetCode)
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new System.Net.NetworkCredential("convicart6@gmail.com", "vrey nwgz rnln xvzk"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("convicart6@gmail.com"),
+                Subject = "Password Reset Code",
+                Body = $"Your password reset code is: {resetCode}",
+                IsBodyHtml = true,
+            };
+
+            mailMessage.To.Add(email);
+            smtpClient.Send(mailMessage);
         }
 
         // GET: Customer/ForgotPasswordConfirmation
         public IActionResult ForgotPasswordConfirmation()
         {
+            ViewBag.Email = TempData["Email"];  // Retrieve email for showing or redirecting
             return View();
         }
+
+        // GET: Customer/ResetPassword
+        [HttpGet]
+        public IActionResult ResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+
+            return View(new ResetPasswordModel { Email = email });
+        }
+
+        // POST: Customer/ResetPassword
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Validate the reset code
+            if (!resetCodes.ContainsKey(model.Email) || resetCodes[model.Email] != model.Code)
+            {
+                ModelState.AddModelError("", "Invalid code.");
+                return View(model);
+            }
+
+            // Find the customer by email
+            var customer = _context.Customers.FirstOrDefault(c => c.Email == model.Email);
+            if (customer == null)
+            {
+                ModelState.AddModelError("", "Customer not found.");
+                return View(model);
+            }
+
+            // Save the new password as plain text
+            customer.Password = model.NewPassword; 
+            _context.SaveChanges(); // Save the changes to the database
+
+            resetCodes.Remove(model.Email); // Remove the used code
+
+            TempData["Message"] = "Your password has been successfully reset.";
+            return RedirectToAction("ResetPasswordConfirmation");
+        }
+
+
+        // GET: Customer/ResetPasswordConfirmation
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+
         [HttpGet]
         public IActionResult ChangePassword()
         {

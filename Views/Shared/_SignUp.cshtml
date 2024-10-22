@@ -110,6 +110,7 @@
 
         confirmPassword.addEventListener("input", function () {
             if (confirmPassword.value !== password.value) {
+                e.preventDefault(); // Prevent form submission
                 confirmPasswordError.textContent = "Passwords do not match.";
             } else {
                 confirmPasswordError.textContent = "";
