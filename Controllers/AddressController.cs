@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ConvicartWebApp.Models;
 using ConvicartWebApp.Filter;
+using ConvicartWebApp.Interface;
+
 namespace ConvicartWebApp.Controllers
 {
     /// <summary>
@@ -9,14 +11,15 @@ namespace ConvicartWebApp.Controllers
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class AddressController : Controller
     {
-        private readonly ConvicartWarehouseContext _context;
+        private readonly IAddressService _addressService;
 
         /// Initializes a new instance of the <see cref="AddressController"/> class.
-        /// <param name="context">The database context for accessing data.</param>
-        public AddressController(ConvicartWarehouseContext context)
+        /// <param name="addressService">The service for managing addresses.</param>
+        public AddressController(IAddressService addressService)
         {
-            _context = context;
+            _addressService = addressService;
         }
+
         /// Displays the view for creating or updating an address.
         /// <returns>The view for creating or updating an address.</returns>
         // GET: Address/CreateOrUpdate
@@ -24,6 +27,7 @@ namespace ConvicartWebApp.Controllers
         {
             return View();
         }
+
         /// Saves a customer address, either creating a new one or updating an existing address.
         /// <param name="address">The address information to save.</param>
         /// <returns>A redirect to the customer's profile page.</returns>
@@ -40,39 +44,8 @@ namespace ConvicartWebApp.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Set AddressId to CustomerId
-            address.AddressId = customerId.Value;
-
-            // Check if the address already exists (update)
-            var existingAddress = await _context.Addresses.FindAsync(customerId.Value);
-            if (existingAddress != null)
-            {
-                // Update existing address details
-                existingAddress.StreetAddress = address.StreetAddress;
-                existingAddress.City = address.City;
-                existingAddress.State = address.State;
-                existingAddress.PostalCode = address.PostalCode;
-                existingAddress.Country = address.Country;
-
-                _context.Addresses.Update(existingAddress);
-            }
-            else
-            {
-                // Create a new address
-                await _context.Addresses.AddAsync(address);
-            }
-
-            // Save changes to address
-            await _context.SaveChangesAsync();
-
-            // Update Customer with AddressId
-            var customer = await _context.Customers.FindAsync(customerId.Value);
-            if (customer != null)
-            {
-                customer.AddressId = address.AddressId; // Set the AddressId in Customer
-                _context.Customers.Update(customer);
-                await _context.SaveChangesAsync(); // Save changes to Customer
-            }
+            // Delegate the save/update operation to the AddressService
+            await _addressService.SaveOrUpdateAddressAsync(customerId.Value, address);
 
             // Redirect to customer profile page
             return RedirectToAction("Profile", "Customer");

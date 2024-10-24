@@ -322,7 +322,8 @@ namespace ConvicartWebApp.Controllers
             var order = new Order
             {
                 CustomerId = customer.CustomerId,
-                OrderDate = DateTime.Now
+                OrderDate = DateTime.Now,
+                Status = "OrderPlaced"
             };
 
             // Add cart items to the order and calculate the total cost
@@ -345,7 +346,7 @@ namespace ConvicartWebApp.Controllers
                     ProductName = product.ProductName,
                     Price = product.Price,
                     Quantity = item.Quantity,
-                    imgUrl = product.imgUrl
+                    ProductImage = product.ProductImage
                 };
 
                 order.OrderItems.Add(orderItem);

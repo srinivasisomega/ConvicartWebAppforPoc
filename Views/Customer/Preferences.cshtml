@@ -174,34 +174,34 @@
 
 <!-- Main container for preferences -->
 <div class="Main-Pref-Container">
-    <!-- Title Section -->
     <div class="Main-Pref-Container-Title">
         <h2>Dietary Preference</h2>
-        <h4>Choose your Favorite types, your recommendations will be based on them.</h4>
+        <h4>Choose your favorite types, your recommendations will be based on them.</h4>
     </div>
 
-    <!-- Cuisines Section -->
     <div class="Main-Pref-Container-Cusines">
         <h2>Cuisines</h2>
         <form asp-action="SavePreferences" method="post">
             <input type="hidden" name="customerId" value="@customerId" />
 
-            <!-- Card holder for horizontal scrolling of cuisine options -->
             <div class="Card-holder">
                 @foreach (var preference in Model)
                 {
                     <div class="Card">
-                        <!-- Cuisine image -->
-                        <img src="~/Images/preference/@preference.ImageURLCusine" alt="@preference.PreferenceName" />
+                        <!-- Check if the image is not null before rendering it -->
+                        @if (preference.PreferenceImage != null)
+                        {
+                            <img src="data:image;base64,@Convert.ToBase64String(preference.PreferenceImage)" alt="@preference.PreferenceName" />
+                        }
+                        else
+                        {
+                            <img src="path/to/default/image.jpg" alt="No image available" /> <!-- Provide a fallback image -->
+                        }
 
-                        <!-- Checkbox input for selecting cuisine -->
                         <input type="checkbox" name="selectedPreferences" value="@preference.PreferenceId" id="preference_@preference.PreferenceId" />
                         <label for="preference_@preference.PreferenceId">
                             <div>
-                                <!-- Cuisine name -->
                                 <div>@preference.PreferenceName</div>
-
-                                <!-- Cuisine description -->
                                 <div>@preference.PreferenceDescription</div>
                             </div>
                         </label>
@@ -209,9 +209,9 @@
                 }
             </div>
 
-            <!-- Submit button to save preferences -->
             <button type="submit">Save Preferences</button>
         </form>
     </div>
 </div>
+
 

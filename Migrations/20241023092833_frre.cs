@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConvicartWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class image : Migration
+    public partial class frre : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,8 @@ namespace ConvicartWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +51,8 @@ namespace ConvicartWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PreferenceName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     PreferenceDescription = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    ImageURLCusine = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
+                    ImageURLCusine = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PreferenceImage = table.Column<byte[]>(type: "VARBINARY(MAX)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,7 +68,8 @@ namespace ConvicartWebApp.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Mobile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +92,8 @@ namespace ConvicartWebApp.Migrations
                     Gender = table.Column<string>(type: "nvarchar(1)", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     PointBalance = table.Column<int>(type: "int", nullable: false),
-                    ProfileImage = table.Column<byte[]>(type: "VARBINARY(MAX)", nullable: true)
+                    ProfileImage = table.Column<byte[]>(type: "VARBINARY(MAX)", nullable: true),
+                    LastPointsAddedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -110,7 +114,7 @@ namespace ConvicartWebApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ProductDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Carbs = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     Proteins = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
@@ -121,6 +125,7 @@ namespace ConvicartWebApp.Migrations
                     Difficulty = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     PreferenceId = table.Column<int>(type: "int", nullable: true),
                     imgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductImage = table.Column<byte[]>(type: "VARBINARY(MAX)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -210,14 +215,15 @@ namespace ConvicartWebApp.Migrations
                 name: "RecipeSteps",
                 columns: table => new
                 {
-                    StepNo = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    StepDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StepNumber = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    StepDescription = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Stepimage = table.Column<byte[]>(type: "VARBINARY(MAX)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipeSteps", x => new { x.ProductId, x.StepNo });
+                    table.PrimaryKey("PK_RecipeSteps", x => new { x.ProductId, x.StepNumber });
                     table.ForeignKey(
                         name: "FK_RecipeSteps_Stores_ProductId",
                         column: x => x.ProductId,

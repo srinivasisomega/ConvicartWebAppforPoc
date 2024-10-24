@@ -10,7 +10,7 @@
             @foreach (var item in Model.CartItems)
             {
                 <div class="card">
-                    <img src="~/Images/store/@item.Product.imgUrl" alt="@item.Product.ProductName" class="item-image">
+                    <img src="data:image;base64,@Convert.ToBase64String(item.Product.ProductImage)" alt="@item.Product.ProductName" class="item-image">
                     <h6>@Model.ProductNames[item.ProductId]</h6>
                     <div class="Plusminus">
                         <h6>@item.Quantity</h6>
@@ -36,14 +36,14 @@
         <div class="Bill">
             <h1>Cart Summary</h1>
             <ul>
-                <li> Total Amount :  @Model.TotalAmount.ToString("C")</li>
-                <li> Discount (@(Model.Discount * 100)%) :  -@((Model.TotalAmount * Model.Discount).ToString("C"))</li>
-                <li> Subtotal (after discount) :  @Model.DiscountedSubtotal.ToString("C")</li>
+                <li> Total Amount :  @Model.TotalAmount.ToString()</li>
+                <li> Discount (@(Model.Discount * 100)%) :  - @((Model.TotalAmount * Model.Discount).ToString())</li>
+                <li> Subtotal (after discount) :  @Model.DiscountedSubtotal.ToString()</li>
                 <hr />
-                <li> Tax (@(Model.TaxRate * 100)%) :  @Model.TaxAmount.ToString("C")</li>
-                <li> Shipping :  @Model.ShippingCost.ToString("C")</li>
+                <li> Tax (@(Model.TaxRate * 100)%) :  @Model.TaxAmount.ToString()</li>
+                <li> Shipping :  @Model.ShippingCost.ToString()</li>
                 <hr />
-                <li> Final Total :  @Model.FinalTotal.ToString("C")</li>
+                <li> Final Total :  @Model.FinalTotal.ToString()</li>
             </ul>
 
             <!-- Form to submit the purchase action -->

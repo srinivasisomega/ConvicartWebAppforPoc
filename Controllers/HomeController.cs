@@ -46,44 +46,44 @@ namespace ConvicartWebApp.Controllers
         {
             return View();
         }
-       
+
 
         // Action to handle the submission of the Query form
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Mobile,Description")] QuerySubmission query1)
+        public async Task<IActionResult> Create([Bind("Id,Name,Mobile,Email,Description")] QuerySubmission querySubmission)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(query1);
+                _context.Add(querySubmission);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); // Redirect to Index on success
+                return RedirectToAction(nameof(Index));
             }
-            return View("Contact.cshtml"); // Return to the Contact view if ModelState is invalid
+            return View(querySubmission);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> SignUp([Bind("Name,Number,Email,Password")] Customer customer)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(customer);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index)); // Redirect to Index on success
-        //    }
-        //    return View("Subscription"); // Return to the Contact view if ModelState is invalid
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Signin([Bind("Email,Password")] Customer customer)
-        //{
-        //    return View();
-        //}
+            //[HttpPost]
+            //public async Task<IActionResult> SignUp([Bind("Name,Number,Email,Password")] Customer customer)
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        _context.Add(customer);
+            //        await _context.SaveChangesAsync();
+            //        return RedirectToAction(nameof(Index)); // Redirect to Index on success
+            //    }
+            //    return View("Subscription"); // Return to the Contact view if ModelState is invalid
+            //}
+            //[HttpPost]
+            //public async Task<IActionResult> Signin([Bind("Email,Password")] Customer customer)
+            //{
+            //    return View();
+            //}
 
-        //    public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
+            //    public IActionResult Privacy()
+            //{
+            //    return View();
+            //}
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+            [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConvicartWebApp.Migrations
 {
     [DbContext(typeof(ConvicartWarehouseContext))]
-    [Migration("20241021134704_deliverystatus")]
-    partial class deliverystatus
+    [Migration("20241023092833_frre")]
+    partial class frre
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -257,6 +257,9 @@ namespace ConvicartWebApp.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<byte[]>("PreferenceImage")
+                        .HasColumnType("VARBINARY(MAX)");
+
                     b.Property<string>("PreferenceName")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -292,6 +295,9 @@ namespace ConvicartWebApp.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("QuerySubmissions");
@@ -299,22 +305,23 @@ namespace ConvicartWebApp.Migrations
 
             modelBuilder.Entity("ConvicartWebApp.Models.RecipeSteps", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StepNo")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                    b.Property<int?>("StepNumber")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("StepDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
-                    b.HasKey("ProductId", "StepNo");
+                    b.Property<byte[]>("Stepimage")
+                        .HasColumnType("VARBINARY(MAX)");
+
+                    b.HasKey("ProductId", "StepNumber");
 
                     b.ToTable("RecipeSteps");
                 });
@@ -352,6 +359,9 @@ namespace ConvicartWebApp.Migrations
                     b.Property<string>("ProductDescription")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<byte[]>("ProductImage")
+                        .HasColumnType("VARBINARY(MAX)");
 
                     b.Property<string>("ProductName")
                         .HasMaxLength(255)

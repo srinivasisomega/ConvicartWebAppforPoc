@@ -61,8 +61,15 @@
                     if (formattedCustomerPreferences != null && formattedCustomerPreferences.Count > i && formattedCustomerPreferences[i].ToString() == preference.PreferenceId.ToString())
                     {
                         <div class="Card">
-                            <img src="~/Images/preference/@preference.ImageURLCusine" alt="@preference.PreferenceName" />
-
+                            @if (preference.PreferenceImage != null)
+                            {
+                                <img src="data:image;base64,@Convert.ToBase64String(preference.PreferenceImage)" alt="@preference.PreferenceName" />
+                            }
+                            else
+                            {
+                                <!-- Provide a fallback image if the PreferenceImage is null -->
+                                <img src="path/to/default/image.jpg" alt="No image available" />
+                            }
                             <input type="checkbox" name="selectedPreferences" value="@preference.PreferenceId" id="preference_@preference.PreferenceId" checked />
                             <label for="preference_@preference.PreferenceId">
                                 <div>
@@ -76,8 +83,15 @@
                     {
                         // If the preference is not selected, leave the checkbox unchecked
                         <div class="Card">
-                            <img src="~/Images/preference/@preference.ImageURLCusine" alt="@preference.PreferenceName" />
-
+                            @if (preference.PreferenceImage != null)
+                            {
+                                <img src="data:image;base64,@Convert.ToBase64String(preference.PreferenceImage)" alt="@preference.PreferenceName" />
+                            }
+                            else
+                            {
+                                <!-- Provide a fallback image if the PreferenceImage is null -->
+                                <img src="path/to/default/image.jpg" alt="No image available" />
+                            }
                             <input type="checkbox" name="selectedPreferences" value="@preference.PreferenceId" id="preference_@preference.PreferenceId" />
                             <label for="preference_@preference.PreferenceId">
                                 <div>

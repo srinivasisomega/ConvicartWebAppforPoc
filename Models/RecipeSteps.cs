@@ -5,21 +5,16 @@ namespace ConvicartWebApp.Models
 {
     public class RecipeSteps
     {
-            // Foreign key to the Product
-            [ForeignKey("Product")]
-            public int ProductId { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public int? ProductId { get; set; } // Foreign key to Products table
 
-            // Step number, must be provided and part of the composite key
-            [Key, Column(Order = 1)] // Part of composite key
-            [Required] // Not null
-            public int StepNo { get; set; }
-
-            // Description of the step
-            public string StepDescription { get; set; }
-
-            // URL for the step's image
-            public string ImageUrl { get; set; }
-            public virtual Store Product { get; set; }
-        
+        public int? StepNumber { get; set; } // Step ID for each step in a recipe        
+        [MaxLength(1000)]
+        public string? StepDescription { get; set; } // Description of the step
+        [Column(TypeName = "VARBINARY(MAX)")]
+        public byte[]? Stepimage { get; set; }
+        // Navigation property
+        public virtual Store? Product { get; set; }
     }
 }

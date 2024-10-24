@@ -1,5 +1,7 @@
 using ConvicartWebApp.Filter; // Make sure this is the correct namespace for your filters
+using ConvicartWebApp.Interface;
 using ConvicartWebApp.Models; // Ensure you have the correct namespace for your context
+using ConvicartWebApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,9 @@ builder.Services.AddDbContext<ConvicartWarehouseContext>(options =>
 
 // Register the CustomerInfoFilter with dependency injection
 builder.Services.AddScoped<CustomerInfoFilter>();
-
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IPointsService, PointsService>();
+builder.Services.AddScoped<ICustomerService,CustomerService>();
 // Register IHttpContextAccessor for accessing HttpContext
 builder.Services.AddHttpContextAccessor(); // This is essential for filters to access HttpContext
 

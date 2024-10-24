@@ -112,7 +112,7 @@ namespace ConvicartWebApp.Controllers
             }
 
             // Retrieve recipe steps for the product
-            var steps = _context.RecipeSteps.Where(s => s.ProductId == id).OrderBy(s => s.StepNo).ToList();
+            var steps = _context.RecipeSteps.Where(s => s.ProductId == id).OrderBy(s => s.StepNumber).ToList();
 
             // Pass the product and steps to the view
             ViewBag.RecipeSteps = steps; // Use ViewBag to pass the recipe steps or adjust to pass it directly
@@ -123,7 +123,7 @@ namespace ConvicartWebApp.Controllers
         public IActionResult GetRecipeSteps(int productId)
         {
             // Retrieve the recipe steps from the database
-            var steps = _context.RecipeSteps.Where(s => s.ProductId == productId).OrderBy(s => s.StepNo).ToList();
+            var steps = _context.RecipeSteps.Where(s => s.ProductId == productId).OrderBy(s => s.StepNumber).ToList();
             return PartialView("_RecipeSteps", steps); // Return the partial view with the steps
         }
         public IActionResult GetProfileImage(int id)

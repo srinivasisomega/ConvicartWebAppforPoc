@@ -1,20 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ConvicartWebApp.Filter;
 using ConvicartWebApp.Models;
+using ConvicartWebApp.Interface;
+using ConvicartWebApp.Services;
 using System.Linq;
+
 namespace ConvicartWebApp.Controllers
 {
-    /// <summary>
-    /// this controller is responsible for adding ponts to customer and rendering the view for buying points.
-    /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
     public class PointsController : Controller
     {
-        private readonly ConvicartWarehouseContext _context;
+        private readonly ICustomerService _customerService;
+        private readonly IPointsService _pointsService;
 
-        public PointsController(ConvicartWarehouseContext context)
+        // Dependency Injection through constructor
+        public PointsController(ICustomerService customerService, IPointsService pointsService)
         {
-            _context = context;
+            _customerService = customerService;
+            _pointsService = pointsService;
         }
 
         // Action for displaying the purchase points form
@@ -24,10 +27,9 @@ namespace ConvicartWebApp.Controllers
 
             if (customerId == null)
             {
-                return RedirectToAction("SignUp", "Customer"); // Redirect to sign-up if customerId is not found in session
+                return RedirectToAction("SignUp", "Customer");
             }
 
-            // Initialize the view model
             var model = new PurchasePointsViewModel
             {
                 CustomerId = (int)customerId
@@ -45,29 +47,30 @@ namespace ConvicartWebApp.Controllers
                 return View("DisplayPurchaseForm", model); // Return to form with validation errors
             }
 
-            // Example currency rate (could be retrieved dynamically)
-            decimal pointsToCurrencyRate = 20; // 1 point = 0.10 currency unit
-
-            // Calculate total cost for the points
-            model.AmountToPay = model.PointsToPurchase * pointsToCurrencyRate;
-
-            // Retrieve customer details from the database
-            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == model.CustomerId);
-
-            if (customer == null)
+            try
             {
-                ModelState.AddModelError("", "Customer not found.");
-                return View("DisplayPurchaseForm", model); // Return to form with error
+                // Delegate the point purchase and payment logic to the PointsService
+                var amountToPay = _pointsService.CalculateAmountToPay(model.PointsToPurchase);
+                var customer = _customerService.GetCustomerById(model.CustomerId);
+
+                if (customer == null)
+                {
+                    ModelState.AddModelError("", "Customer not found.");
+                    return View("DisplayPurchaseForm", model); // Return to form with error
+                }
+
+                // Update points and save through the customer service
+                _customerService.AddPointsToCustomer(customer, model.PointsToPurchase);
+                model.AmountToPay = amountToPay;
+
+                // Confirmation message
+                model.ConfirmationMessage = $"Successfully purchased {model.PointsToPurchase} points!";
             }
-
-            // Update the customer's point balance
-            customer.PointBalance += model.PointsToPurchase;
-
-            // Save changes to the database
-            _context.SaveChanges();
-
-            // Optional: Add a confirmation message
-            model.ConfirmationMessage = $"Successfully purchased {model.PointsToPurchase} points!";
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error occurred: {ex.Message}");
+                return View("DisplayPurchaseForm", model); // Handle errors gracefully
+            }
 
             return View("DisplayPurchaseForm", model); // Return form with confirmation
         }

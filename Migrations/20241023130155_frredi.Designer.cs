@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConvicartWebApp.Migrations
 {
     [DbContext(typeof(ConvicartWarehouseContext))]
-    [Migration("20241017223824_failedchange1")]
-    partial class failedchange1
+    [Migration("20241023130155_frredi")]
+    partial class frredi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,6 +192,10 @@ namespace ConvicartWebApp.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18, 2)");
 
@@ -217,16 +221,15 @@ namespace ConvicartWebApp.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("ProductImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("imgUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderItemId");
 
@@ -252,6 +255,9 @@ namespace ConvicartWebApp.Migrations
                     b.Property<string>("PreferenceDescription")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("PreferenceImage")
+                        .HasColumnType("VARBINARY(MAX)");
 
                     b.Property<string>("PreferenceName")
                         .HasMaxLength(255)
@@ -288,6 +294,9 @@ namespace ConvicartWebApp.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("QuerySubmissions");
@@ -295,22 +304,28 @@ namespace ConvicartWebApp.Migrations
 
             modelBuilder.Entity("ConvicartWebApp.Models.RecipeSteps", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("StepNo")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
 
                     b.Property<string>("StepDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
-                    b.HasKey("ProductId", "StepNo");
+                    b.Property<int?>("StepNumber")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Stepimage")
+                        .HasColumnType("VARBINARY(MAX)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("RecipeSteps");
                 });
@@ -343,11 +358,14 @@ namespace ConvicartWebApp.Migrations
                         .HasColumnType("time");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ProductDescription")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<byte[]>("ProductImage")
+                        .HasColumnType("VARBINARY(MAX)");
 
                     b.Property<string>("ProductName")
                         .HasMaxLength(255)
@@ -454,9 +472,7 @@ namespace ConvicartWebApp.Migrations
                 {
                     b.HasOne("ConvicartWebApp.Models.Store", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });

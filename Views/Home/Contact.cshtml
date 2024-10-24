@@ -295,32 +295,31 @@
             <p>Looking for help regarding your order. Talk to us!</p>
 
             <div class="input-section">
-                <form method="post" asp-action="Create">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Name">Name*</label>
-                        <input asp-for="Name" placeholder="Your name.." />
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Mobile">Mobile*</label>
-                        <input asp-for="Mobile" placeholder="Your mobile number.." />
+                        <label asp-for="Mobile" class="control-label"></label>
+                        <input asp-for="Mobile" class="form-control" />
                         <span asp-validation-for="Mobile" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Email">Email*</label>
-                        <input asp-for="Email" placeholder="Your email.." />
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
-                        <label asp-for="Description">Description*</label>
-                        <textarea asp-for="Description" placeholder="Describe your query.." rows="4"></textarea>
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-
-                    <button type="submit" class="submit-btn">Submit</button>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
                 </form>
             </div>
         </div>

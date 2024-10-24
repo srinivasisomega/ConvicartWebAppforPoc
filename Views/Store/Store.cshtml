@@ -293,7 +293,8 @@
             {
                 <div class="item-card" onmouseover="showRecipeLink('@item.ProductId')" onmouseout="hideRecipeLink('@item.ProductId')">
                     <a href="@Url.Action("Recipe", "Store", new { id = item.ProductId })" style="text-decoration:none; color:inherit;">
-                        <img src="~/Images/store/@item.imgUrl" alt="@item.ProductName" class="item-image">
+                        <img src="@Url.Action("GetProfileImage", "Store", new { id = item.ProductId })" alt="@item.ProductName" class="item-image">
+
                         <h3 class="recipie-title">@item.ProductName</h3>
                         <p>@item.Price points</p>
                         <div class="rating">

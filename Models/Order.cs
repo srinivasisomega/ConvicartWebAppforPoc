@@ -1,12 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace ConvicartWebApp.Models
-{    public enum OrderStatus
-    {
-        OrderPlaced,
-        DeliveryInProgress,
-        Delivered
-    }
-
+{    
     public class Order
     {
         [Key]
@@ -15,7 +9,7 @@ namespace ConvicartWebApp.Models
         public decimal TotalAmount { get; set; } // Final total after deductions
         public DateTime OrderDate { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.OrderPlaced; // Default status
+        public string? Status { get; set; }
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 

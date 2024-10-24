@@ -37,15 +37,7 @@ namespace ConvicartWebApp.Models
 
             modelBuilder.Entity<Order>()
                 .Property(o => o.TotalAmount)
-                .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
-
-            modelBuilder.Entity<Order>()
-                .Property(o => o.Status) // Configure the enum as a string or integer
-                .HasConversion(
-                    os => os.ToString(), // Convert enum to string when saving
-                    os => (OrderStatus)Enum.Parse(typeof(OrderStatus), os)); // Convert string back to enum when reading
-
-            // Specify precision and scale for OrderItem Price
+                .HasColumnType("decimal(18, 2)"); 
             modelBuilder.Entity<OrderItem>()
                 .Property(oi => oi.Price)
                 .HasColumnType("decimal(18, 2)"); // Precision 18, Scale 2
@@ -73,9 +65,6 @@ namespace ConvicartWebApp.Models
             modelBuilder.Entity<Store>()
                 .Property(s => s.Minerals)
                 .HasColumnType("decimal(5, 2)");
-
-            modelBuilder.Entity<RecipeSteps>()
-                .HasKey(ps => new { ps.ProductId, ps.StepNo }); // Composite key configuration
 
             modelBuilder.Entity<Cart>()
                 .HasMany(c => c.CartItems)

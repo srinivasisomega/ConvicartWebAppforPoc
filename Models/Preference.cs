@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace ConvicartWebApp.Models
 {
     public class Preference
@@ -12,6 +13,8 @@ namespace ConvicartWebApp.Models
         public string? PreferenceDescription { get; set; }
         [MaxLength(255)]
         public string? ImageURLCusine { get; set; }
+        [Column(TypeName = "VARBINARY(MAX)")]
+        public byte[]? PreferenceImage { get; set; }
     }
 
 }

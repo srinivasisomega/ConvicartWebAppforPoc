@@ -12,10 +12,13 @@
             foreach (var step in Model)
             {
                 <li>
-                    @if (!string.IsNullOrEmpty(step.ImageUrl))
-                    {
-                        <img src="@Url.Content($"~/Images/Recipe/{step.ProductId}/{step.ImageUrl}")" alt="Step @step.StepNo" class="recipe-step-image" />
-                    }
+
+                    <img src="data:image;base64,@Convert.ToBase64String(step.Stepimage)"
+                         alt="Step @step.StepNumber"
+                         class="recipe-step-image"
+                         onerror="this.onerror=null; this.src='@Url.Content("~/Images/Recipe/default-image.jpg")';" />
+
+
                     <h5>@count</h5>
                     <p>@step.StepDescription</p>
                     @{
@@ -39,18 +42,18 @@
         border-radius: 5px;
     }
 
-        .recipe-steps li{
-            display:flex;
-            flex-direction:row;
-            align-items:center;
-            justify-content:space-evenly;
-            margin-bottom:10px;
+        .recipe-steps li {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            margin-bottom: 10px;
         }
 
-            .recipe-steps li p{
-                margin:0;
-                padding:5px;
-                width:170px;
+            .recipe-steps li p {
+                margin: 0;
+                padding: 5px;
+                width: 170px;
             }
 
     .recipe-step-image {

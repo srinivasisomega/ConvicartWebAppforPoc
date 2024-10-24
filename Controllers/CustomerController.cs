@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ConvicartWebApp.Filter;
 using ConvicartWebApp.ViewModels;
 using System.Net.Mail;
+using ConvicartWebApp.Interface;
 namespace ConvicartWebApp.Controllers
 {
     /// <summary>
@@ -14,10 +15,11 @@ namespace ConvicartWebApp.Controllers
     public class CustomerController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
-
-        public CustomerController(ConvicartWarehouseContext context)
+        private readonly ICustomerService CustomerService;
+        public CustomerController(ConvicartWarehouseContext context, ICustomerService customerService)
         {
             _context = context;
+            CustomerService = customerService;
         }
 
 
@@ -35,9 +37,7 @@ namespace ConvicartWebApp.Controllers
             }
 
             // Find the customer by email and password
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(c => c.Email == email && c.Password == password)
-                .ConfigureAwait(false);
+            var customer = await CustomerService.GetCustomerByEmailAndPasswordAsync(email, password);
 
             if (customer == null)
             {
@@ -391,6 +391,18 @@ namespace ConvicartWebApp.Controllers
             if (customer?.ProfileImage != null)
             {
                 return File(customer.ProfileImage, "image/jpeg");  // Serve image
+            }
+            else
+            {
+                return NotFound();  // No image found
+            }
+        }
+        public IActionResult GetPreferenceImage(int id)
+        {
+            var customer = _context.Preferences.FirstOrDefault(c => c.PreferenceId == id);
+            if (customer?.PreferenceImage != null)
+            {
+                return File(customer.PreferenceImage, "image/jpeg");  // Serve image
             }
             else
             {

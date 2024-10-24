@@ -2,8 +2,13 @@
 
 namespace ConvicartWebApp.Models
 {
-    
-public class QuerySubmission
+    public enum QueryStatus
+    {
+        Unseen,
+        ResolvingQuery,
+        Resolved
+    }
+    public class QuerySubmission
     {
         [Key]
         public int Id { get; set; }
@@ -25,7 +30,8 @@ public class QuerySubmission
         // Description field with optional validation
         [StringLength(500, ErrorMessage = "Description can't be longer than 500 characters")]
         public string Description { get; set; }
-    }
+        public QueryStatus Status { get; set; } = QueryStatus.Unseen;
 
+    }
 }
 

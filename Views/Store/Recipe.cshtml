@@ -2,7 +2,7 @@
 <div class="recipe-details">
     <!-- Hero Section with Recipe Name and Image -->
     <div class="product-back">
-        <img src="~/Images/store/@Model.imgUrl" alt="Recipe Image">
+        <img src="@Url.Action("GetProfileImage", "Store", new { id = Model.ProductId })" alt="Recipe Image">
     </div>
 
     <div class="product-content">
