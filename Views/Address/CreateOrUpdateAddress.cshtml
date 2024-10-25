@@ -1,8 +1,9 @@
-﻿@model ConvicartWebApp.Models.Address
+﻿@model ConvicartWebApp.PresentationLayer.ViewModels.AddressViewModel
 
 @{
     ViewBag.Title = "Create or Update Address";
 }
+
 <style>
     /* General page styling */
     body {
@@ -13,8 +14,9 @@
         display: flex;
         height: 100vh;
     }
-    .container{
-    align-items:center;
+
+    .container {
+        align-items: center;
     }
 
     /* Container for the form */
@@ -85,6 +87,7 @@
             background-color: #0056b3;
         }
 </style>
+
 <div class="address-container">
     <h2>@ViewBag.Title</h2>
 

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<ConvicartWebApp.Models.Preference>;
+@model IEnumerable<Preference>;
 <form asp-action="SavePreferences" method="post">
     <!-- Hidden field for customerId -->
     <input type="hidden" name="customerId" value="@TempData["CustomerId"]" />

@@ -1,0 +1,132 @@
+﻿@model IEnumerable<Store>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@if (Model != null && Model.Any())
+{
+    <section class="product-section">
+        <h2>Products Based on Your Preferences</h2>
+        <div class="product-grid">
+            @foreach (var product in Model)
+            {
+                <div class="product-card">
+                    <a href="@Url.Action("Recipe", "Store", new { id = product.ProductId })" class="product-link">
+                        <img src="data:image;base64,@Convert.ToBase64String(product.ProductImage)" alt="Product Image" class="product-image" />
+                        <h3>@product.ProductName</h3>
+                        <p>Price: @product.Price Points</p>
+                        <p>Difficulty: @product.Difficulty</p>
+                        <div class="rating">
+                            @for (int i = 0; i < product.Rating; i++)
+                            {
+                                <span class="star">★</span>
+                            }
+                            @for (int? i = product.Rating; i < 5; i++)
+                            {
+                                <span class="star" style="color: #ccc">★</span>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+}
+else
+{
+    <p>No products available based on your preferences at the moment.</p>
+}
+<div class="hero-section">
+    <div class="hero-text">
+        <h1>Welcome to ConviCart</h1>
+        <p>Where convenience meets quality</p>
+    </div>
+</div>
+
+<section class="services-section">
+    <h2>ConviCart Services</h2>
+    <div class="services-container">
+        <div class="service-box">
+            <img src="~/images/tuto.png" alt="Cooking Tutorial" />
+            <h3>Cooking Tutorial</h3>
+        </div>
+        <div class="service-box">
+            <img src="~/images/store.png" alt="Ingredient Delivery" />
+            <h3>Ingredient Delivery</h3>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* CSS for the product section */
+    .product-section {
+        margin-top: 40px;
+        margin-bottom:20px;
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    .product-grid {
+        display: flex;
+        overflow-x: auto; /* Enable horizontal scrolling */
+        white-space: nowrap;
+        scroll-behavior: smooth; /* Smooth scrolling */
+        padding: 10px;
+        gap: 20px; /* Spacing between product cards */
+        scrollbar-width:none;
+    }
+
+    .product-card {
+        flex: 0 0 auto; /* Prevent product cards from shrinking */
+        width: 250px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .product-card:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
+        }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+
+    p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .rating .star {
+        font-size: 1.2em;
+        color: gold;
+    }
+
+    /* Custom scrollbar styles */
+    .product-grid::-webkit-scrollbar {
+        height: 10px;
+    }
+
+    .product-grid::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+
+        .product-grid::-webkit-scrollbar-thumb:hover {
+            background-color: #999;
+        }
+a{
+    text-decoration:none;
+}
+</style>

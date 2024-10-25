@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using ConvicartWebApp.Models;
+using ConvicartWebApp.DataAccessLayer.Data;
 namespace ConvicartWebApp.Filter
 {
     public class CustomerInfoFilter : IActionFilter

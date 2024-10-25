@@ -1,4 +1,4 @@
-﻿@model ConvicartWebApp.Models.Store;
+﻿@model Store;
 <div class="recipe-details">
     <!-- Hero Section with Recipe Name and Image -->
     <div class="product-back">
@@ -12,7 +12,7 @@
         <div class="recipe-card">
             <div class="recipe-left">
                 <!-- Display Recipe Steps -->
-                @Html.Partial("~/Views/Shared/Recipie/_RecipeSteps.cshtml", ViewBag.RecipeSteps as IEnumerable<ConvicartWebApp.Models.RecipeSteps>)
+                @Html.Partial("~/Views/Shared/Recipie/_RecipeSteps.cshtml", ViewBag.RecipeSteps as IEnumerable<RecipeSteps>)
             </div>
 
             <div class="recipe-right">
