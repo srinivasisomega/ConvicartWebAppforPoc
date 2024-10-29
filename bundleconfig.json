@@ -1,0 +1,24 @@
+[
+  {
+    "outputFileName": "wwwroot/js/srini.min.js",
+    "inputFiles": [
+      "wwwroot/js/*.js"
+    ],
+    "minify": {
+      "enabled": false,
+      "renameLocals": true
+    },
+    "includeInProject": true
+  },
+  {
+    "outputFileName": "wwwroot/css/Srini.min.css",
+    "inputFiles": [
+      "wwwroot/css/*.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "includeInProject": true
+  }
+]

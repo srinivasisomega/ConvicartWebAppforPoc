@@ -2,13 +2,15 @@
 
 namespace ConvicartWebApp.BussinessLogicLayer.Interface.RepositoryInterface
 {
-    public interface ICustomerRepository : IRepository<Customer>
+    public interface ICustomerRepository
     {
-        Task<Customer?> GetCustomerByEmailAsync(string email);
-        Task<Customer?> GetCustomerByPhoneNumberAsync(string phoneNumber);
-        Task<IEnumerable<Customer>> GetCustomersBySubscriptionAsync(string subscription);
-        Task<IEnumerable<Customer>> GetCustomersWithExpiringSubscriptionsAsync(DateTime expirationDate);
-        Task<int> GetCustomerPointsBalanceAsync(int customerId);
+        Task<Customer> GetCustomerByIdAsync(int customerId);
+        Task<Customer> GetCustomerWithAddressByIdAsync(int customerId);
+        Task<Customer> GetCustomerByEmailAsync(string email);
+        Task<Customer> GetCustomerByEmailAndPasswordAsync(string email, string password);
+        Task UpdateCustomerAsync(Customer customer);
+        Task SaveChangesAsync();
     }
+
 
 }

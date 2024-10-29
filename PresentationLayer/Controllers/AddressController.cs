@@ -10,16 +10,16 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
     /// Controller for managing customer addresses.
     /// </summary>
     [TypeFilter(typeof(CustomerInfoFilter))]
-    [Authorize(Policy = "GoldOnly")]
+    [SessionAuthorize]
     public class AddressController : Controller
     {
-        private readonly IAddressService _addressService;
+        private readonly IAddressService AddressService;
 
         /// Initializes a new instance of the <see cref="AddressController"/> class.
         /// <param name="addressService">The service for managing addresses.</param>
         public AddressController(IAddressService addressService)
         {
-            _addressService = addressService;
+            AddressService = addressService;
         }
 
         /// Displays the view for creating or updating an address.
@@ -40,7 +40,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         public async Task<IActionResult> SaveAddress(AddressViewModel viewModel,int? customerId)
         {
             // Delegate the save/update operation to the AddressService using the view model
-            await _addressService.SaveOrUpdateAddressAsync(customerId.Value, viewModel);
+            await AddressService.SaveOrUpdateAddressAsync(customerId.Value, viewModel);
             // Redirect to customer profile page
             return RedirectToAction("Profile", "Customer");
         }

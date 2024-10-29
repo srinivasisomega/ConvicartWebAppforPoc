@@ -1,5 +1,7 @@
 ﻿using ConvicartWebApp.BussinessLogicLayer.Interface;
 using ConvicartWebApp.DataAccessLayer.Data;
+using ConvicartWebApp.PresentationLayer.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConvicartWebApp.BussinessLogicLayer.Services
 {
@@ -13,6 +15,35 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
             _context = context;
             CustomerService = customerService;
         }
+        public async Task<SubscriptionViewModel> GetCustomerSubscriptionAsync(int customerId)
+        {
+            // Fetch customer data from the database
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId)
+                .ConfigureAwait(false);
+
+            if (customer == null)
+                return null;
+
+            // Determine the current subscription type and duration
+            string currentSubscriptionType = customer.Subscription;
+            string currentSubscriptionDuration = "None"; // Default if no subscription exists
+
+            if (customer.SubscriptionDate.HasValue)
+            {
+                var daysSinceSubscription = (customer.SubscriptionDate.Value - DateTime.Now).Days;
+                currentSubscriptionDuration = daysSinceSubscription > 30 ? "Year" : "Month";
+            }
+
+            // Return a view model with the calculated data
+            return new SubscriptionViewModel
+            {
+                CustomerId = customerId,
+                CurrentSubscriptionType = currentSubscriptionType,
+                CurrentSubscriptionDuration = currentSubscriptionDuration
+            };
+        }
+
 
         public bool UpdateSubscription(string subscriptionType, int days, decimal amount, int customerId, out string errorMessage)
         {

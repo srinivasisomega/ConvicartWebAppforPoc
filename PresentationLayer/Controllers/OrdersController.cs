@@ -1,32 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ConvicartWebApp.Filter;
-using ConvicartWebApp.DataAccessLayer.Data;
+using ConvicartWebApp.BussinessLogicLayer.Interface;
 namespace ConvicartWebApp.PresentationLayer.Controllers
 {
-
-
     [TypeFilter(typeof(CustomerInfoFilter))]
+    [SessionAuthorize]
     public class OrdersController : Controller
     {
-        private readonly ConvicartWarehouseContext _context;
+        private readonly IOrderService OrderService;
 
-        // Inject the database context
-        public OrdersController(ConvicartWarehouseContext context)
+        // Inject the order service
+        public OrdersController(IOrderService orderService)
         {
-            _context = context;
+            OrderService = orderService;
         }
-        [ServiceFilter(typeof(CustomerAuthorizationFilter))]
-        public IActionResult OrderHistory(int? customerId)
-        {
-            var orders = _context.Orders
-                .Where(o => o.CustomerId == customerId.Value)
-                .Include(o => o.OrderItems) // Include related OrderItems
-                .ToList();
 
+        [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        public async Task<IActionResult> OrderHistory(int? customerId)
+        {
+            if (!customerId.HasValue)
+            {
+                return BadRequest("Customer ID is required");
+            }
+
+            var orders = await OrderService.GetOrderHistoryAsync(customerId.Value);
             return View(orders);
         }
-
     }
+
 
 }

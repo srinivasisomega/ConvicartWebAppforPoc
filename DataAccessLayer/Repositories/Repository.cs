@@ -20,18 +20,6 @@ namespace ConvicartWebApp.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        // Get entity by ID
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
-        // Add new entity
-        public async Task AddAsync(T entity)
-        {
-            await _dbSet.AddAsync(entity);
-        }
-
         // Update existing entity
         public async Task UpdateAsync(T entity)
         {
@@ -48,7 +36,13 @@ namespace ConvicartWebApp.Infrastructure.Repositories
                 _dbSet.Remove(entity);
             }
         }
+        public async Task<T?> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
 
+        public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
+
+        public void Update(T entity) => _context.Set<T>().Update(entity);
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
         // Save changes to the database
         public async Task SaveAsync()
         {

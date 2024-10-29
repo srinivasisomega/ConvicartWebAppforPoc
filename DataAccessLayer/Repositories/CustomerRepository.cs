@@ -4,48 +4,47 @@ using ConvicartWebApp.DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 namespace ConvicartWebApp.Infrastructure.Repositories
 {
-    public class CustomerRepository : Repository<Customer>, ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly ConvicartWarehouseContext _context;
 
-        public CustomerRepository(ConvicartWarehouseContext context) : base(context)
+        public CustomerRepository(ConvicartWarehouseContext context)
         {
             _context = context;
         }
 
-        // Get customer by email
-        public async Task<Customer?> GetCustomerByEmailAsync(string email)
+        public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            return await _context.Customers.FirstOrDefaultAsync(c => c.Email == email);
+            return await _context.Customers.FindAsync(customerId);
         }
 
-        // Get customer by phone number
-        public async Task<Customer?> GetCustomerByPhoneNumberAsync(string phoneNumber)
-        {
-            return await _context.Customers.FirstOrDefaultAsync(c => c.Number == phoneNumber);
-        }
-
-        // Get customers by subscription type
-        public async Task<IEnumerable<Customer>> GetCustomersBySubscriptionAsync(string subscription)
+        public async Task<Customer> GetCustomerWithAddressByIdAsync(int customerId)
         {
             return await _context.Customers
-                                 .Where(c => c.Subscription == subscription)
-                                 .ToListAsync();
+                .Include(c => c.Address)
+                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
         }
 
-        // Get customers with expiring subscriptions
-        public async Task<IEnumerable<Customer>> GetCustomersWithExpiringSubscriptionsAsync(DateTime expirationDate)
+        public async Task<Customer> GetCustomerByEmailAsync(string email)
         {
             return await _context.Customers
-                                 .Where(c => c.SubscriptionDate.HasValue && c.SubscriptionDate.Value <= expirationDate)
-                                 .ToListAsync();
+                .FirstOrDefaultAsync(c => c.Email == email);
         }
 
-        // Get customer's points balance
-        public async Task<int> GetCustomerPointsBalanceAsync(int customerId)
+        public async Task<Customer> GetCustomerByEmailAndPasswordAsync(string email, string password)
         {
-            var customer = await _context.Customers.FindAsync(customerId);
-            return customer?.PointBalance ?? 0;
+            return await _context.Customers
+                .FirstOrDefaultAsync(c => c.Email == email && c.Password == password);
+        }
+
+        public async Task UpdateCustomerAsync(Customer customer)
+        {
+            _context.Customers.Update(customer);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 

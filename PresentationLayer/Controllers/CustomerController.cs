@@ -4,6 +4,8 @@ using ConvicartWebApp.DataAccessLayer.Data;
 using ConvicartWebApp.DataAccessLayer.Models;
 using ConvicartWebApp.BussinessLogicLayer.Interface;
 using ConvicartWebApp.PresentationLayer.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using ConvicartWebApp.BussinessLogicLayer.Services;
 namespace ConvicartWebApp.PresentationLayer.Controllers
 {
     /// <summary>
@@ -89,6 +91,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
         // GET: checks if there is customer id in session if yes sends the customer's data to view for selection the type of subscription.
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public async Task<IActionResult> Subscription(int customerId)
         {
             var customer = await _context.Customers.FindAsync(customerId).ConfigureAwait(false);
@@ -100,6 +103,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         //this method is responsible for add no of days to subscription date, adding points to point balence, and adding subscription to the customers table.
         [HttpPost]
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public IActionResult UpdateSubscription(string subscriptionType, int days, decimal amount, int customerId)
         {
             if (!SubscriptionService.UpdateSubscription(subscriptionType, days, amount, customerId, out string errorMessage))
@@ -109,12 +113,24 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
                 return RedirectToAction("Subscription", new { customerId = customerId });
             }
 
-            // Redirect to Preferences on success
-            return RedirectToAction("Preferences");
+            // Check if a record with the same customerId exists in the CustomerPreferences table
+            bool hasPreferences = _context.CustomerPreferences.Any(p => p.CustomerId == customerId);
+
+            // Redirect based on whether preferences already exist
+            if (hasPreferences)
+            {
+                return RedirectToAction("Profile");
+            }
+            else
+            {
+                return RedirectToAction("Preferences");
+            }
         }
+
 
         // GET: Preferences Page  checks if there is customer id in session if yes sends the customer's data to view for selection of preferences.
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public async Task<IActionResult> Preferences(int customerId)
         {
 
@@ -125,13 +141,10 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         }
 
         [HttpPost]
+        [SessionAuthorize]
         public async Task<IActionResult> SavePreferences(List<int> selectedPreferences)
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
-            if (customerId == null)
-            {
-                return RedirectToAction("Preferences");
-            }
 
             await PreferenceService.UpdateCustomerPreferencesAsync(customerId.Value, selectedPreferences).ConfigureAwait(false);
 
@@ -140,6 +153,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
         // GET: Profile Page this page displays the address, preferences, pointbalence, subscription and other importent details related to customer
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public async Task<IActionResult> Profile(int? customerId)
         {
             if (!customerId.HasValue) return BadRequest();
@@ -160,6 +174,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         }
 
         // it is responsible for rendering a view that show existing preferences slected by customer and show all other preferences from preferences table.
+        [SessionAuthorize]
         public async Task<IActionResult> UpdatePreference()
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
@@ -178,28 +193,20 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         }
 
         [HttpPost]
+        [SessionAuthorize]
         public async Task<IActionResult> UpdatedPreferences(List<int> selectedPreferences)
         {
             int? customerId = HttpContext.Session.GetInt32("CustomerId");
-            if (customerId == null)
-            {
-                return RedirectToAction("SignUp");
-            }
-
             await PreferenceService.UpdateCustomerPreferencesAsync(customerId.Value, selectedPreferences).ConfigureAwait(false);
 
             return RedirectToAction("Profile", new { customerId });
         }
 
         [HttpGet]
+        [SessionAuthorize]
         public IActionResult EditProfile()
         {
             var customerId = HttpContext.Session.GetInt32("CustomerId");
-            if (customerId == null)
-            {
-                return RedirectToAction("SignUp", "Customer");
-            }
-
             var customer = CustomerService.GetCustomerByIdAsync(customerId.Value).Result;
             if (customer == null) return NotFound();
 
@@ -217,6 +224,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         //renders a page to upload the image.
         [HttpGet]
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public IActionResult UploadProfileImage(int? customerId)
         {
             var customer = CustomerService.GetCustomerById(customerId);
@@ -230,6 +238,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public async Task<IActionResult> UploadProfileImageSave(IFormFile image, int? customerId)
         {
             if (customerId == null)
@@ -246,7 +255,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
             return RedirectToAction("Profile", new { id = customerId });
         }
-
+        [SessionAuthorize]
         public IActionResult GetProfileImage(int id)
         {
             var customer = CustomerService.GetCustomerById(id);
@@ -346,6 +355,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public IActionResult ChangePassword(int? customerId)
         {
 
@@ -355,6 +365,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model, int? customerId)
         {
             if (!ModelState.IsValid)
@@ -388,6 +399,20 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
             HttpContext.Session.Remove("CustomerId");
             return RedirectToAction("Index", "Home");
         }
+        [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        [SessionAuthorize]
+        public async Task<IActionResult> GetSubscription(int customerId)
+        {
+            var viewModel = await SubscriptionService.GetCustomerSubscriptionAsync(customerId);
+
+            if (viewModel == null)
+                return NotFound();
+
+            return View("SubscriptionUpdate", viewModel);
+        }
+
+
+
     }
 
 }

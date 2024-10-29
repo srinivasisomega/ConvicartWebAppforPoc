@@ -12,15 +12,15 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
     public class StoreController : Controller
     {
         private readonly ConvicartWarehouseContext _context;
-        private readonly IStoreService _storeService;
-        private readonly IRecipeService _recipeService;
+        private readonly IStoreService StoreService;
+        private readonly IRecipeService RecipeService;
 
 
         public StoreController(ConvicartWarehouseContext context, IStoreService storeService, IRecipeService recipeService)
         {
             _context = context;
-            _storeService = storeService;
-            _recipeService = recipeService;
+            StoreService = storeService;
+            RecipeService = recipeService;
         }
         //displays products acoring to pagination, difficulty, points range, duration range, it also diplays products inthe order of acending and decending points.
         public IActionResult Store(
@@ -35,12 +35,12 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
                 int? maxPoints = null)
         {
             // Get filtered and sorted stores from the service
-            var stores = _storeService.GetStores(searchTerm, preferences, difficulty, cookTimeMin, cookTimeMax, minPoints, maxPoints);
-            stores = _storeService.SortStores(stores, sortOrder);
+            var stores = StoreService.GetStores(searchTerm, preferences, difficulty, cookTimeMin, cookTimeMax, minPoints, maxPoints);
+            stores = StoreService.SortStores(stores, sortOrder);
 
             // Paginate results
             const int pageSize = 12;
-            var pagedStores = _storeService.PaginateStores(stores, page, pageSize, out int totalPages);
+            var pagedStores = StoreService.PaginateStores(stores, page, pageSize, out int totalPages);
 
             // Pass pagination and filter data to the view
             ViewBag.CurrentPage = page;
@@ -59,7 +59,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         public async Task<IActionResult> Recipe(int id)
         {
             // Retrieve the product from the database asynchronously
-            var product = await _storeService.GetProductByIdAsync(id);
+            var product = await StoreService.GetProductByIdAsync(id);
 
             if (product == null)
             {
@@ -67,7 +67,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
             }
 
             // Retrieve recipe steps for the product asynchronously
-            var steps = await _recipeService.GetRecipeStepsByProductIdAsync(id);
+            var steps = await RecipeService.GetRecipeStepsByProductIdAsync(id);
 
             // Pass the product and steps to the view
             ViewBag.RecipeSteps = steps;
@@ -80,7 +80,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
         public async Task<IActionResult> GetRecipeSteps(int productId)
         {
             // Retrieve the recipe steps from the database asynchronously
-            var steps = await _recipeService.GetRecipeStepsByProductIdAsync(productId);
+            var steps = await RecipeService.GetRecipeStepsByProductIdAsync(productId);
 
             return PartialView("_RecipeSteps", steps); // Return the partial view with the steps
         }

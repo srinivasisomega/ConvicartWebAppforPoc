@@ -1,24 +1,10 @@
-﻿@model ConvicartWebApp.PresentationLayer.ViewModels.SubscriptionViewModel
-
+﻿@model Customer
 <style>
 
     .active-subscription {
-        position: relative; /* Ensures positioning for the pseudo-element */
-        border: 7px solid #008000;
+        border: 2px solid #007BFF;
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-        padding: 16px; /* Add some padding to give space for the tick mark */
-        border-radius: 8px; /* Optional: smoothens the corners */
     }
-
-        .active-subscription::after {
-            content: "✔Current"; /* Unicode for checkmark */
-            font-size: 24px;
-            color: #007BFF; /* Same color as the border */
-            position: absolute;
-            top: 8px; /* Position the tick mark at the top-right corner */
-            right: 20px;
-        }
-
     .Sub-title {
         display: flex;
         flex-direction: column;
@@ -64,17 +50,16 @@
             margin-bottom: 16px;
         }
 </style>
-<!-- Bronze Subscription -->
-<form asp-action="UpdateSubscription" method="post" class="Subscription Bronze @(Model.CurrentSubscriptionType == "Bronze" && Model.CurrentSubscriptionDuration == "Year" ? "active-subscription" : "")">
+<form asp-action="UpdateSubscription" method="post" class="Subscription Bronze">
     <input type="hidden" name="customerId" value="@Model.CustomerId" />
     <input type="hidden" name="subscriptionType" value="Bronze" />
-    <input type="hidden" name="days" value="365" />
-    <input type="hidden" name="amount" value="50000" />
+    <input type="hidden" name="days" value="30" />
+    <input type="hidden" name="amount" value="5000" />
     <div class="Sub-title">
         <h3>Bronze</h3>
         <div class="amount">
-            <h2>₹ 50000</h2>
-            <h5>/Year</h5>
+            <h2>₹ 5000</h2>
+            <h5>/Month</h5>
         </div>
     </div>
     <ul>
@@ -86,16 +71,16 @@
 </form>
 
 <!-- Silver Subscription -->
-<form asp-action="UpdateSubscription" method="post" class="Subscription Silver @(Model.CurrentSubscriptionType == "Silver" && Model.CurrentSubscriptionDuration == "Year" ? "active-subscription" : "")">
+<form asp-action="UpdateSubscription" method="post" class="Subscription Silver">
     <input type="hidden" name="customerId" value="@Model.CustomerId" />
     <input type="hidden" name="subscriptionType" value="Silver" />
-    <input type="hidden" name="days" value="365" />
-    <input type="hidden" name="amount" value="70000" />
+    <input type="hidden" name="days" value="30" />
+    <input type="hidden" name="amount" value="8000" />
     <div class="Sub-title">
         <h3>Silver</h3>
         <div class="amount">
-            <h2>₹ 90000</h2>
-            <h5>/Year</h5>
+            <h2>₹ 8000</h2>
+            <h5>/Month</h5>
         </div>
     </div>
     <ul>
@@ -107,16 +92,16 @@
 </form>
 
 <!-- Gold Subscription -->
-<form asp-action="UpdateSubscription" method="post" class="Subscription Gold @(Model.CurrentSubscriptionType == "Gold" && Model.CurrentSubscriptionDuration == "Year" ? "active-subscription" : "")">
+<form asp-action="UpdateSubscription" method="post" class="Subscription Gold">
     <input type="hidden" name="customerId" value="@Model.CustomerId" />
     <input type="hidden" name="subscriptionType" value="Gold" />
-    <input type="hidden" name="days" value="365" />
-    <input type="hidden" name="amount" value="100000" />
+    <input type="hidden" name="days" value="30" />
+    <input type="hidden" name="amount" value="10000" />
     <div class="Sub-title">
         <h3>Gold</h3>
         <div class="amount">
-            <h2>₹ 100000</h2>
-            <h5>/Year</h5>
+            <h2>₹ 10000</h2>
+            <h5>/Month</h5>
         </div>
     </div>
     <ul>

@@ -6,16 +6,17 @@ using ConvicartWebApp.BussinessLogicLayer.Interface;
 namespace ConvicartWebApp.PresentationLayer.Controllers
 {
     [TypeFilter(typeof(CustomerInfoFilter))]
+    [SessionAuthorize]
     public class PointsController : Controller
     {
-        private readonly ICustomerService _customerService;
-        private readonly IPointsService _pointsService;
+        private readonly ICustomerService CustomerService;
+        private readonly IPointsService PointsService;
 
         // Dependency Injection through constructor
         public PointsController(ICustomerService customerService, IPointsService pointsService)
         {
-            _customerService = customerService;
-            _pointsService = pointsService;
+            CustomerService = customerService;
+            PointsService = pointsService;
         }
 
         // Action for displaying the purchase points form
@@ -43,8 +44,8 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
             try
             {
                 // Delegate the point purchase and payment logic to the PointsService
-                var amountToPay = _pointsService.CalculateAmountToPay(model.PointsToPurchase);
-                var customer = _customerService.GetCustomerById(model.CustomerId);
+                var amountToPay = PointsService.CalculateAmountToPay(model.PointsToPurchase);
+                var customer = CustomerService.GetCustomerById(model.CustomerId);
 
                 if (customer == null)
                 {
@@ -53,7 +54,7 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
                 }
 
                 // Update points and save through the customer service
-                _customerService.AddPointsToCustomer(customer, model.PointsToPurchase);
+                CustomerService.AddPointsToCustomer(customer, model.PointsToPurchase);
                 model.AmountToPay = amountToPay;
 
                 // Confirmation message

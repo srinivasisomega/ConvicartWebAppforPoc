@@ -140,7 +140,6 @@
             display: block;
         }
 
-
 </style>
 <div class="progress-bar">
     <span class="section active">Sign up/in</span>
@@ -159,33 +158,4 @@
         <div class="partial-Signup-Switch"> @Html.Partial("_SignUp")</div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const signUpSwitch = document.querySelector(".switch-signup");
-    const signInSwitch = document.querySelector(".switch-signin");
-    const signInPartial = document.querySelector(".partial-Signin-Switch");
-    const signUpPartial = document.querySelector(".partial-Signup-Switch");
-
-    // Set initial active tab (e.g., Sign In active by default)
-    signInSwitch.classList.add("active");
-    signInPartial.classList.add("active");
-
-    signUpSwitch.addEventListener("click", function () {
-        // Switch to sign-up view
-        signUpSwitch.classList.add("active");
-        signInSwitch.classList.remove("active");
-        signUpPartial.classList.add("active");
-        signInPartial.classList.remove("active");
-    });
-
-    signInSwitch.addEventListener("click", function () {
-        // Switch to sign-in view
-        signInSwitch.classList.add("active");
-        signUpSwitch.classList.remove("active");
-        signInPartial.classList.add("active");
-        signUpPartial.classList.remove("active");
-    });
-});
-
-</script>
-
+<script src="~/js/SignUp.js"></script>

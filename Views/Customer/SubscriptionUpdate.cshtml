@@ -1,7 +1,9 @@
-﻿@{
+﻿@model ConvicartWebApp.PresentationLayer.ViewModels.SubscriptionViewModel
+@{
     ViewData["Title"] = "Subscription";
 }
 <style>
+    
 
     .container {
         background-color: black;
@@ -105,6 +107,11 @@
         width: max-content;
     }
 </style>
+
+@{
+    ViewData["Title"] = "Subscription";
+}
+
 <div class="progress-bar">
     <span class="section">Sign up/in</span>
     <hr class="separator active-bar" size="4" />
@@ -112,16 +119,21 @@
     <hr class="separator" size="4" />
     <span class="section">Preferences</span>
 </div>
+
 <div class="Switch-in-out">
     <div class="nav-sign-in">
         <h3 class="switch-Month">Month</h3>
         <h3 class="switch-Year">Year</h3>
     </div>
     <div class="form-container-in-out">
-        <div class="partial-Year-Switch"> @Html.Partial("~/Views/Shared/Subscription/_SubYearoriginal.cshtml")</div>
-        <div class="partial-Month-Switch"> @Html.Partial("~/Views/Shared/Subscription/_SubMonthoriginal.cshtml")</div>
+        <div class="partial-Year-Switch">
+            @Html.Partial("~/Views/Shared/Subscription/_SubYear.cshtml", Model)
+        </div>
+        <div class="partial-Month-Switch">
+            @Html.Partial("~/Views/Shared/Subscription/_SubMonth.cshtml", Model)
+        </div>
     </div>
 </div>
-<script src="~/js/Subscription.js">
 
+<script src="~/js/Subscription.js">  
 </script>
