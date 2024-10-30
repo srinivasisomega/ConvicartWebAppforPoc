@@ -4,8 +4,11 @@ using ConvicartWebApp.DataAccessLayer.Data;
 using ConvicartWebApp.DataAccessLayer.Models;
 using ConvicartWebApp.BussinessLogicLayer.Interface;
 using ConvicartWebApp.PresentationLayer.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using ConvicartWebApp.BussinessLogicLayer.Services;
 namespace ConvicartWebApp.PresentationLayer.Controllers
 {
     /// <summary>
@@ -88,6 +91,55 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
 
             return View(customer);
         }
+        [HttpGet]
+        public IActionResult SignInWithGoogle()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded) return RedirectToAction("SignUp");
+
+            var email = result.Principal.FindFirstValue(ClaimTypes.Email);
+            var name = result.Principal.FindFirstValue(ClaimTypes.Name);
+
+            if (string.IsNullOrEmpty(email))
+            {
+                ViewData["SignInErrors"] = new List<string> { "Google login failed. Please try again." };
+                return RedirectToAction("SignUp");
+            }
+
+            // Check if user already exists using LINQ
+            var customer = await CustomerService.GetCustomerByEmailAsync(email);
+
+            if (customer == null)
+            {
+                // New user, create a Customer entry
+                customer = new Customer
+                {
+                    Name = name,
+                    Number = "Change number",
+                    Email = email,
+                    Password = "Change Password",
+                    PointBalance = 0,
+                };
+
+                _context.Customers.Add(customer);
+                await _context.SaveChangesAsync();
+            }
+
+            // Store CustomerId in session
+            HttpContext.Session.SetInt32("CustomerId", customer.CustomerId);
+
+            return RedirectToAction("Profile", new { customerId = customer.CustomerId });
+        }
+
+
 
         // GET: checks if there is customer id in session if yes sends the customer's data to view for selection the type of subscription.
         [ServiceFilter(typeof(CustomerAuthorizationFilter))]

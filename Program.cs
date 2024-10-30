@@ -5,7 +5,9 @@ using ConvicartWebApp.DataAccessLayer.Data;
 using ConvicartWebApp.DataAccessLayer.Repositories;
 using ConvicartWebApp.Filter;
 using ConvicartWebApp.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +24,19 @@ app.Run();
 void ConfigureServices(WebApplicationBuilder builder)
 {
     var services = builder.Services;
-
+    services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        options.CallbackPath = "/signin-google";
+    });
     // Register ConvicartWarehouseContext with connection string
     services.AddDbContext<ConvicartWarehouseContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("ConvicartWarehouseContextConnection")));
