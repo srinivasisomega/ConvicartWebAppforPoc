@@ -16,27 +16,27 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
             _repository = repository;
         }
 
-        public async Task<Customer> GetCustomerByIdAsync(int customerId)
+        public async Task<Customer?> GetCustomerByIdAsync(int customerId)
         {
-            return await _repository.GetCustomerByIdAsync(customerId);
+            return await _repository.GetByIdAsync(customerId);
         }
-        public Customer GetCustomerById(int? customerId)
+
+        public Customer? GetCustomerById(int? customerId)
         {
             if (customerId == null) return null;
 
-            // Since we have an async version of this method, we can call it synchronously here.
-            return _repository.GetCustomerByIdAsync(customerId.Value).Result;
+            // Synchronously fetch customer by ID
+            return _repository.GetByIdAsync(customerId.Value).Result;
         }
 
-
-        public async Task<Customer> GetCustomerWithAddressByIdAsync(int customerId)
+        public async Task<Customer?> GetCustomerWithAddressByIdAsync(int customerId)
         {
             return await _repository.GetCustomerWithAddressByIdAsync(customerId);
         }
 
         public async Task UpdateCustomerProfileAsync(Customer customer)
         {
-            var existingCustomer = await _repository.GetCustomerByIdAsync(customer.CustomerId);
+            var existingCustomer = await _repository.GetByIdAsync(customer.CustomerId);
             if (existingCustomer != null)
             {
                 existingCustomer.Name = customer.Name;
@@ -45,17 +45,17 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
                 existingCustomer.Age = customer.Age;
                 existingCustomer.Gender = customer.Gender;
 
-                await _repository.UpdateCustomerAsync(existingCustomer);
+                _repository.Update(existingCustomer);
                 await _repository.SaveChangesAsync();
             }
         }
 
-        public async Task<Customer> GetCustomerByEmailAndPasswordAsync(string email, string password)
+        public async Task<Customer?> GetCustomerByEmailAndPasswordAsync(string email, string password)
         {
             return await _repository.GetCustomerByEmailAndPasswordAsync(email, password);
         }
 
-        public async Task<Customer> GetCustomerByEmailAsync(string email)
+        public async Task<Customer?> GetCustomerByEmailAsync(string email)
         {
             return await _repository.GetCustomerByEmailAsync(email);
         }
@@ -70,33 +70,33 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
             if (customer == null) return false;
 
             customer.Password = newPassword;
-            await _repository.UpdateCustomerAsync(customer);
+            _repository.Update(customer);
             await _repository.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> SaveProfileImageAsync(IFormFile image, int customerId)
         {
-            var customer = await _repository.GetCustomerByIdAsync(customerId);
+            var customer = await _repository.GetByIdAsync(customerId);
             if (customer == null || image == null || image.Length == 0) return false;
 
             using (var memoryStream = new MemoryStream())
             {
                 await image.CopyToAsync(memoryStream);
                 customer.ProfileImage = memoryStream.ToArray();
-                await _repository.UpdateCustomerAsync(customer);
+                _repository.Update(customer);
                 await _repository.SaveChangesAsync();
             }
 
             return true;
         }
 
-        // Implement AddPointsToCustomer as a synchronous method
         public void AddPointsToCustomer(Customer customer, int points)
         {
             customer.PointBalance += points;
-            _repository.UpdateCustomerAsync(customer).Wait();  // Synchronously save changes
-            _repository.SaveChangesAsync().Wait();
+            _repository.Update(customer);
+            _repository.SaveChangesAsync().Wait();  // Synchronously save changes
         }
     }
+
 }

@@ -1,16 +1,11 @@
 ﻿namespace ConvicartWebApp.BussinessLogicLayer.Interface.RepositoryInterface
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T>
     {
-        Task<IEnumerable<T>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
+        IQueryable<T> GetAll();
         Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(int id);
-        Task SaveAsync();
         void Update(T entity);
         Task SaveChangesAsync();
     }
-
-
 }

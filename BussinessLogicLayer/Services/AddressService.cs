@@ -17,7 +17,7 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
 
         public async Task SaveOrUpdateAddressAsync(int customerId, AddressViewModel viewModel)
         {
-            var customer = await _customerRepository.GetCustomerByIdAsync(customerId);
+            var customer = await _customerRepository.GetByIdAsync(customerId);
             if (customer == null)
             {
                 throw new Exception("Customer not found.");
@@ -49,7 +49,7 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
 
                 await _addressRepository.AddAsync(newAddress);
                 customer.AddressId = newAddress.AddressId;
-                await _customerRepository.UpdateCustomerAsync(customer);
+                _customerRepository.Update(customer);
             }
 
             await _addressRepository.SaveChangesAsync();

@@ -2,12 +2,9 @@
 
 namespace ConvicartWebApp.BussinessLogicLayer.Interface.RepositoryInterface
 {
-    public interface IAddressRepository
+    public interface IAddressRepository : IRepository<Address>
     {
         Task<Address?> GetAddressByCustomerIdAsync(int customerId);
-        Task AddAsync(Address address);
-        void Update(Address address);
-        Task SaveChangesAsync();
     }
 
 }
