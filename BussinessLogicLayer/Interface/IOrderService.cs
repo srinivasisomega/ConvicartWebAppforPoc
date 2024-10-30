@@ -7,6 +7,7 @@ namespace ConvicartWebApp.BussinessLogicLayer.Interface
     {
         Task<List<Order>> GetOrderHistoryAsync(int customerId);
         bool Purchase(int customerId, CartViewModel cartViewModel);
+        Task<bool> CancelOrderAsync(int orderId, int customerId);
 
     }
 

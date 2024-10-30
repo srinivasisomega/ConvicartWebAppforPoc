@@ -26,6 +26,25 @@ namespace ConvicartWebApp.PresentationLayer.Controllers
             var orders = await OrderService.GetOrderHistoryAsync(customerId.Value);
             return View(orders);
         }
+        [HttpPost]
+        [ServiceFilter(typeof(CustomerAuthorizationFilter))]
+        public async Task<IActionResult> CancelOrder(int orderId, int? customerId)
+        {
+            if (!customerId.HasValue)
+            {
+                return BadRequest("Customer ID is required");
+            }
+
+            // Attempt to cancel the order
+            var success = await OrderService.CancelOrderAsync(orderId, customerId.Value);
+            if (!success)
+            {
+                return BadRequest("Order cannot be cancelled. It may already be processed or does not exist.");
+            }
+
+            return Ok("Order successfully cancelled, and points refunded.");
+        }
+
     }
 
 

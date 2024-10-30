@@ -82,6 +82,32 @@ namespace ConvicartWebApp.BussinessLogicLayer.Services
 
             return true;
         }
+        public async Task<bool> CancelOrderAsync(int orderId, int customerId)
+        {
+            // Find the order based on orderId and ensure it belongs to the customer
+            var order = await _context.Orders
+                .Where(o => o.OrderId == orderId && o.CustomerId == customerId && o.Status == "OrderPlaced")
+                .FirstOrDefaultAsync();
+
+            if (order == null) return false; // Order not found or status is not "OrderPlaced"
+
+            // Retrieve the customer to update the point balance
+            var customer = await _context.Customers.FindAsync(customerId);
+            if (customer == null) return false;
+
+            // Add the order's total amount back to the customer's point balance
+            customer.PointBalance += (int)order.TotalAmount;
+
+            // Update order status to "Cancelled"
+            order.Status = "Cancelled";
+
+            // Update customer and order in the database
+            _context.Customers.Update(customer);
+            _context.Orders.Update(order);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
 
     }
 }
