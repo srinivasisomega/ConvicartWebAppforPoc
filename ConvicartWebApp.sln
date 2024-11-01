@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvicartWebApp", "ConvicartWebApp.csproj", "{C32E9C19-5B67-4893-BB1B-733348AA39B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvicartWebApp", "ConvicartWebApp.csproj", "{C32E9C19-5B67-4893-BB1B-733348AA39B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvicartBusinessLogicLayer", "..\Business Logic Layer\ConvicartBusinessLogicLayer.csproj", "{A8011F6E-63DA-4519-86D8-6C87CEDCE178}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvicartDataAccessLayer", "..\ConvicartDataAccessLayer\ConvicartDataAccessLayer.csproj", "{51C4EBFC-D680-4D6C-A739-5FD001C3209E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{C32E9C19-5B67-4893-BB1B-733348AA39B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C32E9C19-5B67-4893-BB1B-733348AA39B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C32E9C19-5B67-4893-BB1B-733348AA39B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8011F6E-63DA-4519-86D8-6C87CEDCE178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8011F6E-63DA-4519-86D8-6C87CEDCE178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8011F6E-63DA-4519-86D8-6C87CEDCE178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8011F6E-63DA-4519-86D8-6C87CEDCE178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C4EBFC-D680-4D6C-A739-5FD001C3209E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C4EBFC-D680-4D6C-A739-5FD001C3209E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C4EBFC-D680-4D6C-A739-5FD001C3209E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C4EBFC-D680-4D6C-A739-5FD001C3209E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
